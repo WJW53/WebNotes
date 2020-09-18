@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+function own(){
+            
+        }
+        Person.prototype.name = 'W';
+        function Person(){
+            this.age = 20;
+        }
+        // Person.prototype = {
+        //     name = 'sha',
+        // };
+        var person = new Person();
+
+        console.log(person.__proto__ == Person.prototype);//
+        console.log(person.constructor == Person);
+        //person本身没有constructor,就从其构造函数的原型上调用
+        console.log(person.__proto__.constructor == person.constructor);
+        console.log(Person.__proto__ == Function.prototype);//
+        console.log(Person.prototype.constructor == Person);//指向其本身
+
+        console.log(Person.prototype.__proto__ == Object.prototype);
+
+        console.log(Person.prototype == person.__proto__);//那还能写啥
+        console.log(Function.prototype.__proto__ === Object.prototype);
+        //console.log(person.prototype.constructor);
+        //TypeError,person怎么可能有原型
+
+    </script>
+    
+</body>
+</html>

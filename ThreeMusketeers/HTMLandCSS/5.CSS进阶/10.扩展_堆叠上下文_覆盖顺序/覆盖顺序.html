@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html{
+            background-color: lightblue;
+
+        }
+        .container{
+            background: #008c8c;
+            width: 200px;
+            height: 200px;
+            position: relative;
+            /* 不设置的话 默认为auto */
+            /* z-index: auto; */
+            /* z-index: 0; */
+            margin: 50px;
+            /* margin-top: -200px */
+            
+        }
+        .item{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            z-index: -1;
+            position: absolute;
+            left: -30px;
+            top: -30px;
+
+        }
+        .normal{
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+            margin-top: -70px;
+            margin-top: -400px;
+        }
+        .float{
+            width: 200px;
+            height: 200px;
+            background-color: brown;
+            float: left;
+            margin-left: 100px;
+            margin-top: -30px;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- normal能覆盖p元素是因为p元素时块盒，但里面的文字仍然是行盒，所以覆盖不了行盒 -->
+    <!-- 如果把p换成span元素，则normal只会被覆盖 -->
+    <p style="background:lightyellow">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio commodi similique non vero nulla maiores totam quasi at, sed amet earum consequatur pariatur quam dolor obcaecati, minus veniam doloribus iste facere, nostrum rem accusantium dolorum! Ducimus voluptates beatae sequi unde. Provident quae rerum ab ad mollitia cum tenetur minima! Vero, animi ratione! Voluptatum reprehenderit ut excepturi ipsum amet? Voluptatem facilis atque fuga, earum laudantium cupiditate odit enim quas doloremque cumque aut? Aut, alias! Dignissimos libero nulla, itaque sunt nihil eveniet! Tempore, ea dicta numquam quasi, accusamus magni dolores repellendus asperiores nesciunt magnam incidunt! Voluptates repudiandae optio vero omnis? Cumque eius laborum quod iste eligendi iure sit? Distinctio fugiat, impedit error sequi voluptatum placeat itaque aliquid laudantium, veritatis modi voluptatem? Corrupti labore a rerum iste accusantium sit, rem, obcaecati at quibusdam inventore, enim modi illo numquam consequatur maiores nobis! Nisi nemo natus nostrum provident perferendis aperiam a deserunt corrupti consequatur obcaecati odio corporis tempora, eum consequuntur, accusamus rem reprehenderit! Dolores dolore, incidunt eos ea repudiandae provident. Magnam, exercitationem. Nisi eaque exercitationem error rerum ad nobis quasi, ullam rem ea, esse debitis fugiat modi facere quam optio odit. Minima laboriosam laborum, quasi, nostrum incidunt quaerat sed cumque dicta omnis animi quis doloremque.
+    </p>
+    <div class="container">
+        <div class="item">
+        </div>
+        <!-- 同一级别，写在后面的覆盖前面的 -->
+        <div class="item" style="z-index: -1; background-color:chocolate;left:-35px;top:-35px;"></div>
+    </div>
+
+    
+    <div class="normal">
+
+    </div>
+    <div class="float">
+
+    </div>
+    
+
+
+</body>
+</html>

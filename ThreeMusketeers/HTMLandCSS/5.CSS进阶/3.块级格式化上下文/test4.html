@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            /* overflow: hidden; */
+            float: left;
+            background-color: lightblue;
+            position: relative;
+        }
+        .item{
+            /* float: left; */
+            /* 因为绝对、固定定位彻底脱离了常规流，所以bfc不会自动计算它们 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 20px;
+            width: 200px;
+            height: 200px;
+            background-color: red;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item">
+
+        </div>
+    </div>
+
+
+</body>
+</html>

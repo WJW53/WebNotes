@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div>
+    </div>
+    <img src="" alt="">
+    <iframe src="" frameborder="0"></iframe>
+    <img src="" alt="">
+    <span></span>
+    <strong>
+        <em></em>
+    </strong>
+
+    <script>
+        function loadScript (url,callback) {//解决把外部文件下载过来
+            var script = document.createElement('script');//创建
+            script.type = 'text/javascript';//设置
+            
+
+            //script.readyState//状态码,初始值为loading,会动态改变.complete/loaded:代表已经加载完毕
+            if(script.readyState){//Chrome也有
+                script.onreadystatechange = function(){//IE里也有,当监听到readyState改变了才会触发
+                    //初始值是interactive,当改变时就执行函数
+                    if(script.readyState == 'complete' || script.readyState == 'loaded' ){
+                        // callback();
+                        tools[callback]();
+                    }
+                }
+            }else{
+                script.onload = function(){//Safari Chrome Firefox opera都兼容;IE只有script没有onload
+                    // callback();//onload 事件会在页面或图像加载完成后立即发生。
+                    tools[callback]();
+                }
+            }
+
+            //放在后面防止放在前面的话,若硬件设施啥的太NB了,加载太快导致无法触发onreadystatechange
+            script.src = url;
+            document.head.appendChild(script);
+        }
+
+        // loadScript('test.js',function(){test();});//必须把test放在匿名函数里,不然报错,解析时test未定义
+        loadScript('test.js','test');
+    </script>
+
+
+</body>
+</html>

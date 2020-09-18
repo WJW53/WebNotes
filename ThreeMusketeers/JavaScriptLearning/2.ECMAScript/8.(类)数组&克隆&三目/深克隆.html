@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //深度克隆:我的属性和你一模一样,但是我修改引用值属性后并不影响你的引用值
+        //暂时只考虑数组和对象的区别
+        var obj = {
+            name:'abc',
+            age:123,
+            card:['visa','master'],
+            wife:{
+                name:'bcd',
+                son:{
+                    name:'aaa',
+                }
+            }
+        }
+        var obj1 = {};
+//深层拷贝
+        function myDeepClone(origin,target){
+            var target = target || {},//防止用户不传target,就是你什么都不带,我也能给你提供原料
+                toStr  = Object.prototype.toString,
+                arrStr = '[object Array]';//用来比较
+
+            for(var prop in origin){
+               if(origin.hasOwnProperty(prop)){//为了避免拿到原型链上的属性
+                    if(origin[prop] !== 'null' && typeof(origin[prop]) == 'object'){
+                        // //首先不是null.并且是[]或{}.    这是停止调用的判断条件
+                        // if(toStr.call(origin[prop]) == arrStr){
+                        //     target[prop] = [];//如果是数组,就新建空数组
+                        // }else{
+                        //     target[prop] = {};//若是对象,就新建空对象
+                        // }
+                        target[prop] = toStr.call(origin[prop]) == arrStr ? [] : {};
+                        myDeepClone(origin[prop],target[prop]);//然后再克隆上述的[],或{}里的属性
+                    }else{
+                        target[prop] = origin[prop];
+                    }
+                    
+                }
+            }
+            return target;
+        }
+
+        myDeepClone(obj,obj1);
+        console.log(obj1);
+        console.log(obj1.card.push('sunny'));
+        console.log(obj1);
+        console.log(obj);
+    </script>
+</body>
+</html>

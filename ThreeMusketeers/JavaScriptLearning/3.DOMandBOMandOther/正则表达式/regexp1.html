@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        // var reg1 = /^-?\d+(\.0+)?$/gmi;//最后那个gmi表示全局搜索、多行匹配、忽略大小写模式
+        // var reg2 = new RegExp("^-?\d+(\.0+)?$","gmi");
+        // var reg3 = RegExp(reg1);
+        // console.log(reg1 === reg3);
+        // console.log(reg2.test(123));
+        
+
+        // var reg = /abc/g;
+        // var s = "111abc111abc111";
+
+        // //判断匹配了多少处
+        // var n = 0;
+        // while(reg.test(s)){
+        //     n++;
+        // }
+        // console.log(`匹配了${n}次`);
+
+        // console.log(s,reg.lastIndex,reg.test(s),reg.lastIndex);
+        // console.log(s,reg.lastIndex,reg.test(s),reg.lastIndex);
+        // console.log(s,reg.lastIndex,reg.test(s),reg.lastIndex);
+        // console.log(s,reg.lastIndex,reg.test(s),reg.lastIndex);
+        // console.log(s,reg.lastIndex,reg.test(s),reg.lastIndex);
+        // console.log(s,reg.lastIndex,reg.test(s),reg.lastIndex);
+
+        var reg = /\d+/g;
+        var s1   = "1234abc123aaa";
+        var result;
+        // console.log(Array.isArray(reg.exec(s1)));
+        // console.log(s1,reg.lastIndex,reg.exec(s1),reg.lastIndex);
+        // console.log(s1,reg.lastIndex,reg.exec(s1),reg.lastIndex);
+        // console.log(s1,reg.lastIndex,reg.exec(s1),reg.lastIndex);
+        // console.log(s1,reg.lastIndex,reg.exec(s1),reg.lastIndex);
+        // console.log(s1,reg.lastIndex,reg.exec(s1),reg.lastIndex);
+        // console.log(s1,reg.lastIndex,reg.exec(s1),reg.lastIndex);
+
+        //得到所有的匹配结果和位置
+        while(result = reg.exec(s1)){
+            console.log(`${s1} 匹配结果:${result[0]},出现位置:${result.index}`)
+        }
+
+        var res2 = s1.match(reg);
+        console.log(s1,res2);
+
+        var s2 = "adsfds,wr3\n24 sadf-fsda\terk32";
+        var res3 = s2.split(/[, \-\t\n]/,3);//第二个参数是分隔后的元素数量
+        console.log(res3);
+        //var s22 = s2.replace(" ",",");
+        var s22 = s2.replace(/\s/g,",");//匹配任何空白字符,并替换为逗号
+        console.log(s22);
+
+        var s3 = "hello world\tjavascript\nyes";
+        console.log(s3);
+        var s33 = s3.replace(/\s*\b[a-z]\s*/g,function(match){//最终转换为了大驼峰式命名法
+            console.log(match,match.length);//空格、制表、换行都算长度为1
+            return match.toUpperCase().trim();//字母大写且去掉首尾空白
+        });//就是将匹配到的内容进行操作后,替换为正则所选取的内容
+        console.log(s33);
+        
+    </script>
+</body>
+</html>

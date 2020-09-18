@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .parent{
+            background: lightblue;
+            /* width: 300px; */
+            /* height: 200px; */
+            border: 2px solid;
+            padding: 30px;
+            margin:10px 30px;
+            
+        }
+
+        .child{
+            border: 2px solid;
+            /* height: 100px; */
+            background: red;
+
+            /* 包含块左右多出点的效果 */
+            /* width: auto;
+            margin-left: -50px;
+            margin-right: -50px; */
+
+            /* margin-left: auto;
+            margin-right: auto; */
+            width: 100px;
+            /* 这两个是常规流中块盒在其包含块中居中的方法 */
+            margin: 0 auto;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div class="parent">
+        <div class="child">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio aliquid iure exercitationem eos, eius cum laudantium dolores nihil perspiciatis, quos commodi ad, quia provident consectetur eveniet vero voluptas esse saepe!
+        </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+//1.        
+        var foo = 123;
+        function print1 () {
+            this.foo = 234;//这个this指向window,所以它更改window.foo = 234了
+            console.log(foo);//这个foo打印的也是window.foo
+        }
+        //print1();//234,
+        new print1();//123,因为foo前面没人调用,所以拿window的foo,故为123
+    //但若是上述print1();不注释掉,那么结果仍然为234,因为window.foo被更改为了234
+
+//2.
+        var a = 5;
+        function test0(){//下述结果分别是执行test0();和new test0();的结果
+            a = 0;
+            console.log(a);//0,0
+            console.log(this.a);//5,undefined
+            var a;//注意这个var a;就是它影响了test0();的战局！没有这个,就会输出3个0
+            console.log(a);//0,0
+        }
+        test0();
+        //AO{a:0,this.a->window.a,}
+
+        //new test0();
+        //AO{a:0,this:{}}//得给this.a赋值它才有a,所以this里没有a,所以是undefined
+
+
+//3.
+        //console.log(hello);//报错:hello is not defined
+        
+        function print(){
+            var marty = {
+                name:'marty',
+                printName:function(){
+                    console.log(this.name);
+                }
+            }
+        
+            var test1 = {name:'test1'};
+            var test2 = {name:'test2'};
+            var test3 = {name:'test3'};
+
+            test3.printName=marty.printName;
+            var printName2=marty.printName.bind({name:123});//捆绑
+            marty.printName.call(test1);//test1
+            marty.printName.apply(test2);//test2
+            marty.printName();//marty.因为是marty自己调用的,所以this==marty,marty.name=='marty'
+            printName2();//123
+            test3.printName();//test3
+        }
+        print();
+
+//4.
+        var bar = {aa:'002'};
+        function printf(){
+            bar.aa = 'a';
+            Object.prototype.bb = 'b';
+            return function inner(){
+                console.log(bar.aa);
+                console.log(bar.bb);
+            }
+        }
+        printf()();//a b
+
+    </script>
+</body>
+</html>

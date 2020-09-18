@@ -1,0 +1,135 @@
+/* 可以去mdn查 */
+
+/* 1.通配符选择器 */
+/* * {
+    color: red;
+} */
+
+
+
+/* 2.属性选择器 */
+
+
+/* 选中所有具有href属性的元素 */
+/* [href] {
+    color: red;
+} */
+
+/* [href="https://www.sina.com"] {
+    color: red;
+} */
+/* [href="https://baidu.com"] {
+    color: #008c8c;
+} */
+
+/* [attr~=value]表示带有以attr命名的属性的元素
+并且该属性是一个以空格作为分隔的值列表，其中[至少]
+一个值匹配“value” */
+/* [class~="b"] {
+    color: green;
+} */
+
+/* 而类选择器是： */
+/* .b {
+    color: green;
+} */
+
+/* 用*=，只要attr属性里包含value这个关键字即可 */
+/* 例如下述 只需， class="abcd" */
+/* [class*="b"] {
+    color: green;
+} */
+
+/* 常用$=,地址只需以那段描述结束即可 */
+/* [href$="douyu.com"] {
+    color: hotpink;
+} */
+
+
+
+
+/* 3.伪装类选择器 */
+
+
+/* ps:记得清除浏览数据否则调试界面颜色
+点过后不会更改 */
+/* 超链接未访问时的状态 */
+/* a:link {
+    color: chocolate;
+} */
+/* 超链接访问过后的状态 */
+/* a:visited {
+    color:rgb(113,133,0);
+} */
+
+/* 选中鼠标悬停时的a元素 */
+/* a:hover {
+    color: red;
+} */
+
+/* 鼠标按下时的a元素 */
+/* a:active {
+    color: #000000;
+} */
+
+
+
+
+/* 4.伪元素选择器 */
+/* before可以在前面这个元素里面生成第一个子元素，
+可以认为是before元素，content是其内容*/
+
+/* span::before {
+    content: "《";
+    color: red;
+} */
+/* 可以理解为生成最后一个子元素after */
+/* span::after {
+    content: "》";
+    color: red;
+} */
+
+/* p {
+    text-indent: 2em;
+    line-height: 2;
+}
+
+div.red {
+    color: red;
+}
+
+.red li{
+    color: #008c8c;
+} */
+
+
+/* .abc .bcd {
+    color: red;
+} */
+
+
+/* div li {
+    color: red;
+} */
+/* div>ul>li {
+    color: red;
+} */
+/* 或者 */
+/* div>ul li {
+    color: red;
+} */
+
+
+.special{
+    color: red;
+}
+
+.special~li,p{
+    color: #008c8c;
+}
+.special+li{
+    color: #000;
+}
+
+
+

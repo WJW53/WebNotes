@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+//1.        
+        var set = false + 1;
+        document.writeln(set);//1
+        var demo = false == 1;
+        document.writeln(demo);//false
+        if(typeof(a)&&-true + (+undefined) + ""){
+//"undefined"&&"-1NaN" 即返回 "-1NaN" ,而除了空串字符串bool值均为true,所以执行语句
+            document.writeln('基础扎实');
+        } 
+        if(11 + "11" * 2 == 33) {
+            document.writeln('基础扎实');
+        }
+        !!" " + !!"" - !!false||document.writeln('你觉得能打印你就是猪');
+    //  (true  + false - false )||..
+    //   1  || ..
+    //  前面已经为真了所以后面不可能打印出来
+
+//2.
+    //暂时不提这题,涉及后面的知识
+            // var x = 1;
+            // if(function f() {}){
+            //     x += typeof(f);
+            // }
+            // console.log(x);//1undefined
+
+            // (window.foo || window.foo = 'bar')
+        //这样写会报错,因为先进行或运算,然后再赋值
+
+            // ( window.foo || (window.foo = 'bar') );
+        //因为有括号,所以先执行赋值操作,window.foo = 'bar'
+    //但是这题不管你分析对了错了,最后都能得出window.foo的值为'bar'
+    </script>
+</body>
+</html>

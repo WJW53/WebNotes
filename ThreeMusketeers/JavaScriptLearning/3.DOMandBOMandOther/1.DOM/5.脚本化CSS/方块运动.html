@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <div style="width: 100px;height: 100px;background-color: red;
+    position: absolute;left: 0;top: 0;"></div>
+
+    <script>
+        function getStyle(elem,prop){
+            if(window.getComputedStyle){
+                return window.getComputedStyle(elem,null)[prop];
+            }else{
+                return elem.currentStyle[prop];
+            }
+        }
+
+        var div = document.getElementsByTagName('div')[0];
+        var speed = 0.5;
+        var timer = setInterval(function(){
+            speed += speed/20;
+            div.style.left = parseInt(getStyle(div,'left')) + speed + 'px';
+//注意：getStyle返回的是字符串类型
+            if(parseInt(div.style.left) > 960){
+                clearInterval(timer);
+            }
+        },10);//1秒钟100帧
+
+    </script>
+</body>
+</html>

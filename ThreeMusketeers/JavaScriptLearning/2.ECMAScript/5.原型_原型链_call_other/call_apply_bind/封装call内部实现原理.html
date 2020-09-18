@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 以下有些笔记可能有误,后来懒得改了,我之后画图深刻理解了,无所谓了 -->
+    <script>
+        //这篇的func指的是下述有个函数叫func.针对两层esCall讲述的下述注释.将func.escall看做是A
+        Function.prototype.esCall = function (context) {//context = func
+            var content = context || window;    //令content = func
+            content.fn = this;//外面是二层esCall时:content.fn = func.esCall = Function.prototype.esCall
+            var args = [];
+
+            for(var i = 1,len = arguments.length;i<len;i++){//就是把原this指向的函数的参数保存下来
+                args.push( 'arguments['  +  i  +  ']' );//字符串是从左往右引号一一对应,不是tnd整体括起来
+                //console.log(args);                
+            }//实际上就是字符串形式的arguments[i],i=1,...,len-1
+            var result = eval( 'content.fn('  +  args  + ')' );//eval(String),再把String解析为JS执行
+            //content.fn(args) = func.call(args),这里args为[],经过字符串拼接后,
+            //为content.fn(),所以等同于func.call()。这两行都是指二层esCall时
+
+            delete content.fn;//防止污染传进来的 context
+
+            //console.log(result);//undefined 因为这时eval()里面的返回值是空的：因为func.esCall()无返回值
+            //也就是Function.prototype.call()无返回值.  后来我修改了func()里的返回值为1,然后就改变了
+            return result;//返回result的结果即func.call() == A.()
+        }
+        function func() {
+            console.log(this);
+            //return 1;
+        }
+        func.esCall(func,1,2,3);//func
+        func.esCall.esCall(func);//window   因为最后是执行func.call();里面没有参数,所以content指向window
+        //然后再把func给content.fn,最后返回的是func(); 而func() == window.func(),里面的this是指向window  
+    </script>
+
+
+</body>
+</html>

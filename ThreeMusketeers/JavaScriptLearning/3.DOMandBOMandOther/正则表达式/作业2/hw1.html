@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        var reg = /\d{3}/g;
+        var s = "433afdsaf34542fsdssfsd234";
+        var n = 0;
+        var str = "";
+        // while(reg.test(s)){
+        //     n++;
+        // }
+        // console.log(`匹配了${n}次`);
+        // while(result = reg.exec(s)){
+        //     console.log(`${s}的匹配结果:${result[0]},匹配位置:${result.index}`);
+        // }
+
+        while(result = reg.exec(s)){
+            n++;
+            str += result[0] + "\n";
+        }
+
+        str = `匹配了${n}次:\n` + str;
+        console.log(str);
+    </script>
+</body>
+</html>

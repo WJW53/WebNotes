@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            list-style: none;
+        }
+        li:nth-of-type(odd){
+            background-color: blue;
+        }
+        li:nth-of-type(even){
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>a</li>
+        <li>b</li>
+        <li>c</li>
+        <li>d</li>
+    </ul>
+
+    <script>
+        var liCollection = document.getElementsByTagName('li');
+        for(var i = 0;i < liCollection.length;i++){
+            // liCollection[i].onclick = function(){
+            //     console.log(i);
+            //     //每行各点一下,都会各输出一个4,因为闭包问题
+            // }
+            //用下述方法解决,即可输出正确顺序(还是立即执行函数原理)
+            (function (j) {
+                liCollection[j].onclick = function (){
+                    console.log(j);
+                }
+            }(i))
+        }
+
+//以下内容只是别的知识点的练习而已:
+//输出一个字符串占多少个字节        
+        function retByteslen(target){
+            var count,
+                len;
+                count = len = target.length;
+            for(var i = 0; i < len; i++){
+                if(target.charCodeAt(i) > 255){//是中文字符就+1
+                    count++;
+                }
+            }
+            console.log(count);
+        }
+
+//这题可以.
+        //console.log(typeof(txt));
+        var x = 1;
+        if(function f() {}){
+//这个函数不是false,所以能执行{}里的内容. 但其实不论是否为false            
+//因为这个if的括号把里面的内容变成了表达式,它就不再是函数了,然后f就会消失了        
+//而typeof是唯一一个在未经声明未经赋值仍不会报错的用法
+            x += typeof f;
+        }
+        console.log(x);//输出:1undefined
+        //并且它是字符串型,这个不用说吧
+    </script>
+</body>
+</html>

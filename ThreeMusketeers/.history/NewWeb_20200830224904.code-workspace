@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"name": "ThreeMusketeers",
+			"path": "."
+		},
+		{
+			"name": "TEST",
+			"path": "..\\TEST"
+		},
+		{
+			"name": "1-4月DEMO",
+			"path": "..\\渡一\\渡一资料\\公开课资料\\2020年\\1-4月DEMO"
+		},
+		{
+			"name": "web全栈工程师之旅",
+			"path": "..\\web全栈工程师之旅"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "web全栈工程师之旅"
+	}
+}

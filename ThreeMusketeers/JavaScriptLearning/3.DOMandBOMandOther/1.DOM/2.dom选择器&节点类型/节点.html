@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="only" class="d1">
+        123
+        <!-- This is comment -->
+        <strong>
+            <span>1</span>
+        </strong>
+        <span></span>
+        <em></em>
+    </div>
+    <iframe src="" frameborder="0"></iframe>
+
+    <script>
+        var strong = document.getElementsByTagName('strong')[0];
+        console.log(strong.parentNode);//div
+        console.log(strong.parentNode.parentNode);//body
+        console.log(strong.parentNode.parentNode.parentNode);//html
+        console.log(strong.parentNode.parentNode.parentNode.parentNode);//#document
+        console.log(strong.parentNode.parentNode.parentNode.parentNode.parentNode);//null
+
+        var div = document.getElementsByTagName('div')[0];
+        console.log(div.childNodes.length);//9?为啥?因为节点类型..
+        console.log(div.nextSibling);
+        console.log(div.nextSibling.nextSibling);
+        console.log(div.previousSibling);
+        console.log('\n');
+
+        console.log(strong.parentElement);
+        console.log(strong.parentElement.parentElement);
+        console.log(strong.parentElement.parentElement.parentElement);
+        console.log(strong.parentElement.parentElement.parentElement.parentElement);
+
+        console.log(div.children);
+
+        console.log('\n');
+        console.log(div.childNodes[1].nodeValue);
+        console.log(div.childNodes[1]);
+        console.log(div.childNodes[1].nodeType);
+        console.log(div.childNodes[0].nodeValue);
+        console.log(div.childNodes[3].nodeType);
+        console.log(div.childNodes[3].nodeName);
+        
+        console.log('\n');
+        //返回元素子节点
+        function retElementChild(node){
+            var temp = {
+                length : 0,
+                push : Array.prototype.push,
+                splice: Array.prototype.splice,
+            }
+                child = node.childNodes,
+                len = child.length;
+            
+            for(var i = 0;i<len;i++){
+                if(child[i].nodeType === 1){
+                    temp.push(child[i]);
+                }  
+            }
+            return temp;
+        }
+        console.log(retElementChild(div));
+        
+        console.log(div.attributes[0].value='not-only');//但是不可更改属性名
+
+    </script>
+</body>
+</html>

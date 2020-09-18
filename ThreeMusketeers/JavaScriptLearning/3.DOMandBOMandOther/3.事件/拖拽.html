@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div style="width: 100px;height: 100px;background-color:red;
+    position: absolute;left: 0;top: 0;">
+
+    </div>
+
+    <script>
+//未做兼容性等处理,未封装呢
+
+        var div = document.getElementsByTagName('div')[0];
+        var disX,
+            disY;
+//不要在div上挪动,要在document上挪动,这样才能保证监听到这个事件
+        div.onmousedown = function(e){//鼠标点击div时
+            disX = e.pageX - parseInt(div.style.left);
+            disY = e.pageY - parseInt(div.style.top);
+
+            document.onmousemove = function(e){//鼠标移动时
+                var event = e || window.event;
+                // console.log(e.pageX + " " + e.pageY);
+                div.style.left = e.pageX - disX +'px';
+                div.style.top = e.pageY - disY +'px';
+            }
+
+
+            document.onmouseup = function(){//松开鼠标
+                document.onmousemove = null;//就取消
+            }
+        }
+        
+        
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <p></p>
+        <span></span>
+        <em></em>
+        <i></i>
+    </div>
+
+
+    <script>
+        //3. 将目标节点内部的标签逆序,利用剪切操作
+        Element.prototype.invertedChild = function(){
+            var child = this.children
+                len = child.length;
+
+            for(var i = len-2;i>=0;i--){//因为是逆序,所以得从倒数第二个开始appendChild
+                this.appendChild(child[i]);
+            }    
+            return this;
+        }
+        var div = document.getElementsByTagName('div')[0];
+        div.invertedChild();
+    </script>
+</body>
+</html>

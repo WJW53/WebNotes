@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img,embed,object{
+            width: 100px;
+            height: 100px;
+        }
+        p{
+            width: 100px;
+            height: 100px;
+            background: url("微信.svg") no-repeat center/cover;
+        }
+    </style>
+
+</head>
+<body>
+    <img src="./微信.svg" alt="">
+    <p></p>
+    <embed src="./微信.svg" type="image/svg+xml">
+    <object data="微信.svg" type="image/svg+xml"></object>
+<!-- iframe有些不一样，要想改它的尺寸，得去.svg里面修改宽高 -->
+    <iframe src="微信.svg" width="100px" height="100px" ></iframe>
+</body>
+</html>

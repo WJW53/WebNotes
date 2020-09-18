@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //立即执行函数: 针对初始化功能的函数
+        var num = (function abc(a,b,c){
+                // var a = 123;
+                // var b = 234;
+                // console.log(a + b + c * 2);
+                var d = a + b + c * 2 - 2;
+                return d;
+            }(1,2,3));
+        //(function (){}());W3C官方建议这种
+        //(function (){})();
+
+        var test1 = function (){
+            console.log('a');
+        }();
+//因为有了最后那个括号()--执行符号,所以再次引用test1这个名称就会undefined
+//它不是报错!是undefined,因为前面那个叫变量声明,这个声明一直存在,只是后面立即执行函数执行完后就消失了
+
+
+//正负非都可以,与或 也行但前面要写东西
+        - function test2(){
+            console.log('b');
+        }();
+//但是这时候引用test2就会报错: test2 is not defined
+
+
+//阿里巴巴曾经考题: 
+        function test(a,b,c,d) {
+            console.log(a+b+c+d);
+        }
+//理论上这么写肯定是错误的,但是呢,系统是能不报错就不报错,
+//系统会把这个当成拆开 看成两句话,看成函数声明和下述的,执行的是(1,2,3,4);
+//因为逗号运算符(返回逗号右边的东西)本身也是运算符. 所以系统不会报错,但是也不会执行生成什么东西
+        (1,2,3,4);
+
+    </script>
+</body>
+</html>

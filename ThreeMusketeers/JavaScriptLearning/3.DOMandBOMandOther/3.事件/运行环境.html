@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="width: 100px;height: 100px;background-color:red"></div>
+
+    <script>
+        var div = document.getElementsByTagName('div')[0];
+        div.addEventListener('click',function(){
+            console.log(this);//指向该div本身
+        },false);
+        // div.attachEvent('click',function(){//IE独有方法
+        //     console.log(this);//指向window,如何解决呢
+        //     handle.call(div);//就这样解决呗,再去打印this,就会是div的了,
+        // },false);
+        function handle(){
+            //事件处理程序
+        }
+        
+    </script>
+
+</body>
+</html>

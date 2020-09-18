@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        请输入你常用的浏览器：
+        <input list="userAgent" type="text">
+    </p>
+<!-- 使用id和list属性，将这俩关联起来，不然datalist显示不了 -->
+    <datalist id="userAgent">
+        <option value="Chrome">谷歌浏览器</option>
+        <option value="FireFox">火狐浏览器</option>
+        <option value="Safari">苹果浏览器</option>
+        <option value="IE">IE浏览器</option>
+        <option value="Opera">欧鹏浏览器</option>
+    </datalist>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        var sstWords = ["色情","暴力","卢本伟","傻比","贸易战"]
+        //将字符串中敏感词汇替换为指定的字符串
+        function removeSensitiveWords(s,rep){
+            //var reg = /色情|暴力|卢本伟|傻比|贸易战/g;
+            // var reg = new RegExp(sstWords.join("|"),"g");
+            // 这样就可以把连着的敏感词汇只进行一次替换了
+            var reg = new RegExp(`(${sstWords.join("|")})+`,"g");
+            return s.replace(reg,rep);
+        }
+        
+        console.log(removeSensitiveWords("asd色情暴力334不评价卢本伟a23S贸易战","****"));
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+        }
+
+        .parent{
+            background: lightblue;
+            height: 300px;
+            margin-top: 50px;
+            /* 若想取消合并，只要中间隔任何东西即可。1.用border隔开上下相邻的外边距 */
+            /* border: 3px solid; */
+            /* 若设计稿里没有边框出现，则用下述： 2.子元素不用margin-top，父元素用padding-top*/
+            padding-top: 50px;
+        }
+
+        .child{
+            height: 100px;
+            background: red;
+            /* margin-top: 50px; */
+            width:200px;
+
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <div class="parent">
+        <div class="child">
+
+        </div>
+    </div>
+
+    
+</body>
+</html>

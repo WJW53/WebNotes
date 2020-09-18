@@ -1,0 +1,953 @@
+@import "reset.css";
+@import "common.css";
+@import "//at.alicdn.com/t/font_1705747_uvizrrltiwj.css";
+
+/* 统一样式开始 */
+body{
+    line-height: 2;
+}
+
+button{
+    cursor: pointer;
+}
+/* 统一样式结束 */
+
+
+/* 首页通用样式开始 */
+.container{
+    /* 居中 */
+    width: 950px;
+    margin: 0 auto;
+}
+
+.section{
+    padding: 35px 0;  
+}
+
+.section:nth-child(even){
+    background-color: #f7f7f7;
+}
+
+.aside-left{
+    float: left;
+    width: 100px;
+    margin-right: 20px;
+}
+
+.aside-right{
+    float: right;
+    width: 265px;
+    margin-left: 30px;
+}
+
+.main{
+    /* 创建BFC,bfc区域会自动避开浮动盒子 */
+    overflow: hidden;
+    /* 缩放率 */
+    /* zoom: 1; */    
+}
+
+.section-title{
+    margin: 12px 0;
+}
+
+.section-title .title{
+    display: inline;
+    color: #007722;
+    font-size: 15px;
+}
+
+.section-title .title::after{
+    content: " · · · · · ·";
+}
+
+.section-title .link{
+    font-size: 12px;
+}
+
+.section-title .link::before{
+    content: "(";
+}
+.section-title .link::after{
+    content: ")";
+}
+
+.adv img{
+    width: 100%;
+    /* 设置为块盒block去除白边 */
+    display: block;
+}
+
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.clearfix::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+a{
+    color: #37a;
+}
+a:hover{
+    color: #fff;
+    background-color: #37a;
+
+}
+a:active{
+    /* 激活时的样式 */
+    color: #fff;
+    background-color: #f93;
+}
+
+ul{
+/* 凡是列表都得考虑这个,如果内容是一个很长很长的一个单词 */
+/* 会在任意字符间断行 */
+    word-break: break-all;
+}
+
+.adv-tag::after{
+    content: "广告";
+    color: #c9c9c9;
+    font-size: 10px;
+    margin-left: 4px;
+}
+
+.aside-left .title{
+    font-size: 24px;
+}
+.dark-color{
+    color: #494949;
+}
+
+
+.item-list li{
+    display: inline-block;
+    vertical-align: top;
+    line-height: 1.5;
+}
+
+.item-list li .img img{
+    width: 100%;
+    display: block;
+}
+
+.left-menu {
+    font-size: 14px;
+}
+
+.left-menu a.new{
+    position: relative;
+}
+/* 这样就可以做出一个带图标的a元素 */
+.left-menu a.new::after{
+    content: "";
+    /* 因为绝对定位了 */
+    /* display: block; */
+    background: url("../img/new_menu.gif") no-repeat;
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    top: 0;
+    right: -20px;
+}
+
+.right-menu-list{
+    font-size: 12px;
+}
+.right-menu-list li{
+    float: left;   
+}
+
+.block-link{
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.menu-adv{
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.app-icon-1{
+    width: 50px;
+    height: 50px;
+    display: block;
+    background: url("../img/app_icons.jpg") no-repeat;
+/* 阴影:横(+右)、纵(+下)坐标阴影偏移量、阴影模糊程度(越大越模糊)、扩散半径、阴影颜色 */
+    /* box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, .2); */
+    box-shadow: 1px 1px 2px #999;
+    border-radius: 10px;
+}
+
+.app-icon-2{
+    width: 50px;
+    height: 50px;
+    display: block;
+    background: url("../img/app_icons.jpg") no-repeat;
+/* 阴影:横(+右)、纵(+下)坐标阴影偏移量、阴影模糊程度(越大越模糊)、扩散半径、阴影颜色 */
+    /* box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, .2); */
+    box-shadow: 1px 1px 2px #999;
+    border-radius: 10px;
+    background-position: -250px 0;
+}
+
+.app-icon-3{
+    width: 50px;
+    height: 50px;
+    display: block;
+    background: url("../img/app_icons.jpg") no-repeat;
+/* 阴影:横(+右)、纵(+下)坐标阴影偏移量、阴影模糊程度(越大越模糊)、扩散半径、阴影颜色 */
+    /* box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, .2); */
+    box-shadow: 1px 1px 2px #999;
+    border-radius: 10px;
+    background-position: -50px 0;
+}
+
+.group .group-name a{
+    font-size: 14px;
+    color: #333;
+}
+.group .group-name a::after{
+    content: "»";
+}   
+.group .right-menu-list li{
+    /* 行块盒本身就是BFC */
+    margin-right: 10px;
+}
+
+/* 首页通用样式结束 */
+
+
+
+/* 页头开始 */
+.header{
+    height: 90px;
+/* 防止外边距合并 */
+    box-sizing: border-box;
+    padding-top: 30px;
+
+}
+
+/* .header .logo, .header .menu, .header .search{
+    height: 30px;
+    border: 2px solid #000;
+} */
+.header .logo a{
+    /* 因为a元素是行盒，无法设置宽高，所以先变成块盒 */
+    display: block;
+    width: 154px;
+    /* height: 34px; */
+    background: url("../img/logo_db.png") no-repeat left top/100%;
+    background-image: -webkit-image-set(url("../img/logo_db.png") 1x, url("../img/logo_db@2x.png") 2x);
+/* 这三行用来巧妙地隐藏掉豆瓣两个字，或者在a元素里写个span元素豆瓣，然后用下面的代码 */
+    height: 0;
+    padding-top: 30px;
+    overflow: hidden;
+    /*  */
+    cursor: pointer;
+}
+/* 隐藏掉豆瓣那两个字 */
+/* .header .logo a span{
+    display: none;
+} */
+
+.header .search{
+    width: 270px;
+    height: 30px;
+    border: 1px solid #c3c3c3;
+    margin-left: 20px;
+    position: relative;
+    line-height: normal;
+}
+
+.header .search .txt{
+    width: 240px;
+    height: 20px;
+    padding: 4px;
+    font-size: 13px;
+
+}
+.header .search .txt::placeholder{
+    color: #cccccc;
+}
+
+.header .search button{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    /* padding: 0; */
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    color: #c3c3c3;
+
+}
+
+.header .menu{
+    margin-top: 6px;
+}
+
+.header .menu a{
+    /* display: inline-block; */
+    /* 浮动元素会变成块盒，块盒才能设置宽高，浮动后记得解决高度坍塌 */
+    float: left;
+    background: url("../img/nav_logo.png") no-repeat left top/463px 20px;
+    width: 40px;
+    height: 20px;
+    margin-left: 20px;
+}
+
+.header .menu .menu-read {
+    background-position: 0 0;
+}
+
+.header .menu .menu-movie {
+    background-position: -60px 0;
+}
+
+.header .menu .menu-music {
+    background-position: -120px 0;
+}
+
+.header .menu .menu-group {
+    background-position: -180px 0;
+}
+
+.header .menu .menu-city {
+    background-position: -240px 0;
+}
+
+.header .menu .menu-fm {
+    background-position: -300px 0;
+}
+
+.header .menu .menu-time {
+    background-position: -360px 0;
+}
+
+.header .menu .menu-doupin {
+    background-position: -420px 0;
+    width: 44px;
+}
+
+
+/* 页头结束 */
+
+
+/* 横幅开始 */
+.banner {
+    height: 304px;
+    /* 这里宽度得设置为auto,然后高度100%即可 */
+    background: url("../img/banner-bg.jpg") no-repeat 20px top/auto 100% #edf4ad;
+}
+
+.banner .container .loginarea{
+    width: 300px;
+    height: 300px;   
+}
+
+.banner .container .slogan{
+    margin-top: 88px;
+    margin-right: 32px;
+}
+
+.banner .container .slogan .title{
+    font-size: 25px;
+    color: #111;    
+}
+
+.banner .container .slogan .title span{
+    margin-left: 10px;
+}
+.banner .container .slogan .download{
+    margin-top: 20px;
+}
+
+.banner .container .slogan .download .btn{
+    width: 115px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+}
+
+.banner .container .slogan .download .qrcode{
+/* 为了便于调整span宽高，对齐啥的,span默认是行盒,img无法撑开它的宽高度 */
+/* 但是后来span里面需要加div而它本身的子元素不能写div，所以这里把span换为div了 */
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    /* 要设置边框必须设置宽高，要宽高起码是行块盒， */
+    border: 1px solid #48aa0d;
+    vertical-align: bottom;
+
+    position: relative;
+}
+
+.banner .container .slogan .download .qrcode img{
+    width: 100%;
+    height: 100%;    
+}
+
+.banner .container .qrcode .qrcode-img{
+    position: absolute;
+/* 因为它的包含块是父元素填充盒而非边框盒，所以这里额外设置一下，不让父元素边框露出来 */
+    left: -2px;
+    top: -2px;
+    width: 200px;
+    padding: 15px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.banner .container .qrcode-img p{
+    color: #666;
+    text-align: center;
+    font-size: 13px;
+    
+}
+
+.banner .container .slogan .download .qrcode:hover .qrcode-img{
+    display: block;
+}
+/* 横幅结束 */
+
+
+
+/* 热点内容开始 */
+.hot-list{
+    line-height: 1.5;
+}
+
+.hot-list li{
+    margin-bottom: 15px;
+}
+.hot-list li .title{
+    font-size: 14px;
+}
+.hot-list li .desc{
+    color: #aaa;
+    font-size: 13px;
+}
+/* .hot-list li .desc span:nth-child(n+2){
+} */
+.hot-list li .desc span{
+    margin-right: 4px;
+}
+
+.hot-main .left{
+    width: 350px;
+}
+
+.hot-main ul{
+    /* 文字向两侧对齐，对最后一行无效。 */
+    text-align: justify;
+    line-height: 1.5;
+}
+.hot-main ul::after{
+    /* 让它变为最后一行,以使得上述的分散排列 */
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+
+.hot-main .left li{
+    width: 170px;
+    font-size: 12px;
+    margin: 5px 0;
+    /* 文字多了会产生问题,所以用行盒的垂直对齐方式: 顶端对齐 */
+    /* vertical-align: top; */
+}
+
+.hot-main .left li .img img{
+    width: 100%;
+    /* 解决白边 */
+    /* display: block; */
+}
+
+.hot-main .left li .words span{
+    color: #999;
+}
+
+
+.hot-main .right{
+    width: 275px;
+    font-size: 12px;
+}
+
+.hot-main .right li{
+    margin-bottom: 18px;    
+}
+
+.hot-main .right li .title{
+    color: #999;
+}
+
+.hot-main .right li .desc{
+    color: #666;
+}
+/* 热点内容结束 */
+
+
+/* 豆瓣时间开始 */
+/* .time-main ul{
+    //这样不好,因为无法精确控制一行5个..
+    text-align: justify;
+} */
+.time-main ul li{
+    width: 100px;
+    margin-right: 60px;
+    margin-bottom: 30px;
+    font-size: 13;
+    text-align: center;
+}
+
+.time-main ul li .words a{
+    color: #333333;
+}
+.time-main ul li .words a:hover{
+    background-color: #37a;
+    color: #fff;
+}
+.time-main ul li .words a:active{
+    background-color: #f93;
+}
+.time-main ul li .words span{
+    display: block;
+    color: #999;
+    font-size: 12px;
+    margin-top: 10px;
+}
+/* 豆瓣时间结束 */
+
+
+/* 豆瓣视频开始 */
+.video-main .section-title a:hover{
+    background-color: initial;
+}
+
+.video-main li{
+    width: 250px;
+    margin-right: 30px;
+    font-size: 13px;
+    /* 顶端对齐 */
+}
+.video-main li:nth-child(3n){
+    margin-right: 0;
+}
+.video-main li .img{
+    position: relative;
+}
+.video-main li .img::before{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .2);
+    color: #fff;
+    text-align: center;
+    line-height: 144px;
+    font-size: 35px;
+}
+
+/* 豆瓣视频结束 */
+
+
+/* 豆瓣电影开始 */
+.movie-area .right-menu-list li{
+    width: 48px;
+    height: 24px;
+    overflow: hidden;
+}
+
+.order-movie-list{
+    font-size: 12px;
+}
+.order-movie-list li{
+    /* 设置前面的数字样式 */
+    list-style-position: inside;
+    list-style-type: decimal;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 8px;
+
+}
+.order-movie-list li a{
+    margin-left: 5px;
+}
+
+.movie-area .item-list li{
+    width: 100px;
+    margin-right: 33px;
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 13px;
+}
+.movie-area .item-list li:nth-child(4n){
+    margin-right: 0;
+}
+
+.movie-area .item-list li .words{
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+.movie-area .item-list li .words a{
+    /* 因为正常a元素无法设置宽度 */
+    display: inline-block;
+    /* 就可以根据文字内容自适应宽度了 */
+    max-width: 100%;
+    /* 为文字设置: 不换行,溢出隐藏后展示... */
+    /* 连续的空白符会被合并,但文本内的换行无效 */
+    white-space: nowrap;
+    overflow: hidden;
+    /* 溢出后样式,出现... */
+    text-overflow: ellipsis;
+}
+
+.movie-area .func{
+    margin-top: 7px;
+}
+.movie-area .func .block-link{
+    background-color: #1c8bd0;
+    color: #fff;
+}
+.movie-area .func .block-link:hover{
+    background-color: #047fcb;
+}
+/* 豆瓣电影结束 */
+
+
+/* 豆瓣小组开始 */
+.group-area a{
+    color: #007982;
+}
+.group-area a:hover{
+/* !important 代表 当鼠标...时,将别的样式淘汰掉,仅采用这个样式 */
+/* 但是不要在通用样式里写 */
+    color: #fff !important;
+}
+.group-area a:active{
+    color: #fff !important;
+}
+
+.group-area .group .right-menu-list li a{
+    font-size: 12px;
+}
+
+.group-area .main .item-list{
+    text-align: justify;
+}
+.group-area .main .item-list::after{
+    content: "";
+    display: inline-block;
+    width: 100%;
+}
+
+.group-area .main .item-list li{
+    width: 248px;
+    margin-bottom: 30px;
+    font-size: 13px;
+}
+.group-area .main .item-list li .img{
+    float: left;
+    width: 48px;
+    margin-right: 15px;
+}
+
+.group-area .main .item-list li .words{
+/* 使words对应的盒子变成BFC,避开浮动,不形成文字环绕 */
+    overflow: hidden;
+}
+.group-area .main .item-list li .words span{
+    display: block;
+    font-size: 12px;
+    color:#999;
+    margin-top: 5px;
+}
+/* 豆瓣小组结束 */
+
+
+
+/* 豆瓣读书开始 */
+
+.book-area a{
+    color: #494949;
+}
+.book-area a:hover,.book-area a:active{
+    color: #fff;
+}
+
+.book-area .right-menu-list li{
+    margin-right: 10px;
+}
+
+.book-area .right-menu-list li span{
+    color: #999;
+}
+
+.book-area .group{
+    border-bottom: 1px solid #eaeaea;
+    /* padding-bottom: 10px; */
+    padding: 10px 0;
+}
+.book-area .group:last-child{
+    border-bottom: none;
+}
+
+.book-area .item-list li{
+    width: 100px;
+    margin-right: 30px;
+    font-size: 13px;
+    text-align: center;
+}
+.book-area .item-list li:nth-child(4n){
+    margin-right: 0;
+}
+
+.book-area .item-list li .words{
+    margin-top: 12px;
+}
+
+.book-area .item-list li .words span{
+    display: block;
+    color: #111;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.book-area .item-list li .func .block-link{
+    background-color: #999a95;
+    color: #fff;
+
+}
+.book-area .item-list li .func .block-link:hover{
+    background-color: #878882;
+}
+/* 豆瓣读书结束 */
+
+
+/* 豆瓣音乐开始 */
+.music-area a{
+    color: #555d53;
+}
+
+.music-area .aside-left .title a{
+    color: #f38c00;
+}
+.music-area .aside-left .title a:hover,.music-area .aside-left .title a:active{
+    color: #fff;
+}
+
+.music-area .music-player-list li .number{
+    font-size: 12px;
+    color: #111;
+}
+.music-area .music-player-list li .player {
+    width: 240px;
+}
+
+.music-area .music-player-list li .player .img{
+    width: 48px;
+    height: 48px;
+    position: relative;
+}
+.music-area .music-player-list li .player .img img{
+    /* 去白边 */
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.music-area .music-player-list li .player .img::before{
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, .8);
+    color: #fff;
+    text-align: center;
+    line-height: 48px;
+}
+/* 鼠标移入时,找到before,但是注意此时,鼠标所处的元素是before不再是a元素,
+所以需要把a元素放外面 */
+.music-area .music-player-list li .player .img:hover::before{
+    display: block;
+}
+
+.music-area .music-player-list li .player .words{
+    /* 计算后,最多192px,这里加起来190px,ok */
+    width: 180px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+.music-area .music-player-list li .player .words span{
+    display: block;
+    color: #999;
+    line-height: 1.5;
+}
+
+.music-area .item-list li{
+    width: 130px;
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 40px;
+}
+.music-area .item-list li .img{
+    width: 80px;
+    margin: 0 auto;
+}
+.music-area .item-list li .words{
+    margin: 5px 0;
+}
+
+.music-area .title2{
+    margin-top: 0;
+}
+/* tnd,别手残,这里.item-list.hot-music是连着写的(同级同元素),
+不要中间来个空格(代表后代元素的类选择器) */
+.music-area .item-list.hot-music li .words{
+    font-size: 13px;
+    margin: 8px 0;
+}
+.music-area .item-list.hot-music li .img{
+    position: relative;
+}
+.music-area .item-list.hot-music li .img::before{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    /* 垂直且横向居中 */
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    /* 文字图标水平居中 */
+    text-align: center;
+    line-height: 40px;
+
+    font-size: 36px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .4);
+    /* CSS3中border-radius为50%就是一个圆 */
+    border-radius: 50%;
+
+}
+
+/* 豆瓣音乐结束 */
+
+/* 豆瓣豆品开始 */
+.doupin-area .aside-left .title a{
+    color: #1f9432;
+}
+.doupin-area .aside-left .title a:hover,.doupin-area .aside-left .title a:active{
+    color: #fff;
+}
+
+.doupin-area .aside-right {
+    font-size: 14px;
+}
+
+.doupin-area .main .item-list li{
+    width: 240px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+.doupin-area .main .item-list li .words{
+    margin-top: 10px;
+}
+.doupin-area .main .item-list li .words span{
+    color: #E55457;
+}
+
+/* 豆瓣豆品结束 */
+
+
+/* 豆瓣同城开始 */
+.city-area a{
+    color: #643;
+}
+.city-area a:hover,.city-area a:active{
+    color: #fff;
+}
+
+.city-area .aside-left .title a{
+    color: #ec5303;
+}
+.city-area .aside-left .title a:hover, .city-area .aside-left .title a:active{
+    color: #fff;
+}
+
+
+.city-area .item-list li{
+    width: 248px;
+    margin-right: 20px;
+    margin-bottom: 45px;
+}
+.city-area .item-list li:nth-child(even){
+    margin-right: 0;
+}
+
+.city-area .item-list li .img{
+    margin-right: 10px;
+}
+.city-area .item-list li .img img{  
+    width: 70px;
+    height: 90px;
+}
+
+.city-area .item-list li .words{
+    /* BFC,自动避开浮动元素 */
+    overflow: hidden;
+}
+.city-area .item-list li .words a{
+    font-size: 13px;
+}
+.city-area .item-list li .words span{
+    display: block;
+    font-size: 12px;
+    color: #666666;
+    line-height: 1.6;
+}
+/* 豆瓣同城结束 */
+
+
+/* 豆瓣页脚开始 */
+.footer{
+    font-size: 12px;
+    line-height: 1.5;
+    color: #999;
+}
+.footer .container{
+    border-top: 1px dashed #dcdcdc;
+    padding-top: 15px;
+    padding-bottom: 30px;
+}
+.footer .left img{
+    width: 15px;
+    /* 中部对齐 */
+    vertical-align: middle;
+}
+.footer .left,.footer .right{
+    width: 50%;
+}
+
+.footer .right .menu a{
+    display: inline-block;
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+.footer .adv{
+    width: 150px;
+    margin-top: 20px;
+}
+/* 豆瓣页脚结束 */

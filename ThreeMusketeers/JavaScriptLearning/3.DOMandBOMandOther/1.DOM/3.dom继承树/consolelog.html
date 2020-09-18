@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div>
+        <p>
+
+        </p>
+        <span>
+
+        </span>
+        <!-- this is comment. -->
+    </div>
+
+
+
+    <script>
+        var div = document.getElementsByTagName('div')[0];
+        console.log(div.children.length);
+        console.log(div.childNodes.length);
+
+        console.log(document.body.toString());//[object HTMLBodyElement]
+        console.log(document);//#document
+
+    </script>
+</body>
+</html>

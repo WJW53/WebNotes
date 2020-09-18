@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* body{
+            margin: 0;
+        } */
+        iframe{
+            /* vertical-align: text-top; */
+            /* display: block;*/
+/* 不知道为啥我把width设置为300px后,出现滚动条,只有采用scrolling="no"才能解决 */
+            /* 要么就设置宽高都为301px,或者把width改为100% */
+/* 要么就去嵌入页面将body设置为overflow:hidden,这也是当我们想要去除某个页面的滚动条时的办法 */
+/* 此处为了不动别的地方,所以我用了scrolling="no" */
+
+/* 通过检测，我发现当scrolling="auto"或者"yes"时，如果设置了body，
+那么就会使用body里的设置；当scrolling="no"时，
+不管body设置了什么，都会使用scrolling的设置，即全部的滚动条都被去掉了。 */
+            width: 300px;
+            height: 300px;   
+            /* overflow: hidden;没用 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- <iframe scrolling="no" src="./loginframe.html" frameborder="0"></iframe> -->
+    <iframe src="./loginframe.html" frameborder="0"></iframe>
+</body>
+</html>

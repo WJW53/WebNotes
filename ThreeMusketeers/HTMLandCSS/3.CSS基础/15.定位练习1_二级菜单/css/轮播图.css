@@ -1,0 +1,104 @@
+.banner {
+    width: 520px;
+    height: 304px;
+    /* border: 1px solid; */
+    margin: 1em auto;
+/* 设置溢出隐藏 */
+    overflow: hidden;
+   /* 为了left、right。。*/
+    position: relative;
+}
+
+.banner .imgs {
+    width: 1560px;
+    height: 304px;
+    /* 剩下的交给JS */
+    /* margin-left: -520px; */
+}
+
+.banner .imgs img{
+    /* float: left; */
+    width: 520px;
+    height: 304px;
+}
+
+.banner .imgs a{
+    float: left;
+    /* 不需要做额外处理高度坍塌(前提height:auto)，因为上述.banner .imgs已经定高了 */
+}
+
+.banner .left,
+.banner .right{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    /* background-color: #fff; */
+/* 让盒子垂直居中 */
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    /* 内容的格式 */
+    font-size: 3em;
+    text-align: center;
+    font-family: Arial;
+    color: #ffffff;
+    border-radius: 50%;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+.banner .left{
+    left: 20px;    
+}
+
+.banner .right{
+    right: 20px;
+}
+
+.banner .left:hover,
+.banner .right:hover{
+    background-color: #ffffff;
+    color: #f40;
+}
+
+.banner .modal {
+    width: 100%;
+    /* 也定高了，所以不考虑高度坍塌 */
+    height: 40px;
+    background-color: rgba(0,0,0,.3);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    color: #ffffff;
+    /* 垂直居中 */
+    line-height: 40px;
+    padding: 0 20px;
+    /* 不然width:100%,加上新的padding就会适应内容。。所以设置为边框盒 */
+    box-sizing: border-box;
+
+}
+
+.banner .modal .title{
+    float: left;
+    font-weight: bold;
+}
+
+.banner .modal .dots{
+    float: right;
+}
+
+.banner .modal .dots li{
+    width: 8px;
+    background-color: red;
+    height: 8px;
+   /* 用用行块盒 */
+    display: inline-block;
+    margin: 0 2px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.banner .modal .dots li:hover {
+    background-color: #336699;
+}

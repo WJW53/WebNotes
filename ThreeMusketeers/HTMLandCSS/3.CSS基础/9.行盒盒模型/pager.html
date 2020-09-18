@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .mypager a{
+            border: 1px solid #e1e2e3;
+            text-decoration: none;
+            color: #3388ff;
+            width: 34px;
+            height: 34px;
+            /* 先变成行块盒 */
+            display: inline-block;
+            /* 水平居中 */
+            text-align: center;
+            /* 垂直居中 */
+            line-height: 34px;
+        }
+
+        .mypager a:hover{
+            border: 1px solid #3388ff;
+            background: #f2f8ff;
+        }
+
+        .mypager a.selected{
+            border:none;
+            color: #000;
+            background: initial;
+            
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="mypager">
+        <a href="">1</a><a href="">2</a>
+        
+        <!-- 想要消除掉行盒行块盒之间的间隙，只能不换行，别无他法 -->
+        <a href="" class="selected">3</a>
+        <a href="">4</a>
+        <a href="">5</a>
+        <a href="">6</a>
+        <a href="">7</a>
+        <a href="">8</a>
+        <a href="">9</a>
+        <a href="">10</a>
+    </div>
+
+
+</body>
+</html>

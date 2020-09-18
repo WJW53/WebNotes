@@ -1,0 +1,77 @@
+/* 方便学习，以后做项目，千万不要使用中文！！！ */
+.clearfixed::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.header {
+    background-color: #e3e4e5;
+    color: #999;
+    height: 40px;
+    line-height: 40px;
+/* 下面可以让菜单固定，相对于视口不动， */
+    position: fixed;
+    /* fixed后是自动适应内容，所以设置宽度100% */
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+.header .topnav>li{
+    float: left;
+    margin: 0 20px;
+    /* background-color: lightblue; */
+    /* padding: 0 8px;设置padding没用因为如果内容多了就会被内容撑开了，所以还是要设置宽度 */
+    width: 150px;
+    text-align: center;
+    height: 40px;
+    /* 为了不让边框改变盒子尺寸，改变默认盒子为边框盒 */
+    box-sizing: border-box;
+/* 只有这里li定位了，才能让.submenu找到包含块 */
+    position: relative;
+}
+
+.header .topnav>li:hover {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-bottom: none;
+    /* 因为边框导致文字最后还是得往下移动，所以使得行高减小一点 */
+    line-height: 36px;
+
+}
+
+.header .topnav>li .submenu{
+    text-align: left;
+    line-height: 1.5;
+    width: 300px;
+    /* display: none; 表示不生成盒子(不显示在网页上) */
+    display: none;
+    border: 2px solid #ccc;
+    /* 需要让它紧靠客户服务最右边 */
+    box-sizing: border-box;
+    position: absolute;
+    right: -2px;
+    background-color: #fff;
+
+}
+
+/* 设置鼠标移到这个元素时 下面的submenu属性 */
+.header .topnav>li:hover .submenu{
+    /* display: -webkit-box; */
+    display: block;
+    padding: 10px;
+
+}
+
+
+.header .topnav>li:hover::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    
+}

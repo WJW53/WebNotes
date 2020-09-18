@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    
+        // function test() {}
+//[[scope]],是一个隐式的属性,我们没法使用 
+        // test.[[scope]]
+
+        function a() {
+            function b () {
+                var bb = 234;
+                // 用这个来检查,是否 b访问到a的AO和a本身的AO是不是同一个AO
+                aa=0;
+            }
+            var aa = 123;
+            b();
+            // 用这个来检查,是否 b访问到a的AO和a本身的AO是不是同一个AO
+            console.log(aa);//0
+            //结果证明: 都是同一个玩意儿
+        }
+        var global = 100;
+        a();
+        // 步骤：
+
+// 在a刚定义的时候: a.[[scope]] --> 第0号位置指向 : GO{...}
+//ps: 刚定义的时候,是看你出生的大环境是什么
+//比如这个a刚出生就是在全局的作用域里,它的指向的GO是全局给它的
+
+//当a被执行时: a.[[scope]] -->  第0号位置指向 : AO{}
+                        //     第1号位置指向 : GO{}  
+
+
+//当b刚被定义的时候,b拿到的是a的劳动成果 AO1 GO1
+//当b执行的时候,b再将自己产生的AO2放到作用域链的顶端(第0号位置)
+//b执行完后,抹掉它和链顶端的联系,注意只是链顶端,因为如果再调用b的话,直接再把线连着就行
+//但是当a执行完后,b就直接被抹杀了,永远就没了。而a只是抹杀了自己和AO的联系,但还剩个GO
+//看看是否之后还会执行a,若一直没执行a的话,就一直等到最后程序结束,GO就也被抹杀了.
+//若再执行了a,就会重连AO,然后新生成一个b. 剩下的就是重复以上步骤
+//真正看的是doing时候的变量   
+
+
+        //例子:
+        function a(){
+            function b(){
+                function c(){
+
+                }
+                c();
+            }
+            b();
+        }
+        a();
+
+        // a defined a.[[scope]] --> 0 : GO
+        // a doing   a.[[scope]] --> 0 : aAO
+        //                           1 : GO
+
+        // b defined b.[[scope]] --> 0 : aGO
+        //                           1 : GO
+
+        // b doing   b.[[scope]] --> 0 : bAO
+        //                           1 : aAO                          
+        //                           2 : GO
+
+        // c defined c.[[scope]] --> 0 : bGO
+        //                           1 : aAO
+        //                           2 : GO
+
+        // c doing   c.[[scope]] --> 0 : cAO
+        //                           1 : bGO
+        //                           2 : aAO
+        //                           3 : GO
+
+
+    </script
+</body
+</html>

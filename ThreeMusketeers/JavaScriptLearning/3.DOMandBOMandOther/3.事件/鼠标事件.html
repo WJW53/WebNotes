@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="width: 100px;height: 100px;background-color:red;
+    position: absolute;left: 0;top: 0;">
+
+
+    <script>
+        // document.onclick = function(){
+        //     console.log('onclick');
+        // }
+        // document.onmousedown = function(){
+        //     console.log('mousedown');
+        // }
+        // document.onmouseup = function(){
+        //     console.log('mouseup');
+        // }
+
+        var div = document.getElementsByTagName('div')[0];
+        // div.onmouseover = function(){
+        //     div.style.backgroundColor = 'yellow';
+        // }
+        // div.onmouseout = function(){
+        //     div.style.backgroundColor = 'green';
+        // }
+        div.onmouseenter = function(){
+            div.style.backgroundColor = 'yellow';
+        }
+        div.onmouseleave = function(){
+            div.style.backgroundColor = 'green';
+        }
+//解决mousedown和click的冲突
+        var firstTime = 0
+            lastTime = 0
+            key = false;
+        document.onmousedown = function(e){
+            // if(e.button == 2){
+            //     console.log('right');
+            // }else if(e.button == 1){
+            //     console.log('left');
+            // }
+            firstTime = new Date().getTime();
+
+        }
+        document.onmouseup = function(){
+            lastTime = new Date().getTime();
+            if(lastTime - firstTime < 300){//也就是点的快才打开,点着不松手超过300ms就不开开关
+                key = true;
+            }
+        }
+        document.onclick = function(){
+            
+            if(key){
+                console.log('click');
+                key = false;
+            }
+        }
+        
+        
+    </script>
+</body>
+</html>

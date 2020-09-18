@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .float{
+            width: 200px;
+            height: 200px;
+            margin: 20px;
+            background-color: red;
+            float: left;
+            /* 设置浮动元素的margin-right，来控制下个常规流盒子 */
+            margin-right: 100px;
+        }
+        .container{
+            height: 500px;
+            background-color: #008c8c;
+            /* 创建BFC，所以他会避开浮动元素。且随浏览器窗口变化而变化 */
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="float">
+
+    </div>
+    <div class="container">
+
+    </div>
+
+</body>
+</html>

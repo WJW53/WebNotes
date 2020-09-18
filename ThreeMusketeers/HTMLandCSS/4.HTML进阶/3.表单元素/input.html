@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            padding-bottom: 100px;
+        }
+    </style>
+
+</head>
+<body>
+<!-- 开发时，不要这么用p元素，这里只是图方便，因为p元素margin元素默认有些像素--间距，开发时要看语义来选择 -->
+
+    <p>
+        <input type="text" value="请输入账号" name="" id="">
+        <input type="text" placeholder="请输入账号" >
+    </p>
+    <p>
+        <input type="password" placeholder="请输入密码">
+    </p>
+    <p>
+        <input type="date">
+    </p>
+    <p>
+        <input type="search">
+    </p>
+    <p>
+        <input type="range" min="0" max="5">
+    </p>
+    <p>
+        <input type="color">
+    </p>
+    <p><input type="number" min="0" max="100" step="10"></p>
+
+    <p>
+        <!-- 多选框,name="loves",代表这是关于爱好的多选 -->
+        爱好：
+        <input name="loves" type="checkbox">
+        音乐
+        <input name="loves" type="checkbox">
+        电影
+        <input name="loves" type="checkbox">
+        哲学
+        <input name="loves" type="checkbox">
+        阅读
+        <input name="loves" type="checkbox">
+        技术
+        <input name="loves" type="checkbox">
+        创业
+        <input name="loves" type="checkbox">
+        其他
+    </p>
+    
+    <p>
+        <!-- 单选框,checked是布尔属性，默认选择它 -->
+        性别：
+        <input name="gender" type="radio">
+        男
+        <input checked name="gender" type="radio">
+        女        
+    </p>
+    <p>
+        <input type="file">
+    </p>
+    <p>
+        <input type="reset" value="重置">
+    </p>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h2{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    
+    
+    <script>
+        var html = `
+        <h2>第1章</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore, numquam aliquam. Possimus accusamus soluta error maiores odit minus aut quasi iusto nisi id. Corporis animi magni harum quaerat obcaecati facere!</p>
+    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quasi, molestiae quos a sint quod voluptas aliquam nihil alias nulla minima odit blanditiis nam non, nemo et, quidem facere praesentium inventore?</p>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptas architecto atque corporis unde, dignissimos quod eos, aperiam dolorem cum quos perferendis dolore culpa dicta reprehenderit facere quae itaque sunt accusantium.</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla reprehenderit esse in libero numquam assumenda inventore quae voluptatem, rerum iste culpa maxime voluptatibus. Excepturi mollitia sed voluptas asperiores, et architecto.</p>
+    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis similique reiciendis a, culpa cumque, nulla adipisci laboriosam magnam totam voluptatem possimus? Praesentium omnis asperiores enim, ullam deserunt facilis magnam illo!</p>
+    <h2>第2章</h2>
+    <p>Excepturi, harum numquam ipsa provident tenetur quibusdam officiis, asperiores possimus omnis, molestias incidunt modi iste reprehenderit nemo. Quod at doloremque vero omnis. Quos quo consequuntur possimus consectetur, deserunt illum officia.</p>
+    <p>Quo minima ut officia mollitia quidem maiores quisquam corrupti tempora aliquid magni ab suscipit eligendi laboriosam, modi sunt nihil, voluptatibus fugit consequatur incidunt. Illum architecto facilis sequi, rerum sed blanditiis.</p>
+    <p>Laudantium, dolorem maiores. Voluptatem placeat id, quisquam nemo laudantium, vel officiis facilis provident voluptate officia, blanditiis unde dolor molestiae minus debitis reprehenderit esse. Assumenda, minus quo! Incidunt tempore molestias possimus!</p>
+    <p>Nisi rem esse laborum saepe, id optio eaque ipsum rerum ad! Vitae quia consectetur recusandae odio eaque est neque ratione provident odit amet, hic, commodi eum deleniti sit magnam molestiae?</p>
+    <p>Dolor, qui quisquam, suscipit eum consectetur cum labore voluptatibus delectus pariatur quo consequuntur, nesciunt non neque voluptates incidunt perferendis reprehenderit eos iste? Id quidem minima at, possimus voluptatum incidunt ab.</p>
+    <h2>第3章</h2>
+    <p>Pariatur voluptate illum tenetur incidunt autem deleniti officia nulla earum quam eligendi dolores laudantium placeat, deserunt aut blanditiis at rerum voluptates iusto sunt dolorem praesentium sit! Possimus saepe rerum et.</p>
+    <p>Sed totam unde ad dicta impedit animi aliquid minus obcaecati harum fuga nam nobis provident commodi maxime debitis quos sequi, optio hic mollitia rem soluta iste esse delectus. Cumque, officia?</p>
+    <p>Minima odit pariatur beatae cum consectetur dolores aliquid sit blanditiis officiis nesciunt, voluptatibus illo hic quas qui? Necessitatibus voluptatum nihil quod dolor repellendus. Itaque doloribus voluptatibus ad. Fugit, a tempore.</p>
+    <p>Ipsam itaque repellendus fugit porro deserunt qui, eum illum quisquam voluptatum totam doloremque ea ratione harum est nulla, consequuntur natus. Obcaecati corrupti laboriosam saepe culpa doloremque nesciunt, quod enim commodi?</p>
+    <p>Sit sunt qui excepturi. Libero ipsa maxime incidunt, ullam vitae, aspernatur error neque laudantium temporibus ea minus numquam? Saepe, quisquam molestias illo consequatur corporis at minima tempora maiores maxime fugiat?</p>
+    <h2>第4章</h2>
+    <p>Quod quisquam sapiente quasi, ullam iusto corrupti dicta magnam esse voluptatibus cupiditate harum commodi eius quo velit quae recusandae nemo similique unde laudantium quaerat sit. Aliquid minima eveniet excepturi laboriosam?</p>
+    <p>Rem aliquam ab ad et, maxime error beatae cupiditate, non eius dignissimos facere laborum adipisci modi quas. Voluptate, atque! Veritatis quisquam quia temporibus? Nisi assumenda recusandae quo ducimus pariatur in.</p>
+    <p>Rerum nobis aliquid ex laudantium, voluptate corporis fuga dignissimos asperiores blanditiis, iusto omnis illo voluptates, eum repellat similique dolor repudiandae inventore voluptatibus autem culpa distinctio ad cum nulla aspernatur. Quaerat?</p>
+    <p>Repudiandae rerum illo dolorem deleniti, eligendi ad enim necessitatibus. Illum porro nemo, temporibus obcaecati corporis aliquam voluptas ullam doloremque delectus consequatur, sit provident, ad fugiat repellat nostrum amet earum quibusdam?</p>
+    <p>Quis similique officia dolore velit nihil excepturi minima cumque possimus quaerat corrupti architecto iusto assumenda qui, officiis esse dicta est doloremque modi! Quos ab quam nihil minima ipsam culpa corrupti?</p>
+    <h2>第5章</h2>
+    <p>Beatae modi architecto magnam officiis eaque, excepturi eum cum quas, quisquam inventore amet doloremque accusantium, fugit ullam quos error neque natus suscipit adipisci culpa? Explicabo magni fuga saepe cumque eveniet.</p>
+    <p>Nemo expedita modi, nesciunt perferendis odit qui, exercitationem non odio temporibus tenetur dicta ut dolor. Ullam numquam explicabo odit at quis, itaque nihil cupiditate qui beatae officia atque repudiandae eius!</p>
+    <p>Numquam nisi rerum repellat cum hic quibusdam quo vero nemo repudiandae corporis pariatur error, quia consequatur minus recusandae obcaecati mollitia vitae neque soluta sit id quos iure. Vel, iusto incidunt?</p>
+    <p>Molestiae vitae repellat natus maxime iure quis illo eveniet facilis aperiam! Quas dicta, illo tempore dignissimos ducimus, minus adipisci, sequi repellat maxime magnam quibusdam. Accusamus est commodi assumenda eius impedit?</p>
+    <p>Alias suscipit soluta dolore. Architecto, corrupti temporibus! Numquam quam officia iure, facilis quidem minima corporis temporibus repudiandae dolores sint praesentium magni sapiente nisi vitae excepturi deserunt saepe quae provident dicta.</p>
+    <h2>第6章</h2>
+    <p>Nulla, laboriosam eius, consectetur facilis aliquam expedita perferendis, provident quas minima est quos mollitia dolorum cupiditate? Fugiat hic aliquam voluptates numquam suscipit iste, vel quia voluptatem saepe eligendi minima nam?</p>
+    <p>Quae sit possimus temporibus dolore aliquid nesciunt unde! Ex quam reiciendis soluta. Dolorum, exercitationem nam iste, beatae aut corporis tempore harum accusamus, iusto doloribus praesentium. Suscipit aliquam eos consequuntur ea.</p>
+    <p>Blanditiis vel, nam minima voluptates, deleniti, modi excepturi est in soluta quia aperiam ab! Laboriosam maxime vero accusantium exercitationem! Aliquid itaque illo in unde quia mollitia similique delectus cum quos?</p>
+    <p>Eum vel assumenda quisquam id sunt numquam, explicabo molestias quaerat perspiciatis? Non officia repellendus est iure reiciendis beatae a, quisquam eos voluptatum. Iure voluptas fugit modi nisi amet distinctio eius?</p>
+    <p>Quasi quis non, tempora ab rem molestias culpa soluta repudiandae exercitationem ipsa illo consequatur libero ipsam sequi debitis quos obcaecati delectus vitae neque eum, voluptas, id impedit atque. Distinctio, sint.</p>
+    <h2>第7章</h2>
+    <p>Suscipit quibusdam voluptate quidem, eum dignissimos minus molestiae blanditiis distinctio perspiciatis odit nemo sit magni amet veniam iure unde quia, totam temporibus praesentium sapiente saepe ipsa id? Veritatis, consequatur deleniti.</p>
+    <p>Ducimus ea accusamus vitae illo animi necessitatibus error. Saepe, dolore possimus? Quisquam voluptatem, id praesentium in iusto eum corrupti saepe, accusantium quae voluptas officia laboriosam soluta eveniet, ipsa nihil ipsum.</p>
+    <p>Dolorem iste tempore cupiditate dignissimos numquam itaque, commodi doloribus similique in sequi aut nostrum rerum quos praesentium incidunt asperiores at quidem atque placeat nihil. Nisi ratione assumenda fugiat error! Doloribus.</p>
+    <p>At dolores ipsa, deleniti reprehenderit, nam voluptas aperiam quibusdam velit voluptates repudiandae ab omnis, debitis suscipit? Suscipit iusto beatae dolor necessitatibus impedit doloribus animi modi natus, provident quo distinctio debitis.</p>
+    <p>Odit soluta excepturi quidem eligendi mollitia quia eveniet error quaerat maxime quasi, laborum corporis quisquam distinctio cum debitis et at iure amet similique tempora? Vero numquam sequi voluptatibus voluptate adipisci?</p>
+    <h2>第8章</h2>
+    <p>Nihil, cumque voluptatibus illum blanditiis sunt cum. Libero error quo minima quasi ipsa eos, odit repudiandae soluta itaque ullam accusantium distinctio in praesentium obcaecati, nemo laudantium nostrum veniam hic dolore.</p>
+    <p>Itaque quibusdam expedita minima a excepturi cupiditate molestias eveniet veritatis blanditiis alias officia exercitationem, vitae dolores ex hic perspiciatis repellendus saepe minus eius officiis fugiat mollitia inventore! Eveniet, et fugiat.</p>
+    <p>Nihil velit voluptatem earum vel accusamus ea vero quibusdam minima. Cumque tempore modi quos, odit voluptate explicabo sint molestias itaque officiis asperiores porro consequatur facilis? Cumque assumenda eius perspiciatis veritatis?</p>
+    <p>Esse, ipsa sunt recusandae ullam earum similique tempore consectetur, molestiae, deleniti reprehenderit doloribus perferendis libero atque corrupti vitae! Aut officia veritatis tempore qui reiciendis molestiae dolores culpa ut quis ipsa.</p>
+    <p>Voluptas, deleniti quia? Quibusdam nam rem provident mollitia a? Molestiae, soluta odit repellat illo obcaecati ratione quia! Beatae doloremque deserunt reiciendis! Iusto qui asperiores dolore, facilis labore animi quisquam temporibus!</p>
+    <h2>第9章</h2>
+    <p>Quidem laudantium quia commodi, nihil vel hic veniam beatae enim consequatur voluptate vero sint. Optio molestiae blanditiis impedit dolore dolor pariatur adipisci minima eos magnam quam iste, iure molestias aliquam.</p>
+    <p>Sit distinctio modi rem nihil quidem aperiam molestias iure in omnis cum? Distinctio fugit a esse iusto veritatis. Deleniti dignissimos magni, laudantium ab esse recusandae reiciendis officiis quis natus rem!</p>
+    <p>Repellat incidunt dignissimos maxime? Amet nam eveniet et, enim sint, eius sapiente similique id quidem dolor beatae tenetur ratione quod dolores consequuntur. Iste sequi est eos molestiae quia qui doloribus!</p>
+    <p>Libero quod ad error aliquid, quis perferendis distinctio expedita, quam ea numquam officia esse atque praesentium nobis vero consequatur sit. Pariatur voluptate nostrum ullam labore nam, cumque laudantium quos aliquid.</p>
+    <p>Accusamus commodi assumenda, quos corporis voluptas optio modi inventore perspiciatis ipsum soluta repellat. Ratione quia eligendi qui repellendus delectus adipisci quis molestias consequuntur neque magni eveniet pariatur, porro, deserunt earum!</p>
+    <h2>第10章</h2>
+    <p>Incidunt quaerat laudantium cupiditate sapiente, quod illo molestiae doloribus dolore nesciunt ea. Ab incidunt architecto atque itaque quas, repellendus labore laudantium aliquid assumenda accusantium. Corporis amet est nisi corrupti. Nulla?</p>
+    <p>Sequi perspiciatis facere rem natus atque quibusdam qui molestias, ex, aliquam deleniti cupiditate. Necessitatibus odit porro aliquam quos amet id enim omnis, labore in suscipit maiores est eos delectus consequuntur!</p>
+    <p>Et consectetur exercitationem non impedit vitae voluptates architecto labore, vel minus ad quas ipsam ea quaerat enim adipisci necessitatibus dolores fugit eveniet repellendus, assumenda fuga, voluptatibus molestias. Sunt, dolorem reprehenderit?</p>
+    <p>Accusantium inventore ex amet corrupti ratione aliquid molestiae eos? Quaerat, placeat animi nulla neque, magni perferendis cupiditate quibusdam doloribus dolor non obcaecati commodi qui unde laudantium! Minima sapiente tempora odit.</p>
+    <p>Aliquid itaque rem culpa numquam ratione quasi id provident a! Officiis consectetur beatae architecto fugit vel eum ipsa optio excepturi at dolor atque qui similique iste possimus commodi, delectus vero?</p>
+    `;
+
+    var reg = /<h2>第\d+章<\/h2>/g;
+    var result = html.match(reg);
+    if(result){
+        console.log(result);
+        console.log(result.length);
+    }else{
+        console.log(0);
+    }
+    
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    email:<input type="text" value="">
+    
+
+    <script>
+        var str = "abcde\r?fg";
+        console.log(str);
+        var test = "\
+            <div></div>\
+            <span></span>\
+        ";
+        console.log(test);
+        // document.body.innerHTML = "\
+        //     <div></div>\
+        //     <span></span>\
+        // ";
+        // 那一个反斜杠的意思是:让其后面的文本回车不再是回车,这样便不会再报错了
+        //因为文档流里字符串换行就会报错
+        
+        var input = document.getElementsByTagName('input')[0];
+        console.log(input.value);
+        
+    </script>
+</body>
+</html>

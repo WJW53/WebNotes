@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        // (function test1(){
+        //     console.log('a');
+        // }());
+
+        //1.闭包小题
+        function test() {
+            var arr = [];
+            for (var i = 0; i < 10; i++) {
+                arr[i] = function () {
+//相当于arr[i] = 函数(等号后面只是个定义语句,每次都是一个新函数,它里面的i到底是多少,
+//谁都不知道,一直是未知数.相当于把document那个语句屏蔽掉不看,只有执行的时候才会来找)
+//只有等到在外部执行的时候,也就是下面的myArr[j]();但是这时候test里的i已经变成了10
+                    document.writeln(i);
+                }
+            }
+            return arr;
+        }
+
+        var myArr = test();
+        for (var j = 0; j < 10; j++) {
+            myArr[j]();
+//显示了10个10 , 无语...   我以为是10个9
+//因为function改变的都是test环境里的AO,而最后tAO中的i(循环结束后)变为了10
+//所以是10个不同的函数调用了同一个i
+        }
+
+        document.writeln("<br>");
+        //2.如何解决上述问题？如下：利用立即执行函数
+
+        function test2() {
+            var arr2 = [];
+            for (var i = 0; i < 10; i++) {
+                (function (j) {
+//生成十个不同的立即执行函数,每次传的实参都是i,所以当执行后,每次来找的j都是对应的数字
+                    arr2[j] = function () {
+                        document.writeln(j);
+                    }
+                }(i));
+            }
+            return arr2;
+        }
+
+        var myArr2 = test2();
+        for (var j = 0; j < 10; j++) {
+            myArr2[j]();
+        }   
+
+//3.这是不用return的方法,也可以闭包        
+        var demo;
+        function test3(){
+            var temp=100;
+            function a(){
+                console.log(temp);
+            }
+            demo = a;
+        }
+
+        test3();
+        demo();         
+    </script>
+</body>
+
+</html>

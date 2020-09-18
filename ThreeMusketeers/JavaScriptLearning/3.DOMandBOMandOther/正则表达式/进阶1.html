@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        // var reg = /(\d[a-z])([a-z]+)/g;
+        // var s = "2adsf-4dsaf-4adftc";
+        // while(ans = reg.exec(s)){
+        //     // console.log(ans);
+        //     console.log(ans[0],ans[1],ans[2],ans[3]);
+        // }
+
+        var s = "2015-5-1,- 2019-6-19,- 2020-4-15";    
+        var reg = /(?<year>\d{4})-(?<month>\d{1,2})-(?<day>\d{1,2})/g;
+
+        // while(ans = reg.exec(s)){
+        //     // console.log(ans);
+        //     // console.log(ans[0],ans[1],ans[2],ans[3]);
+        //     console.log(ans.groups,ans.groups.year,ans.groups.month,ans.groups.day);
+        // }
+
+        var ans = s.replace(reg,function(match,g1,g2,g3){
+            console.log(match,g1,g2,g3);
+            return `${g1}//${g2}/${g3}`;
+            
+        });
+        console.log(ans);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="width: 100px;height: 100px;background-color:red"></div>
+
+    <script>
+        var div = document.getElementsByTagName('div')[0];
+        function addEvent(elem,type,handle){
+            if(elem.addEventListener){
+                elem.addEventListener(type,handle,false);
+            }else if(elem.attachEvent){
+                elem.attachEvent('on'+type,function(){
+                    handle.call(elem);
+                });
+            }else{
+                elem['on'+type] = handle;
+            }
+        }
+
+    </script>
+
+</body>
+</html>

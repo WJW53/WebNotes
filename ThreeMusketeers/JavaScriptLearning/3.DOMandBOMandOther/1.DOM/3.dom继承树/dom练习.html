@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+//1.     
+        var div = document.createElement('div');
+        var p = document.createElement('p');
+        // div.className = 'example';
+        // p.className = 'slogan';
+        div.setAttribute('class','example');
+        p.setAttribute('class','slogan');
+        // p.textContent = '姬成,你真帅！'
+        var text = document.createTextNode('姬成，你最帅！');
+        p.appendChild(text);
+        div.appendChild(p);
+        document.body.appendChild(div);        
+
+
+    </script>
+</body>
+</html>

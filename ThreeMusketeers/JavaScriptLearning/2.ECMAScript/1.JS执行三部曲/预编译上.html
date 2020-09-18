@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        //    console.log(a);
+
+        //    function a(a){
+        //        var a = 123;
+        //        var a = function () {
+
+        //        }
+        //        a();
+        //    }
+           
+        //    a = 10;
+        //    window.a = 10;
+
+//         function test(){
+// // 赋值是自右向左
+// //顺序是: 先把123赋值给b,在声明a,再把b的值赋给a
+// //b是未经声明就赋值,故它的值是归window所有
+// //但是a不是全局变量,函数执行完毕a就消失
+//             var a = b = 123;
+//             console.log(a);//123正确
+//             console.log(window.a);//错误undefined
+//             console.log(window.a);//123正确
+//         }
+//         test();
+//         console.log(b);//123正确
+//         console.log(a);//错误,undefined
+
+//例1：
+        function fn(a){
+            console.log(a);
+            
+            var a = 123;
+
+            console.log(a);
+            //123
+            function a () {}
+
+            console.log(a);
+            //123
+            var b = function () {console.log('2');}
+
+            console.log(b);
+            //function () {console.log('2');};
+
+            function d () {
+                console.log(2);
+            }
+
+            console.log(d);
+            // function d () {
+            //     console.log(2);
+            // };
+        }
+        fn(1);
+
+
+//例2:
+    //先来个:
+        // GO{
+        //     test : function () {
+        //         // ......
+        //     }
+        // }
+            console.log(test);
+            function test(test){
+    //再来个:            
+        // AO{
+        //     test : function () {},
+        // }
+                console.log (test);
+                var test = 234;
+                console.log(test);
+                function test () {}
+            }
+            test(1);
+            var test = 123;
+            console.log(test);
+            
+            console.log('\n');
+
+
+//例3:
+//先来个简单的:
+            // global = 100;
+            // function fn () {
+            //     console.log(global);
+            //     global = 200;
+            //     console.log(global);
+            //     var global = 300;
+            // }
+
+            // fn();
+            // var global;
+            // console.log(global);
+
+
+
+        // GO{
+        //     a : 10,
+        //     test : function test () {
+        //         //......           
+        //     },
+        //     c : 234,
+        // }
+            // function test (){
+            //     console.log(test);
+            //     console.log(b);
+            //     if(a){
+            //         var b = 100;
+            //     }
+            //     console.log(b);
+            //     c = 234;
+            //     console.log(c);
+                
+            // }
+
+            // var a;
+            // test();
+        // AO{
+        //     b : undefined,           
+        // }    
+            // a = 10;
+            // console.log(c);
+
+            
+
+    </script>
+</body>
+</html>

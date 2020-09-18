@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>//到这里立即加载并执行js
+        console.log(document.readyState);
+        document.onreadystatechange = function(){//但这里状态位依然为loading,因为文档还没解析完
+            //还不能变interactive,所以暂时不触发事件
+            console.log(document.readyState);//文档解析完打印interavtive,等下面的div再打印完就打印complete
+        }
+
+        document.addEventListener('DOMContentLoaded',function(){//这里就更 暂时不能触发了
+            var div = document.getElementsByTagName('div')[0];
+            console.log(div);
+        },false);
+    </script>
+
+</head>
+<body>
+    <div style="width: 100px;height: 100px;background-color:red"></div>
+    <script>
+        console.log('shashihou');
+    </script>
+    <script>
+        console.log('WHT!');
+        alert("xiongdi");
+    </script>
+    
+    
+    
+    
+
+</body>
+</html>

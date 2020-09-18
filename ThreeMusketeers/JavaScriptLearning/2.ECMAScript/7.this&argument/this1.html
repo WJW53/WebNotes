@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function test(c) {
+//若是new test()的话,这里就会使得隐式的var this = Object.create(test.prototype);这会更精准
+            //{__proto__: test.prototype,}
+            var a = 123;
+
+            function b() {}
+        }
+        test(1);
+        //实际上AO里面还有个arguments和this.window
+        // AO {
+        //     arguments: [1],
+        //     this: window,//默认this指向window
+        //     c: 1;
+        //     a: undefined,
+        //     b: function b() {},
+        // }
+        new test();
+
+//1.
+            function test1(){
+                console.log(this==window);//true
+            }
+            console.log(window);
+            test1();
+            console.log('\n');
+
+//2. 
+            console.log(this == window);//true
+
+//3.
+            var obj = {
+                a: function(){
+                    console.log(this.name);
+                },
+                name: 'abc',
+            }
+            obj.a();
+
+        console.log('\n');
+
+
+//4. 解决下述这个,那么this基本没啥问题了
+        var name = '222';
+        var a = {
+            name: '111',
+            say: function () {
+                console.log(this.name);
+            }
+        }
+        var fun = a.say;
+        fun();//222,因为它是在全局执行,window
+        a.say();//111
+        var b = {
+            name: '333',
+            say: function (fun) {
+                console.log(this);//-->b
+                //this ---> b,这没错,console.log(this.name)-->333但是!
+                //这个fun()是执行形参传的fun方法
+                fun();//但是这里也不是this.fun();啊！！没人调用fun()所以走的还是预编译环节
+            //如果没有  who.fun();那么fun();单独走(正常执行)的话,拿的就是window(预编译)里的fun();
+                //而预编译的this指向window,window中的name为'222',所以答案为222
+            },
+        }
+        //重点:
+        b.say(a.say);//222,传了a的say方法,在b的say方法里执行
+        b.say = a.say;
+        b.say();//333,因为拷贝了a.say
+
+
+
+    </script>
+</body>
+
+</html>

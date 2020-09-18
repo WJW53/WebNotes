@@ -1,0 +1,7 @@
+
+/* 希望a元素没有下划线，继承父元素的颜色 */
+a{
+    text-decoration: none;
+    /* 强制继承用inherit */
+    color: inherit;
+}

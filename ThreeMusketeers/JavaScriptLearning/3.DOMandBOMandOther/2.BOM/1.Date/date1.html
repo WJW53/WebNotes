@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        var date = new Date().getTime();
+        for(var i = 0;i<100000000;i++){}
+        var date1 = new Date().getTime();
+        console.log(date1-date);//我这计算机转一亿圈需要374ms左右
+
+        // var date1 = new Date();
+        // date1.setMinutes(57);
+        // setInterval(function(){
+        //     if(new Date().getTime() - date1.getTime() > 10000){
+        //         console.log('邓哥还是个宝宝');
+        //     }
+        // },1000);//每隔1000毫秒执行这个函数
+
+        // var i = 0;
+        // setInterval(function(){
+        //     i++;
+        //     console.log(i);
+        // },2000);
+
+        // var firstTime = new Date().getTime();
+        // setInterval(function(){
+        //     var lastTime = new Date().getTime();
+        //     console.log(lastTime - firstTime);
+        //     firstTime = lastTime;
+        // },1000);
+
+        //
+        // var i = 0;//这个i得写在外面
+        // var timer = setInterval(function(){
+        //     console.log(i++);
+        //     if(i>9){
+        //         clearInterval(timer);
+        //     }
+        // },1000);
+
+        var timer = setTimeout(function(){
+            console.log('a');
+            console.log(this);
+        },1000);
+        var timer2 = setInterval(function(){},10000);
+        console.log(timer,timer2);
+        // clearTimeout(timer);
+       
+        setInterval("console.log('b')",1000);
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        console.log(parseInt(3,1));
+        console.log((1,2,3,4));
+        console.log(typeof Array);
+        
+        var f = (
+            function f(){
+                return '1';
+            },
+            function g(){
+                return 2;
+            }
+        )();//逗号操作符,所以返回2
+        console.log(typeof f)
+        console.log("\n");
+        console.log(undefined==null);//true,毕竟他俩跟0比较的所有结果都是false
+        console.log(undefined===null);//false
+        console.log(isNaN('100'));//false
+        console.log(isNaN('abc'));//true
+        console.log(parseInt('1a')==1);//true
+        console.log({} == {});//false
+        console.log("\n");
+        
+
+    </script>
+</body>
+</html>

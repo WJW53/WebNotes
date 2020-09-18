@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const moneyToCN = (money) => {
+  // NaN !== NaN
+  if (Number(money) !== Number(money)) {
+    return money
+  }
+  // 大数位，每四位一节
+  const cnFigure = ['', '万', '亿', '万亿']
+  // 中文数字0-9
+  const cnInteger = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
+  // 十进制计数“个十百千”
+  const cnDecimalism = ['', '拾', '佰', '仟']
+  // 先转为字符串
+  const string = money + ''
+  // 小数点分割
+  const numbers = string.split('.')
+  const integerPart = numbers[0]
+  const decimalPart = numbers[1]
+  // 整数部分位数
+  const len = integerPart.length
+  // 四位分节
+  const pitch = Math.ceil(len / 4)
+  const array = []
+  // 分为每四位一节，从低位向高位分
+  for (let index = 0; index < pitch; index++) {
+    array.push(integerPart.slice((len - (index + 1) * 4 < 0) ? 0 : (len - (index + 1) * 4), len - index * 4))
+  }
+  // 将四位一节的数字转换为对应的中文，拼接上大数位，比如（一千一百一十一）（万），“一千一百一十一万”
+  const cnArray = array.map((figure, index) => {
+    const cn = figure.split('').map((char, i) => {
+      return char === '0' ? '零' : (cnInteger[Number(char)] + cnDecimalism[figure.length - i - 1])
+      // replace末尾的所有“零”，例如“壹仟零零零”变成“壹仟”；再replace中间的多个零，例如“壹万零零零玖”变成“壹万零玖”
+    }).join('').replace(/\u96f6+$/, '').replace(/\u96f6+/g, '\u96f6')
+    // 防止出现“零零零零”变成“”之后再加大数位，例如“（零零零零）万”变成“万”
+    return cn.length ? (cn + cnFigure[index]) : (cnFigure[index] ? '零' : '')
+  }).reverse()
+  // 整数，替换掉中间连续的“零”，例如“一万亿零（亿）零（万）一千”变为“一万亿零一千”，最后可加上.replace(/^\u4e00\u5341/, '\u5341')，将“一十****”变为“十****”
+  const integerCN = cnArray.join('').replace(/\u96f6+/g, '\u96f6')
+
+  let decimalCN = ''
+  if (!decimalPart || decimalPart === '0' || decimalPart === '00') {
+    decimalCN = '整'
+  } else {
+    const [p0, p1] = decimalPart.split('')
+    decimalCN = (p0 === '0' ? '零' : (cnInteger[Number(p0)] + '角')) + (!p1 || p1 === '0' ? '' : (cnInteger[Number(p1)] + '分'))
+  }
+
+  return `${integerCN || '零'}圆${decimalCN}`
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 显示关联： -->
+    <p>
+        请选择性别:
+        <input name="gender"id="radioMale"type="radio">
+        <!-- laber的for属性值为某个id值 -->
+            <label for="radioMale">男</label>
+        <input name="gender"id="radioFeMale"type="radio">
+            <label for="radioFeMale">女</label>
+    </p>
+
+    <!-- 隐式关联： -->
+    <p>
+        请选择性别:
+        <label>
+            <input name="gender" type="radio">男
+        </label>
+        <label>
+            <input name="gender" type="radio">女
+        </label>
+    </p>
+    
+</body>
+</html>

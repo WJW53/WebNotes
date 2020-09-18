@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <table></table>
+        <b></b>
+        abc
+        <!-- Comment -->
+        <strong>
+            <span>
+                <i></i>
+            </span>
+        </strong>
+        <p></p>
+        <i></i>
+        <address></address>
+    </div>
+
+
+    <script>
+        //1.
+        //封装函数，返回元素e的第n层祖先元素
+        function retParent(elem,n){
+            while(elem && n--){//有这个元素结点(html再上面就是null)并且到第n层
+                elem = elem.parentElement;
+            }
+            return elem;
+        }
+        var i = document.getElementsByTagName('i')[0];
+        console.log(retParent(i,2));
+
+        //2.封装children功能:从节点树中摘出所有子元素节点
+        Element.prototype.myChildren = function(){
+            var child = this.childNodes;
+            var len = child.length;
+            var arr = [];
+            for(var i = 0;i<len;i++){
+                if(child[i].nodeType == 1){//元素节点的which值就是1
+                    arr.push(child[i]);
+                }
+            }
+            return arr;
+        }
+        var div = document.getElementsByTagName('div')[0];
+        console.log(div.myChildren());//..b strong  ....
+
+
+//3.封装函数,返回元素(这行都指元素节点)e的第n个兄弟节点.n为正,返回后面的兄弟节点;n为负,返回前面的;n为0,返回自己
+//已为IE9及以下做兼容性处理
+        function retSibling(e,n){
+            while(e && n){//有节点,且n不为0
+                if(n > 0){//不要把n--放到这里,因为这会使得n为负数后下次出错
+                    if(e.nextElementSibling){//因为这个ie9以上才有,所以下面的else是为了ie9及以下做的处理
+                        e = e.nextElementSibling;
+                    }else{
+                        //e&&e.nodeType!=1,是为了防止当前为null且下一个以为null而做的处理,否则超范围报错的
+                        for(e = e.nextSibling;e && e.nodeType != 1;e = e.nextSibling);//注意这个分号的  原因
+                    }
+                    n --;
+
+                }else{
+                    if(e.previousElementSibling){//因为这个ie9以上才有,所以下面的else是为了ie9及以下做的处理
+                        e = e.previousElementSibling;
+                    }else{
+                        //e&&e.nodeType!=1,是为了防止当前为null且下一个以为null而做的处理,否则超范围报错的
+                        for(e = e.previousSibling;e && e.nodeType != 1;e = e.previousSibling);//注意这个分号的  原因
+                    }
+                    n++;
+                }
+            }
+            return e;
+        }
+        var strong = document.getElementsByTagName('strong')[0];
+        console.log(retSibling(strong,-2));
+        console.log(retSibling(strong,3));
+    </script>
+    
+</body>
+</html>

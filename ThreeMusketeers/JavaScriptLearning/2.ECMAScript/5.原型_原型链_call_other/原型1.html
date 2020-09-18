@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //原型 --> Person.prototype
+        //Person.prototype = {}  原型是该构造函数构造出的对象的公共祖先
+        Person.prototype.LastName = 'Hehe.';//它的属性和方法可以被后代对象调用
+        Person.prototype.say = function (){
+            console.log('Hello World!');
+        }
+
+        //Person.prototype = {
+            //隐式的constructor
+            //constructor: function Person(name,age,sex){....},
+        //}
+        function Person(name,age,sex){
+            this.name = name;
+            this.age = age;
+            this.sex = sex;
+        }
+        Car.prototype = {
+            constructor: Person,
+        }
+        function Car(){
+
+        }
+        
+        var car = new Car();
+        var person = new Person('WuJingwei',20,'male');
+        var person1 = new Person();
+        console.log(person.name);
+        person.LastName = 'sadf';
+
+       
+
+
+        
+        
+
+    </script>
+</body>
+</html>

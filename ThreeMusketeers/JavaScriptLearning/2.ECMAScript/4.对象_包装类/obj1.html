@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var mrWu = {
+            name: "Mr.Wu",
+            age: 20,
+            sex: "male",
+            health: 100,
+            smoke: function () {
+                console.log("I'm not smoking!!!cool!!!");
+        // 必须加上mrWu.      或者用this,这时表示第一人称
+                --this.health;
+            },
+            drink: function () {
+                console.log("I'm not drink!");
+                this.health++;
+            },            
+        }
+
+        mrWu.wife = "xiaodong";
+
+        console.log(mrWu);//会正常显示
+        //document.writeln(mrWu);//[object Object]
+        delete mrWu.wife;
+
+        var deng = {
+            prepareGf: "xiaowang",
+            name: "laodeng",
+            sex: 'male',
+            gf: 'xiaoliu',
+            wife: "",
+            divorced: function () {
+                delete this.wife;
+                this.gf = this.prepareGf;
+            },
+            getMarried: function () {
+                this.wife = this.gf;
+                delete this.gf;
+            },
+            changePrepareGf: function (someone) {
+                this.prepareGf = someone;
+            },
+            changeGf: function () {
+                this.gf = this.prepareGf;
+            }
+        }
+
+        function Car(color){
+            this.color = color;
+            this.name = 'BMW';
+            this.height = '1400';
+            this.lang = '4900';
+            this.weight = 1000;
+            this.health = 100;
+            this.run = function (){
+        //这里只能用this. 不能用Car. 这是和{}不同的地方    
+                this.health--;
+            }
+        }
+        var car = new Car('red');
+        var car1 = new Car('green');
+        var car2 = new Car('blue');
+
+        car.name = 'Maserati';
+        car1.name = 'Merz';
+
+//  构造函数隐式三步论
+        function Student(name,age,sex){
+            //1.暂时这么理解,目前并非最终形式//var this = {
+            //     name:'',
+            //     age;20,
+            //           ,...,
+            // }
+        
+            //2.执行this.
+            this.name = name;
+            this.age = age;
+            this.sex = sex;
+            this.grade = 2020;
+            this.say = function(){//这里叫方法了
+                console.log(this.say);
+            }           
+
+//4.但是若有显式的return {};则隐式的return this会失效
+//注意这里返回的一定是对象值才会使隐式的this对象失效.
+//比如:return 123;因为123属于原始值,有new了就不会返回原始值。而是仍然返回隐式的this
+            //return {};
+            //3.//return this;
+        }
+        console.log(new Student('WUJINGWEI',20,'男').name);
+        console.log(new Student('wuqianqian',24,'女').say);
+
+        console.log((typeof ('23'*2)));
+    </script>
+</body>
+
+</html>

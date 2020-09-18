@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+//一.关于 person.__proto__ = anything;
+
+//         // __private__是为了告诉别人,这是玩意儿我有别的用处,你别动它
+//         Person.prototype.name = 'abc';
+//         function Person(){
+// //隐式的:
+//         // var this = {
+//         // __proto__: Person.prototype
+//         // };
+//     //就是说,每一个对象有一原型,这个原型的__proto__属性指向了这个原型本身  
+//         }
+//         var anything = {
+//             name:'sunny',
+//         }
+
+//         var person = new Person();
+//         person.__proto__ = anything;
+//         console.log(person.name);
+
+
+//二.这种情况输出的是sunny 其他普通情况
+//就是直接把Person.prototype.name='cherry';写后面时,输出是cherry 因为这时改变的只是原先房子的内容
+
+//若不理解就先来理解这个吧
+    // var obj = {name:'a'};
+    // var obj1 = obj;
+    // obj = {name:'b'};//因为这里是相当于new了个新房间
+    // console.log(obj1,obj);
+
+//3.但是这时候Person的__proto__没变,所以Person原来的房子也没变是旧Person.prototype
+    Person.prototype.name = 'sunny';
+
+    function Person(){
+        //1.本来Person和Person.prototype指向同一个地儿,老房子
+        //var this = {__proto__:Person.prototype}
+    }
+    
+    // //5.把这个写在 new person的上面的话,就不一样了,就会输出这个beauty.因为是换完房子在new新对象的
+    // Person.prototype = {
+    //     name: 'beauty',
+    // }
+
+//要注意是何时new了对象以及代码执行顺序,这个很重要
+    var person = new Person();
+
+//2.我上面刚new了个对象(用的就是旧房子),但是这时候Person.prototype说它要换个新房子,但已经和person无关了
+    Person.prototype = {
+        name: 'cherry',
+    }
+
+    var person1 = new Person();//6.但是这时候再新new一个房子,那就肯定是cherry了
+    console.log(person1.name);//cherry
+
+    console.log(person.name);//4.所以这里输出的是sunny,  用5.处的代码则是beauty
+//所以相当于:
+    // Person.prototype={name:'a'};
+    // __proto__=Person.prototype;
+    // Person.prototype={name:'b'};
+
+    </script>
+</body>
+</html>

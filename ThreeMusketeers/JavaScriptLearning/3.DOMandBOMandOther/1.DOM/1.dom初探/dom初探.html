@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .content{
+            display: none;
+            width:120px;
+            height:100px;
+            border:2px solid red;
+        }
+        .active{
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <button class="active">111</button>
+        <button>222</button>
+        <button>333</button>
+        <div class="content " style="display: block;">成哥帅</div>
+        <div class="content ">邓哥也帅</div>
+        <div class="content ">但是,我最帅</div>
+    </div>
+    <script type="text/javascript">
+    //dom对象
+        // var div = document.getElementsByTagName('div')[0];
+        // div.style.width = '100px';
+        // div.style.height = '100px';
+        // div.style.backgroundColor = 'red';
+        
+        // var count = 0;
+        // div.onclick = function(){//当你点击,就执行这个函数
+        //     count ++;
+        //     if(count % 2 == 1){
+        //         this.style.backgroundColor = 'green';
+        //         this.style.width = '200px';
+        //         this.style.height = '100px';
+        //         this.style.borderRadius = '50%';
+        //     }else{
+        //         div.style.width = '100px';
+        //         div.style.height = '100px';
+        //         div.style.backgroundColor = 'red';
+        //         this.style.borderRadius = '0';
+        //     }
+               
+        // }
+
+//2.
+            var btn = document.getElementsByTagName('button');
+            var div = document.getElementsByClassName('content');
+
+            for(var i = 0;i<btn.length;i++){
+                (function(n){//这里需要用立即执行函数
+                    btn[n].onclick = function(){
+                    for(var j = 0;j<btn.length;j++){
+                        btn[j].className = "";
+                        div[j].style.display = 'none';
+                    }
+                    this.className = 'active';
+                    div[n].style.display = 'block';
+                    
+                }
+                }(i));
+            }
+
+
+        
+    </script>
+</body>
+</html>
