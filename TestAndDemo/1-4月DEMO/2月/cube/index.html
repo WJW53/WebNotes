@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cube</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <ul class="cube init">
+            <li class="img1"><img src="img/img1.jpg" alt=""></li>
+            <li class="img2"><img src="img/img2.jpg" alt=""></li>
+            <li class="img3"><img src="img/img3.jpg" alt=""></li>
+            <li class="img4"><img src="img/img4.jpg" alt=""></li>
+            <li class="img5"><img src="img/img5.jpg" alt=""></li>
+            <li class="img6"><img src="img/img6.jpg" alt=""></li>
+        </ul>
+    </div>
+    <h2>点击下面图片旋转</h2>
+    <div class="btnsAear">
+        <input type="image" src="img/img1.jpg" id="show-image-1">
+        <input type="image" src="img/img2.jpg" id="show-image-2">
+        <input type="image" src="img/img3.jpg" id="show-image-3">
+        <input type="image" src="img/img4.jpg" id="show-image-4">
+        <input type="image" src="img/img5.jpg" id="show-image-5">
+        <input type="image" src="img/img6.jpg" id="show-image-6">
+    </div>
+    <script>
+            
+            
+            (function(){//代码执行块
+
+                var btnsAear  = document.getElementsByClassName('btnsAear')[0];
+                //夺得点击区域元素
+                var cubeNode =  document.getElementsByClassName('cube')[0];//cube元素
+
+                var currentList  = cubeNode.classList;//获得类名列表 类数组集合 
+                console.log(currentList);
+                var initClass = currentList[1];//得到要替换掉的类名  
+                //点击事件
+                btnsAear.addEventListener('click',function(e){
+
+                    // console.log(e.target.id);
+                    var current = e.target.id
+                    if(current.length>0 && current!=initClass){
+                        currentList.replace(initClass,current);
+                        console.log(currentList);
+                        initClass = current;//更新第二个类名
+
+                    }
+                })
+
+
+
+            })()
+    </script>
+</body>
+
+</html>

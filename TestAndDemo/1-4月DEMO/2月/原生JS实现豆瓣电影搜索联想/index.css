@@ -1,0 +1,129 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #f0f3f5;
+}
+
+#app {
+  width: 804px;
+  margin: 100px auto 0;
+}
+
+#app::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.logo,
+.search {
+  float: left;
+}
+
+.logo {
+  width: 145px;
+  height: 56px;
+  margin-right: 13px;
+  background-image: url('./image/logo.png');
+  background-position-y: center;
+  background-repeat: no-repeat;
+}
+
+.logo a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.search-inp {
+  width: 470px;
+  height: 34px;
+  margin-top: 11px;
+}
+
+.search-inp input{
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  border: none;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  box-shadow: 0px 1px 2px #ccc;
+  outline: none;
+}
+
+.search-btn {
+  position: relative;
+  top: -34px;
+  right: -470px;
+  width: 37px;
+  height: 34px;
+  background-color: #929ba2;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-image: url('./image/search.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.search-list {
+  list-style: none;
+  position: relative;
+  top: -34px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  display: none;
+}
+
+.search-info {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.poster,
+.content {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.poster {
+  width: 45px;
+  height: 63px;
+  background-color: red;
+}
+
+.poster img {
+  width: 100%;
+}
+
+.content {
+  margin-left: 5px;
+}
+
+.title {
+  color: #27a;
+  font-size: 14px;
+}
+
+.year,
+.sub-title,
+.episode {
+  font-size: 12px;
+  color: #9b9b9b;
+}
+
+.title,
+.sub-title,
+.episode {
+  margin-bottom: 4px;
+}
+
+.episode {
+  margin-bottom: 0;
+}

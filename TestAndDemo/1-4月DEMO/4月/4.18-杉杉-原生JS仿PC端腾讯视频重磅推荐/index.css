@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 445px;
+}
+
+#app .main {
+  width: 100%;
+  height: 100%;
+  background-image: url('./img/0.jpg');
+  background-size: cover;
+}
+
+#app .nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 270px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+#app .nav .label {
+  margin-top: 20px;
+  margin-left: 15px;
+  margin-bottom: 20px;
+  padding-left: 25px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  background-image: url('./img/fire.png');
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+#app .nav .list {
+  margin-left: 40px;
+}
+
+#app .nav .item {
+  height: 35px;
+  line-height: 35px;
+  margin-bottom: 10px;
+  font-size: 0px;
+  color: #ff5c38;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  cursor: pointer;
+}
+
+#app .nav .title {
+  font-size: 15px;
+  color: rgba(255, 255, 255, .7);
+  transition: font-size .08s;
+}
+
+#app .nav .desc {
+  font-size: 13px;
+  color: #ff5c38;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* display: none; */
+}
+
+#app .nav .item.active {
+  font-size: 13px;
+}
+
+#app .nav .item.active .title {
+  font-size: 22px;
+  color: #ff5c38;
+}

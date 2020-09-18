@@ -1,0 +1,96 @@
+.calendar {
+  width: 322px;
+  height: 329px;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  background-color: #fff;
+  user-select: none;
+}
+
+.calendar .header {
+  padding-top: 15px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.calendar .header > span {
+  vertical-align: middle;
+}
+
+.calendar .picker-btn {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 3px;
+}
+
+.calendar .picker-btn.picker-prev-year {
+  background-image: url('./img/prev-year.png');
+}
+
+.calendar .picker-btn.picker-next-year {
+  background-image: url('./img/next-year.png');
+}
+
+.calendar .picker-btn.picker-prev-month {
+  background-image: url('./img/prev-month.png');
+}
+
+.calendar .picker-btn.picker-next-month {
+  background-image: url('./img/next-month.png');
+}
+
+.calendar .picker-date {
+  margin: 0 50px;
+  font-size: 14px;
+}
+.calendar .content {
+  padding: 0 10px 10px 10px;
+  color: #606266;
+}
+
+.calendar .picker-weeks {
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.calendar .picker-weeks div,
+.calendar .picker-days div {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin: 4px 6px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.calendar .picker-weeks div {
+  font-size: 14px;
+}
+
+.calendar .picker-days div {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.calendar .picker-days div:hover {
+  color: #409eff;
+}
+
+.calendar .picker-days div.is-today {
+  color: #409eff;
+  font-weight: 700;
+}
+
+.calendar .picker-days div.is-select {
+  border-radius: 50%;
+  background-color: #409eff;
+  color: #fff;
+}
+
+
+.calendar .picker-days div.other-month {
+  color: #c0c4cc;
+}

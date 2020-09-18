@@ -1,0 +1,16 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.puzzle {
+  position: relative;
+  border: 2px solid #ccc;
+  margin-bottom: 50px;
+}
+.block {
+  box-sizing: border-box;
+  position: absolute;
+  border: 1px solid #fff;
+  transition: all .3s;
+}

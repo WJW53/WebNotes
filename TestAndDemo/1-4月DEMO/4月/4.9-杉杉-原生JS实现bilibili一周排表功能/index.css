@@ -1,0 +1,128 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* svg {
+  border-inline-end-width: 26px;
+  height: 28px;
+} */
+
+.time-line {
+  width: 710px;
+  margin-top : 50px;
+  margin-left: 50px;
+}
+
+.time-line .tl-title::after {
+  display: block;
+  content: '';
+  clear: both;
+}
+
+.time-line .tl-week {
+  float: left;
+}
+
+.time-line .tl-link {
+  float: right;
+}
+.time-line .tl-week div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.time-line .anime {
+  width: 26px;
+  height: 28px;
+  background-image: url('./img/anime.png');
+}
+
+.time-line .name {
+  margin-right: 20px;
+  font-size: 20px;
+  color: #212121;
+}
+
+.time-line .tab-switch-item {
+  height: 30px;
+  line-height: 30px;
+  margin-right: 24px;
+  font-size: 14px;
+  /* border-bottom: 1px solid transparent; */
+  cursor: pointer;
+}
+
+.time-line .tab-switch-item.on {
+  color: #00a1d6;
+  border-bottom: 1px solid #00a1b6;
+}
+
+.time-line .tl-link {
+  width: 112px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #00a1b6;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 14px;
+  color: #00a1b6;
+}
+
+.time-line .zone-list-box {
+  height: 332px;
+  margin-top: 16px;
+  overflow: auto;
+}
+
+.time-line .zone-list-box::after {
+  display: block;
+  content: '';
+  clear: both;
+}
+
+.time-line .time-line-card {
+  float: left;
+  width: 210px;
+  margin-bottom: 24px;
+  margin-right: 20px;
+}
+
+.time-line .card-poster {
+  float: left;
+  width: 70px;
+  height: 70px;
+  border-radius: 2px;
+}
+
+.time-line .card-body {
+  padding-left: 80px;
+}
+
+.time-line .card-title {
+  height: 38px;
+  margin-top: 2px;
+  margin-bottom: 12px;
+  font-size: 14px;
+
+  /* 将对象作为伸缩盒子模型显示 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* 设置子元素的排列方式 */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.time-line .card-desc {
+  font-size: 12px;
+  color: #999;
+}
+
+.time-line .card-desc.published {
+  color: #00a1d6;
+}

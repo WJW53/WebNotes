@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		input {
+			margin: 0;
+			padding: 0;
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		#box {
+			width: 500px;
+			margin: 100px auto 0;
+		}
+
+		#box input {
+			width: 498px;
+			line-height: 30px;
+			font-size: 14px;
+			border: 1px solid #ccc;
+		}
+
+		#list {
+			display: none;
+		}
+
+		#list li {
+			background: #009999;
+			margin-top: 3px;
+			line-height: 30px;
+			color: #fff;
+		}
+
+		#list li:hover {
+			background: #00FF99;
+		}
+
+		#list li.active {
+			background: #60625b;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 
+		author:陈学辉
+	 -->
+	<div id="box">
+		<input type="text" />
+		<ul id="list">
+		</ul>
+	</div>
+
+	<script>
+		var book = ['《第七个读者》', '《心理罪 画像》', '《心理罪 教化场》', '《心理罪 暗河》', '《心理罪 城市之光》', '《地球往事》', '《黑暗森林》', '《死神永生》', '《乡村教师》', '《地球大炮》'];
+		var input = document.querySelector("input");
+		var list = document.getElementById("list");
+		var lis = document.getElementsByTagName('li');
+		var last = null;	//上一个选中的列表
+		var cn = -1;		//当前选中的索引，初始值为-1是因为初次按下键的时候要让第0个数据显示
+
+		//生成元素
+		function createData(arr) {
+			list.innerHTML = '';	//一上来需要把原有的内容清空，不清空的话只要点击内容就会累加
+
+			for (var i = 0; i < arr.length; i++) {
+				var li = document.createElement("li");
+				li.innerHTML = arr[i];
+
+				li.index = i;	//需要添加一个索引，用于按上下键的时候能找到正确的列表项
+				li.onclick = listClick;	//点击处理函数
+
+				list.appendChild(li);
+			}
+		}
+		createData(book);
+
+
+		//输入框点击功能
+		input.onclick = function (ev) {
+			list.style.display = 'block';
+			ev.cancelBubble = true;	//阻止事件冒泡到document身上，因为document也添加了一个click事件
+		};
+		//点击页面其它地方让ul隐藏
+		document.onclick = function () {
+			list.style.display = 'none';
+		};
+
+
+		function listClick() {
+			/*
+				用户点击li要处理的逻辑
+					1、根据选项卡效果的原理，应该先把上一次选中的li去掉选中状态，再把当前点击的li设置成选中状态
+					2、但是这里的功能比选项卡多了一个，就是处理自己（点击的li）。如果自己是选中，就取消选中；如果自己未选中，就选中。
+					3、所以这里的逻辑分为两个部分
+						1、处理上一次(last)选中li的class		只需去掉class，因为上一次肯定是选中状态
+						2、处理当前点击li的class				添加或者去掉class
+			 */
+
+
+			/*
+				处理上一次(last)选中li的class
+					1、首先，要考虑last有没有值。如果是首次点击，last是没有值的，为null。所以需要处理，要判断它有值的时候才进行操作。
+					2、其次再想，last(上一次选中)对象的class在什么时候去掉？只有在当前点击的是非last对象（这个是重点啊亲~好好意淫一下）的时候，它才去掉class
+					3、因为如果当前点击的还是last对象（也就是这次点的还是有active class的li标签）。那它的处理逻辑是在下面的if...else里完成的
+					4、所以当点击的还是last对象的话，不能让它走这个if。所以条件里加了一个限制，last!=this
+			 */
+			if (last && last != this) {
+				last.className = '';
+			}
+
+
+			/*
+				处理当前点击li的class
+					1、这个就简单了，自己有class的话，去掉class；自己没有class的话就添加class
+			 */
+			if (this.className == '') {
+				//这个条件成立说明现在点击的选项没有class
+				this.className = 'active';
+				input.value = this.innerHTML;	//把选中的内容添加到输入框里
+
+				/*
+					last的值要在这里更新
+						1、我们先说首次点击
+							1、last一开始的时候为null。代码走到这里后，last变成了this，就是说，last现在为首次点击的那个li
+							2、第二次点击。第二次点击时，是不是要去掉首次点击时li的class呀。而首次点击后li是不是存给了last。所以last是不是代表首次的点击？
+							3、第二次点击后，代码还是会再次走到这里，而this代表的是第二次的点击对象。然后再把第二次的点击赋值给last。那此时last代表的就是第二次的点击
+							4、当第三次点时，是不是要去掉第二次点击的class，而第二次点击仍然存给了last。所以last始终代表的就是上一次的点击
+							5、小伙伴们，这个逻辑能懂吧~
+				 */
+				last = this;		//把上一个改成当前选中的对象
+				cn = this.index;	//把cn的值改成当前选中的索引。当点击某个li后，再按上下键能连续上
+			} else {
+				//这个条件成立说明现在点击的选项有class
+				this.className = '';
+				input.value = '';
+
+				cn = -1;		//防止取消选中后，再按上下键的时候，从中间开始移动
+			}
+		};
+
+
+		//输入框输入的时候查找功能，只能用oninput事件，不能用onkeydown。因为删除的时候onkeydown先发生，然后才会删掉内容
+		input.oninput = function () {
+			var str = this.value;
+			var newData = [];
+
+			//根据输入的内容去数组里找到对应的数据，然后生成数据
+			for (var i = 0; i < book.length; i++) {
+				if (book[i].indexOf(str) != -1) {
+					newData.push(book[i]);
+				}
+			}
+
+			createData(newData);
+
+			list.style.display = 'block';		//输入框里删除内容后，按一下回车，然后再次删除的时候，不会显示列表
+			cn = -1;			//输入框里的内容有变化就要把cn重新赋值，否则会出现按上下键不是从头开始的情况
+		};
+
+		input.onkeydown = function (ev) {
+			switch (ev.keyCode) {
+				case 13:
+					var dis = getComputedStyle(list).display;
+					list.style.display = dis == 'block' ? 'none' : "block";
+
+					break;
+
+				case 38:		//往上走，要减
+					list.style.display = 'block';
+					cn--;
+					if (cn < 0) {
+						cn = lis.length - 1;
+					}
+
+					if (last) {
+						last.className = '';	//先把上一个选中的取消，再把当前的选中。不然在第一次操作，即点击input后直接按上箭头的时候会报错
+					}
+
+					lis[cn].className = 'active';
+					input.value = lis[cn].innerHTML;
+
+					last = lis[cn];		//用完了，要把上一个改成当前的
+
+					break;
+
+				case 40:		//往下走，要加
+					list.style.display = 'block';
+					cn++;
+					if (cn == lis.length) {
+						cn = 0;
+					}
+
+					if (last) {
+						last.className = '';	//先把上一个选中的取消，再把当前的选中
+					}
+
+					lis[cn].className = 'active';
+					input.value = lis[cn].innerHTML;
+
+					last = lis[cn];		//用完了，要把上一个改成当前的
+
+					break;
+			}
+		};
+
+		/*
+			结尾彩蛋：为了能让各位小主能明白，我也是拼了。这个注释写的是煞费苦心呀！试问天下还有比这个更良心、更走心的注释么？啊？这个要还是不懂的话，你只能自学成才了，我也就告老还乡了！还有一个办法就是死嗑了，写上50遍。如果这都不行的话，那就放弃治疗吧，你与js无缘，泪奔吧~~。各位老铁，就说这个注释6不6，能不能给个双击，能不能点亮小红心。爱你们，么么哒！
+		 */
+	</script>
+</body>
+
+</html>

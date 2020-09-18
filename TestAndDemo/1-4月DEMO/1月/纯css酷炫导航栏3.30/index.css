@@ -1,0 +1,110 @@
+*{
+padding: 0;
+margin: 0;
+list-style: none;
+}
+
+body{
+    background: #cccc;
+}
+
+.container{
+    margin:30px auto;
+    width: 70%;
+}
+
+.container .menu{
+    height: 58px;
+}
+.menu li{
+    
+    min-width: 140px;
+    background: linear-gradient(#3d3838cc, #999999);
+}
+ .menu>li{
+    float: left;
+    position: relative;
+}
+.menu>li:first-child{
+    border-radius: 5px 0 0 0 ;
+}
+.menu a{
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    color:black;
+    padding: 0 25px;
+    font-size: 18px;
+    line-height: 36px;
+    border-left: 3px solid rgba(0, 0, 0, 0);
+    text-transform: uppercase;
+
+
+}
+.menu li:hover{
+    background: linear-gradient(#111111,#424242);
+}
+.menu li:hover>a{
+   color:white;
+   border-left: 3px solid #ffffff;
+}
+
+.submenu{
+    position: absolute;
+    max-height: 0;
+    left: 0;
+    top: 100%;
+    z-index: 0;
+    perspective: 400px;
+}
+.submenu li{
+   visibility: hidden;
+   transform: rotate3d(0,1,0,90deg);
+   transition: all 0.5s;
+}
+
+
+.menu>li:hover .submenu{
+    max-height: 1000px;
+    z-index: 10px;
+}
+.menu>li:hover .submenu li{
+    visibility:visible;
+    transform: rotate3d(0,0,0,0deg);
+}
+/* .menu>li:hover .submenu li:first-child(1){
+    transition-delay:0ms;
+}
+.menu>li:hover .submenu li:first-child(2){
+    transition-delay:50ms;
+}
+.menu>li:hover .submenu li:first-child(3){
+    transition-delay:100ms;
+}
+.menu>li:hover .submenu li:first-child(4){
+    transition-delay:150ms;
+}
+.menu>li:hover .submenu li:first-child(5){
+    transition-delay:200ms;
+} */
+
+.submenu li:nth-child(1) {
+
+    transition-delay: 0ms;
+}
+.submenu li:nth-child(2) {
+
+    transition-delay: 100ms;
+}
+.submenu li:nth-child(3) {
+
+    transition-delay: 200ms;
+}
+.submenu li:nth-child(4) {
+
+    transition-delay: 300ms;
+}
+.submenu li:nth-child(5) {
+
+    transition-delay: 400ms;
+}

@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: #DB4D6D;
+  display: flex;
+  /* 沿着主轴方向对齐方式 */
+  justify-content: center;
+  /* 沿着侧轴（交叉轴）方向对齐方式 */
+  align-items: center;
+}
+.text {
+  color: #fff;
+  text-align: center;
+}
+.text h1 {
+  font-size: 40px;
+}
+.text h4 {
+  opacity: 0.5;
+}
+.monster {
+  width: 110px;
+  height: 100px;
+  border-radius: 20px;
+  background-color: #e55A54;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* position的默认值为static */
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  animation: jumping 0.8s infinite alternate;
+}
+.monster.blue {
+  background-color: #0C4475;
+  animation-delay: 0.5s;
+}
+.monster .eye {
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+}
+.monster .mouth {
+  width: 30%;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+.monster.blue .mouth {
+  background-color: #e55A54;
+}
+.monster .eye .eyeball {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background-color: #0C4475;
+  animation: eyemove 1s alternate infinite linear;
+}
+.monster.blue .eye .eyeball {
+  background-color: #e55A54;
+}
+.monster::before, .monster::after {
+  content: '';
+  width: 20%;
+  height: 10px;
+  border-radius: 10px;
+  /* display: block; */
+  background-color: #fff;
+  position: absolute;
+  top: -10px;
+}
+.monster::before {
+  transform: translateX(-20%) rotate(45deg) ;
+}
+.monster::after {
+  transform: translateX(20%) rotate(-45deg);
+}
+
+@keyframes jumping {
+  0% {
+    top: 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    top: 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    top: -50px;
+    box-shadow: 0 120px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes eyemove {
+  0% {
+    transform: translateX(0%);
+  }
+  10% {
+    transform: translateX(0%);
+  }
+  90% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.page-loading {
+  width: 100%;
+  height: 100%;
+  background-color: #0C4475;
+  position: fixed;
+  top: 0px;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading {
+    width: 200px;
+    height: 8px;
+    background: #fff;
+    border-radius: 5px;
+    margin-top: 50px;
+    overflow: hidden;
+}
+.loading .bar {
+  height: 100%;
+  width: 0%;
+  background-color: #e55A54;
+}
+.page-loading.complete {
+  /* display: none; */
+  transition: opacity 0.8s;
+  opacity: 0;
+}
+.page-loading.complete .monster {
+  transition: transform 0.8s;
+  transform: scale(0.01) rotate(360deg);
+}

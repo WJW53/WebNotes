@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+
+  <div class="show-video">
+    <img src="./image/video.jpg" alt="">
+  </div>
+
+  <div id="app">
+    <div class="title-box">
+      <div class="title">片花资讯</div>
+      <div class="more"></div>
+    </div>
+
+    <ul class="video-list">
+      <li class="video">
+        <div class="poster">
+          <img src="http://puui.qpic.cn/qqvideo_ori/0/i0032qm3chd_496_280/0" alt="">
+          <div class="mask"></div>
+          <span class="duration">12:30</span>
+        </div>
+        <div class="video-title">《推拿》黄轩和牛骏峰演绎盲人</div>
+      </li>
+    </ul>
+
+
+    <div class="show">
+      <div class="title-box">
+        <div class="title">片花资讯</div>
+        <div class="more"></div>
+      </div>
+      <ul class="video-list">
+        <li class="video">
+          <div class="poster">
+            <img src="http://puui.qpic.cn/qqvideo_ori/0/i0032qm3chd_496_280/0" alt="">
+            <div class="mask"></div>
+            <span class="duration">12:30</span>
+          </div>
+          <div class="video-title">《推拿》黄轩和牛骏峰演绎盲人</div>
+        </li>
+      </ul>
+    </div>
+    
+  </div>
+  <script src="./data/data-videoList.js"></script>
+  <script src="./index.js"></script>
+  <script>
+    video.init({
+      el: document.getElementById('app'),
+      videoList: videoList,
+      title: '片花资讯',
+    })
+  </script>
+</body>
+</html>

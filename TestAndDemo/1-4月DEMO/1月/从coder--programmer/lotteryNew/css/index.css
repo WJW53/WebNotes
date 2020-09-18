@@ -1,0 +1,31 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.container{
+    position: relative;
+    width: 400px ;
+    margin: 100px auto;
+}
+
+.container .table  img{
+    width: 400px;
+    height: 400px;
+}
+.container .btn  img{
+    position: absolute;
+    width: 130px;
+    top:-21px;
+   
+}
+.container .btn{
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    left: 50%;
+    top: 50%;
+    margin-left: -65px;
+    margin-top: -65px;
+    cursor: pointer;
+    z-index: 99;
+}

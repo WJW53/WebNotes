@@ -1,0 +1,70 @@
+.container {
+    width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.container li {
+    overflow: hidden;
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.container li .cover {
+    float: left;
+    width: 145px;
+    height: 200px;
+    margin-right: 10px;
+}
+
+.container li .cover img {
+    width: 100%;
+    height: 100%;
+}
+
+.container li h2 {
+    margin: 0;
+}
+
+.container li p {
+    line-height: 1.7;
+}
+
+/* 动画：加载 */
+@keyframes load {
+    from {
+        /* 从0度开始旋转 */
+        transform: rotate(0deg);
+    }
+
+    to {
+        /* 到360度动画结束 */
+        transform: rotate(360deg);
+    }
+}
+
+.loading {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ccc;
+    margin: 20px auto;
+    /* 设置圆角边框 */
+    border-radius: 50%;
+    border-top-color: #333;
+    /* 让该元素应用动画 */
+    /* load：动画名称 */
+    /* 1s: 动画持续时间1秒 */
+    /* linear：动画持续时间内匀速运动 */
+    /* infinite: 无穷循环动画 */
+    animation: load 1s linear infinite;
+
+    display: none;
+}
+
+.no-data{
+    text-align: center;
+    color: #999;
+    margin: 20px;
+    display: none;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .box {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 0;
+            left: 0;
+        }
+
+        .red,
+        .greend {
+            box-sizing: border-box;
+            width: 150px;
+            height: 150px;
+        }
+
+        .red {
+            border: 1px solid red;
+        }
+
+        .green {
+            border: 1px solid green;
+            transform-origin: 0% 0%;
+            transform: translate3d(100%, 0, 0) rotate3d(0, 1, 0, 90deg);
+        }
+
+        .box {
+            animation-name: in-right;
+            animation-play-state: running;
+        }
+
+        @keyframes in-right {
+            from {
+                transform: rotate3d(0, 0, 0, 0deg);
+            }
+
+            to {
+                transform: rotate3d(0, -1, 0, 90deg);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="box">
+        <div class="red"></div>
+        <div class="green"></div>
+    </div>
+
+    <script>
+        $('div').on('transitionend', function () {
+            $('.btn').trigger('click')
+        });
+    </script>
+</body>
+
+</html>

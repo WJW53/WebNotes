@@ -1,0 +1,212 @@
+/* 
+   陈学辉 
+ */
+
+h2,h3,p{
+    margin: 0;
+}
+body{
+    background: #f6f6f6;
+    color: #333;
+}
+
+#time{
+    width: 1200px;
+    margin: 0 auto;
+}
+#time h2{
+    font-size: 30px;
+    text-align: center;
+    margin: 50px 0;
+    font-weight: normal;
+}
+
+.itemBox{
+    height: 600px;
+    position: relative;
+    /* border: 1px solid #000; */
+}
+.itemBox img{
+    transition: .5s;
+}
+.item{
+    width: 160px;
+    height: 190px;
+    box-sizing: border-box;
+
+    text-align: center;
+    box-shadow: 0 0 5px 2px rgba(135, 135, 135, .15);
+    border-radius: 5px;
+
+    position: absolute;
+
+    z-index: 1;
+
+    /* 默认所有盒子都不显示，圆点走的时候才显示 */
+    opacity: 0; 
+    transform: scaleX(0);   /* 左右缩放为0，只有用它才能出来左右同时变大的效果 */
+    transition: .5s;
+}
+.item:nth-child(1){
+	left:30px;
+	top: 35px;
+}
+.item:nth-child(2){
+	left: 168px;
+    top: 374px;
+}
+.item:nth-child(3){
+	left: 310px;
+    top: 35px;
+}
+.item:nth-child(4){
+	left: 449px;
+    top: 374px;
+}
+.item:nth-child(5){
+	left: 520px;
+    top: 35px;
+}
+.item:nth-child(6){
+	left: 731px;
+    top: 374px;
+}
+.item:nth-child(7){
+	left: 871px;
+    top: 35px;
+}
+.item:nth-child(8){
+	left: 1010px;
+    top: 374px;
+}
+/* 白色背景，因为它与头像的圆、三角形都有层级关系，所以必需单独做成一个层（伪元素） */
+.item:before{
+    content: '';
+
+    /* 定位+4个方向为0的属性，是为了让元素的尺寸与父级一样 */
+    position: absolute; 
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background: #fff;
+    border-radius: 5px;
+    z-index: -1;
+}
+
+.head{
+    width: 70px;
+    height: 70px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+
+    /* 弹性盒模型 */
+    display: flex;
+    justify-content: center;    /* 主轴上居中对齐 */
+    align-items: center;    /* 交叉轴上居中对齐 */
+}
+.item:nth-child(odd) .head{ /* 偶数 */
+    top: -35px;
+}
+.item:nth-child(even) .head{    /* 奇数 */
+    bottom: -35px;
+}
+.item:nth-child(odd){
+    padding-top: 20px;
+}
+.head img{
+    border-radius: 50%;
+}
+
+.head::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+
+    border-radius: 50%;
+    box-shadow: 0 0 5px 2px rgba(135, 135, 135, .15);
+    z-index: -2;
+}
+
+.item h3{
+    font-size: 18px;
+    font-weight: normal;
+    margin: 15px 0 10px 0;
+}
+.item p{
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.item:after{
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 50%;
+
+    background: #fff;
+    /* border: 2px solid #000; */
+    box-shadow: 0 0 5px 2px rgba(135, 135, 135, .15);
+    transform: translateX(-50%) rotate(45deg);
+    z-index: -3;
+}
+.item:nth-child(odd):after{
+    bottom: -7px;
+}
+.item:nth-child(even):after{
+    top: -7px;
+}
+
+.width{
+    width: 300px;
+}
+.width p{
+    width: 260px;
+    margin: 0 auto 5px auto;
+    overflow: hidden;
+}
+.width p span{
+    float: left;
+    width: 130px;
+    text-align: left;
+}
+
+.timeLine{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+
+    width: 1000px;
+    height: 90px;
+    /* border: 1px solid #000; */
+    
+    display: flex;
+    justify-content: space-between; /* 两端对齐，元素之间的间隔自动平分 */
+}
+.timeLine div{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffae12;
+    border: 5px solid #f6f6ff;
+}
+.timeLine div.big{
+    border: 5px solid #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+}
+.timeLine div.active{
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px 3px #ffae12;
+}

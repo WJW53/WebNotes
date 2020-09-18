@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+      <audio src="./assets/bgm.m4a" autoplay></audio>
+    <div class="wrapper shake" id="wrapper">
+      <div id="header-box">
+      </div>
+      <div id="box" class="box">
+        <div id="content-box">
+          <img id="img" src="./img/bqb/3.jpg" />
+        </div>
+        <div id="confim"></div>
+        <div id="refuse"></div>
+      </div>
+    </div>
+
+    <script>
+      var data = ["./img/bqb/1.jpg", "./img/bqb/2.jpg", "./img/bqb/4.jpg", "./img/bqb/5.jpg", "./img/bqb/6.gif"];
+      // 点击反转逻辑
+      var box = document.getElementById("box");
+      var wrapper = document.getElementById("wrapper");
+      var confim = document.getElementById("confim");
+      var refuse = document.getElementById("refuse");
+      var img = document.getElementById("img");
+      wrapper.onclick = function() {
+        wrapper.onclick = null;
+        // return;
+        wrapper.className = "wrapper";
+        wrapper.style.backgroundImage = "url(./img/red-action.gif)";
+        setTimeout(renderWord, 600);
+      };
+      // 文字动态出现逻辑
+      var title = document.getElementById("header-box");
+      var str =
+        "银花万簇迎金鼠，火树千株展玉龙。今朝天好地好，紫气东来大吉祥；今朝国安民安，丰衣足食合家欢。鼠年到了，愿您新春新气象，祝您人好家团圆。";
+      function renderWord() {
+        var index = 0;
+        var t = setInterval(function() {
+          index++;
+          title.innerHTML = str.slice(0, index);
+          if (index == str.length) {
+            clearInterval(t);
+            box.className = "box-show";
+          }
+        }, 150);
+      }
+
+      //绑定事件
+      var state = 1;
+      refuse.onclick = function() {
+        if (state == 1) {
+            img.src = data.shift();
+            if(data.length == 0) {
+                state = 2;
+                refuse.onmouseenter = function () {
+                    refuse.style.top = Math.random() * 500 + "px";
+                    refuse.style.left = Math.random() * 500 + "px";
+                }
+                refuse.style.top = Math.random() * 500 + "px";
+                refuse.style.left = Math.random() * 500 + "px";
+            }
+        } else if(state == 2) {
+            refuse.parentElement.removeChild(refuse);
+        }
+      };
+      confim.onclick = function () {
+          img.src = "./img/bqb/ewm.png";
+          state = 3;
+
+      }
+    </script>
+  </body>
+</html>

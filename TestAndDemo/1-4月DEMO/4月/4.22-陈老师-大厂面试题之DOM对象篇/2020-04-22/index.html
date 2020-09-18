@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+
+<body>
+	<ul id="list">
+		<li>html</li>
+		<li>css</li>
+		<li>js</li>
+	</ul>
+
+	<ul id="color">
+		<li>red</li>
+		<li>green</li>
+		<li>blue</li>
+	</ul>
+
+	<ul id="wang">
+		<li class="wang" name="王">小王</li>
+		<li class="wang" name="王">大王</li>
+		<li class="wang" name="王" id="lao">老王</li>
+	</ul>
+	<script>
+		//1
+		var list = document.getElementById('list');
+		var lis = list.getElementsByTagName('li');	//js html
+		var lis = list.querySelectorAll('#list li');	//css html js
+
+		list.replaceChild(lis[2], lis[1]);	//替换节点
+		list.insertBefore(lis[1], list.children[0]);	//插入节点
+
+
+		//2
+		var color = document.querySelector('#color');
+		var lis1 = document.querySelectorAll('#color li');
+		var lis2 = color.children;
+
+		for (var i = 0; i < lis1.length; i++) {
+			var li = document.createElement('li');
+			li.innerHTML = 'yellow';
+
+			color.appendChild(li);
+		}
+		console.log(lis1.length, lis2.length);	//3 6
+
+		//DOM	文档对象模型
+		//document.querySelector('li').innerHTML='陈学辉';
+		//javascript	ECMAscript DOM
+
+		console.dir(Node);
+
+		console.dir(Document);
+
+		console.dir(HTMLDocument);
+
+		console.dir(Element);
+
+		console.dir(Attr);
+
+
+		//节点集合 - 按类型分类
+		/*
+			1、动态集合：一个活的集合，节点有变化都会立刻监听到
+				1、children
+				2、childNodes
+				3、getElementsByTagName
+				4、attributes
+				5、document.links、document.forms、document.images... 
+		 */
+
+		var wangshi = document.getElementById('wang');
+		var wang1 = wangshi.children,
+			wang2 = wangshi.getElementsByTagName('li'),
+			wang3 = document.getElementsByName('王');
+
+		/*
+			2、静态集合：一个死的集合，节点有变化不会监听到（一旦获取后就无法改变了）
+				1、querySelectorAll方法取到的结果（只有它一个是） 
+		 */
+		var wang4=document.querySelectorAll('#wang li');
+
+		console.log(wang1.length, wang2.length, wang3.length, wang4.length);	//3 3 3
+		wangshi.innerHTML+='<li class="wang" name="王">王中王</li>';
+		console.log(wang1.length, wang2.length, wang3.length, wang4.length);	//4 4 3
+
+
+		//节点集合-按对象分类
+		/*
+			1、NodeList	
+				1、不是一个数组，是一个类似数组的对象，可以使用 Array.from()将其转换为数组
+				2、此对象里可以放任何节点，可以是动态集合，也可以是静态集合
+				3、具有item(下标)方法，用来取节点，与[下标]的方法一样
+				4、包含
+					1、querySelectorAll
+					2、childNodes
+					3、getElementsByName
+		 */
+		console.dir(NodeList);
+		console.log(
+			wangshi.querySelectorAll('li'),	//NodeList(4)
+			wangshi.childNodes,	//NodeList(4)
+		);
+
+		var list=wangshi.querySelectorAll('li');
+		console.log(list.item(0));
+
+		/*	
+			2、HTMLCollection
+				1、此对象里只能是标签节点，都是动态集合，节点变化立马就能监听到。
+				2、具有namedItem(id或者name)用来取节点
+				3、包含
+					1、children
+					2、getElementsByTagName
+					3、getElementsByClassName
+					4、document.links、docuement.forms、document.images、document.scripts 
+		 */
+		console.dir(HTMLCollection);
+		console.log(
+			wangshi.children,	//HTMLCollection(4)
+			wangshi.getElementsByTagName('li'),	//HTMLCollection(4)
+		)
+
+		console.log(
+			wangshi.children.item(0),
+			wangshi.children.namedItem('lao'),
+		);
+	</script>
+</body>
+<html>

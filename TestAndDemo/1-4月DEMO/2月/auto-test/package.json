@@ -1,0 +1,11 @@
+{
+  "name": "auto-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "arr.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第12题</title>
+</head>
+<body>
+  <ul>
+    <li>a</li>
+    <li>a</li>
+    <li>a</li>
+    <li>a</li>
+  </ul>
+
+  <script>
+    window.onload = function() {//都加载完毕,但最好平时别用
+      var liList = document.getElementsByTagName('li');
+      for (var i = 0; i < liList.length; i++) {
+        (function (j) {//立即执行函数避免出问题
+          liList[j].addEventListener('click', function () {
+            console.log(j+1);//我这是从1开始
+          }, false);
+        }(i));
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        // var a = 5;
+        // function test(){
+        //     a = 0;
+        //     alert(a);//0
+        //     alert(this.a);//5
+        //     var a ;
+        //     alert(a);//0
+        // }
+
+        // test();
+        // new test();//0 undefined 0
+
+        // var str = "成哥很帅";
+        // str.length = 3;
+        // console.log(str.length);
+
+        var name = "222";
+        var a = {
+            name: "111",
+            say: function () {
+                console.log(this.name);
+            }
+        }
+        var fun = a.say;
+        fun();
+        a.say();
+        var b = {
+            name: "333",
+            say: function (fun) {
+                fun();
+            }
+        }
+        b.say(a.say);
+        b.say = a.say;
+        b.say();
+    </script>
+</body>
+
+</html>

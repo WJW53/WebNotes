@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        // 1.定义数组：var arr = [{name: ‘cst’, age: ‘18’}, {name: ‘jc’, age: ‘20’}, {name: ‘dxm’, age: ‘50’} , {name: ‘dcg’, age: ‘30’}]。
+        // 利用filter和map对数组进行操作：留下name中包含c的，并且让他们的年龄都加上自身大小。
+
+
+        var arr = [{
+            name: 'cst',
+            age: '18'
+        },{
+            name: 'jc',
+            age: '20'
+        },{
+            name: 'dxm',
+            age: '50'
+        },{
+            name: 'dcg',
+            age: '30'
+        }];
+
+        var arr1 = arr.filter( (v,i) => {
+            if(v.name.indexOf('c') != -1){
+                return v.name    
+            }
+        } );
+        var arr2 = arr1.map( (v,i) => {
+            v.age =  +v.age + +v.age + "";
+            return {name:v.name,age:v.age};
+        } );
+        console.log(arr2);
+        // console.log(Array.isArray(arr2));
+    </script>
+</body>
+
+</html>

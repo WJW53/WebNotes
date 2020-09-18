@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div id="app">
+    <div class="logo">
+      <a href="https://movie.douban.com/"></a>
+    </div>
+    <div class="search">
+      <div class="search-inp">
+        <input 
+          type="text"
+          placeholder="搜索电影、电视剧、综艺、影人"
+          maxlength="60"
+        />
+      </div>
+      <div class="search-btn"></div>
+      <ul class="search-list">
+        <!-- <li class="search-info">
+          <div class="poster">
+            <img 
+              src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2574145203.jpg" 
+              alt=""
+            >
+          </div>
+          <div class="content">
+            <div class="title">
+              <span>长安十二时辰</span>
+              <span class="year">2019</span>
+            </div>
+            <div class="sub-title">长安十二时辰</div>
+            <div class="episode">共48集</div>
+          </div>
+        </li> -->
+      </ul>
+    </div>
+    
+  </div>
+
+  <script src="./data/data-searchRes.js"></script>
+  <script src="./utils/getData.js"></script>
+  <script src="./index.js"></script>
+  <script>
+    search.init({
+      el: document.getElementById('app')
+    })
+  </script>
+</body>
+</html>

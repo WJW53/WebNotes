@@ -1,0 +1,41 @@
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+ 
+.drawBoard{
+    margin: 30px;
+}
+#cavs{
+    border: 1px solid red;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.drawBoard ul{
+    margin-top: 20px;
+    width: 700px;
+    text-align: center;
+}
+.drawBoard ul li{
+    display: inline-block;
+    /* float: left; */
+    margin-left: 35px;
+}
+
+.drawBoard ul li input{
+    padding: 6px 15px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: box-shadow 0.1s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+    .drawBoard ul li:nth-child(5) input{
+       vertical-align: bottom;
+    }
+.drawBoard ul li input:hover{
+    /* border: 1px solid yellowgreen; */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}

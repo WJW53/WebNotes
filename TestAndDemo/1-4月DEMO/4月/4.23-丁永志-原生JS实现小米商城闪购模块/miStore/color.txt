@@ -1,0 +1,31 @@
+body-bg: #f5f5f5;
+
+计时器
+border: #e53935;
+bg: #f1eded;
+
+times
+color: #ef3a3b;
+desc:  #999;
+
+hour,min,sec
+bg: #605751;
+color: #fff;
+
+卡片组
+
+卡片
+bg: #fff;
+title
+color: #212121;
+desc
+color: #999;
+price-off
+color: #ff6709;
+price
+color: #b0b0b0;
+
+箭头：
+❮ ❯
+not: #ccc;
+allow #888;
