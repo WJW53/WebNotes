@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">Click.</button>
+    <script>
+//bind 基本使用
+        // var x = 10;
+        // function show(){
+        //     console.log(this.x);
+            
+        // }        
+        // show();
+        // var duYi = {
+        //     x: 20,
+        // }
+        // //new Function();
+        // var newShow = show.bind(duYi);
+        // newShow();
+
+//单对象编程
+        // var list = {
+        //     init:function(){
+        //         this.ms = 'duyi.'
+        //         this.dom = document.getElementById('btn');
+        //         this.bindEvent();
+        //     },
+        //     bindEvent:function(){
+        //         //this --> list
+        //         this.dom.onclick = this.showMessage.bind(this);//若这里不更改,那么就不会输出diyi.
+        //     },
+        //     showMessage:function(){
+        //         //原本this -->  dom
+        //         //使用bind后,this --> list
+        //         console.log(this);
+        //         console.log(this.ms);
+        //     }
+        // }
+        // list.init();
+
+
+    //传参的基本使用
+        var x = 10;
+        function show(a,b,c){
+            console.log(this,x,a,b,c);
+        }        
+        show('a','b');
+
+        var duYi = {
+            x: 20,
+        }
+        //new Function();
+        var newShow = show.bind(duYi,'c','d');
+        newShow();
+        newShow('e');//它会接着上面的bind里的参数继续传参
+        var test = new newShow();//show {}__proto__: constructor: ƒ show(a,b,c)__proto__: Object 10 "c" "d" undefined
+        console.log(test);//show{}
+        console.log(new newShow().constructor);//因为这是new的一个newShow
+        
+
+        //
+        // var list = {
+        //     init:function(){
+        //         this.ms = 'duyi.'
+        //         this.dom = document.getElementById('btn');
+        //         this.bindEvent();
+        //     },
+        //     bindEvent:function(){
+        //         //this --> list
+        //         this.dom.onclick = this.showMessage.bind(this,'hello','world');//若这里不更改,那么就不会输出diyi.
+        //     },
+        //     showMessage:function(info1,info2,e){//最后一个是事件对象
+        //         //原本this -->  dom
+        //         //使用bind后,this --> list
+        //         console.log(this);
+        //         console.log(this.ms,info1,info2,e);
+        //     }
+        // }
+        // list.init();
+
+
+        // function A(){
+
+        // }
+        // var o = {};
+        // var x = 1,
+        //     y = 2,
+        //     z = 3;
+        // var B = A.bind(o,x,y);
+        // B(z);
+
+        //总结:
+        //1. 函数A调用bind方法时，需要传递的参数o,x,y,z,...
+        //2. 返回新的函数B
+        //3. 函数B在执行的时候,具体的功能实际上还是使用A的功能,只不过是this指向变为了o
+        //4. 函数B在执行的时候,传递的参数,会拼接到x,y,z的后面,一并在内部传递给A执行！
+        //5.当你再new B() 时,其构造函数依旧是A,而且o不会起到任何作用,但是后面的参数起作用
+    </script>
+</body>
+</html>

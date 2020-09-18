@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .demo{
+            width: 100px;
+            height: 100px;
+            background-color:orange;
+        
+        }
+    </style>
+</head>
+<body>
+    <div class="demo"></div>
+
+    <ul>
+        <div>new</div>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+
+    <script>
+
+        //一. on    可以绑定自定义事件
+        //1. 以下只讲   系统事件 最多传4个参数
+        //         1.type 2.selector 3.data 4.handler  一般只传事件类型和处理程序即可
+        //     无论handler是否匿名,可以为同一个事件绑定多次且生效,也可以多次绑定不同的事件
+
+        function tan(){
+            console.log('tan');
+        }
+        $('.demo').on('click',tan);
+        $('.demo').on('click',tan);
+        // $('.demo').on('click',function(){
+        //     console.log('0');
+        // });
+        $('.demo').on('mouseenter',function(){
+            console.log('1');
+        });
+            
+            //要想跳过selector,直接写data,那data就要写成对象类型,或者 多写一个 逗号!
+            $('.demo').on('click',{name:'wjw'},function(e){
+                console.log('\n',e.selector,e.target);//e.target获取到的是原生HTML标签
+                console.log(e.data);//不要用e.target.data,因为data是绑定在事件源对象上的属性
+            });
+
+            // $('ul').on('click',function(e){//事件委托,利用事件冒泡原理
+            //     console.log(e.selector);//undefined,好像人家的第二个参数不叫selector吧
+            //     console.log(e,'\n',e.target);
+            //     console.log( $(e.target).text() );//点到了li的话e.target就是li标签
+            // })
+
+            //on前面是谁,就是给谁绑定了,后面那个selector只是过滤条件而已
+            $('ul').on('click','li',function(e){
+                console.log( '\n',$(e.target).text() );
+            });//但ul中生效的只能是li标签
+            $('<li>9</li>').appendTo($('ul'));//9,点击它,照样生效,因为绑定的ul,委托给了ul
+
+    </script>
+</body>
+</html>

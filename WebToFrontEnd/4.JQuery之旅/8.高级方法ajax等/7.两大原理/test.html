@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<script>
+    function test(){
+        // console.log(t);//打印出预编译环节的这俩
+        // console.log(obj);//undefined
+
+        function t(){
+            console.log('2. 外面的function');
+        };
+        
+        var obj = {
+            t: function (){//这个t是obj对象里的t, test的A0不管obj.t,只管t和obj
+                console.log('1. 这个是对象里的function');
+                console.log('现在的t是',t);//还是外面的t. 闭包了, 顺着作用域链往上面找
+                t();//填obj.t()或者this.t() 那就死循环了,一直递归了成,
+            }
+
+        }
+
+        console.log(t);//尚未
+
+        return obj;
+    }
+
+    var me = test();
+    me.t();
+
+</script>
+
+
+</body>
+</html>

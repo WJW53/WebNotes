@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+    //fixed parmas(固定的参数 --> fn)
+        function add(a,b,c,d){
+            return a+b+c+d;
+        }
+        //add(1,2,3,4);
+
+ //柯里化前奏     
+    //让下一次凑齐参数个数
+        function FixedParmasCurry(fn){
+            //arguments : [1,2]
+            var args = [].slice.call(arguments,1);
+            return function(){
+                //arguments : [3,4]
+                var newArg = args.concat([].slice.call(arguments,0));//拼接newAdd()传来的参数
+                //newArg : [1,2,3,4]
+                return fn.apply(this,newArg);//这个this指的就是这个function大环境而已,
+                //利用闭包返回fn并带着该有的固定的参数
+            }
+        }
+        // var newAdd = FixedParmasCurry(add,1,2);//后面的参数是作为下次调用的前面的累积
+        // console.log(newAdd(3,4));//必须凑齐固定的参数个数
+        
+        
+//柯里化实现
+        //期望凑齐固定的参数个数,一次凑不齐没关系,只要你给我凑齐就行
+        //不论你中间凑的形式是怎样的,只要在同一个newAdd()上面给我凑齐就行!
+            function Curry (fn,length){
+            //length.因为这个length可能为undefined(不传参),所以这时候就拿fn的length
+            var length = length || fn.length;
+            return function(){
+                if(arguments.length < length){
+                    //例:[fn].concat([1]) --> [fn,1];
+                    var combined = [fn].concat([].slice.call(arguments,0));
+                    // return FixedParmasCurry.apply(this,combined);//这样还不行
+                    //需要递归调用,Curry。而curry里传的参数,就是一个固定参数的函数要让下一次凑齐参数个数
+                    //即上面的FixedParmasCurry,第二个参数是下一次要凑齐的参数个数
+                    return Curry(FixedParmasCurry.apply(this,combined),length-arguments.length);
+                    // 这里第二个参数必须求出来这样写,如果不填,那么前面的玩意儿就会导致后来fn.length==0
+                    //这个this也不用管,也是指向这个function的大环境.  主要是传进来的参数combined
+                }else{//即便超了也没关系,因为add只接受固定参数,多了的又不操作..
+                    return fn.apply(this,arguments);
+                }
+                //
+            }
+        }
+
+
+        var newAdd = Curry(add);
+        // newAdd(1);
+        console.log(newAdd(1, 2, 3,4));//10
+//1.
+        //var num = newAdd(1)(2);
+        //console.log(num(3)(4));//10
+        // num(3);
+        // num(4);//这样做当然不行啊!
+  
+        
+//2.        
+        // var nA1 = newAdd(1);
+        // var nA2 = newAdd(2);
+        // console.log(nA1(2,3)(4));//10
+        // console.log(nA2(2)(3)(4));//11
+//3.
+        var nA1 = newAdd(1);
+        var nA11 = nA1(2);
+        console.log(nA11(3,3,3));//多传没关系,传够就行
+        var nA12 = nA1(3);
+        console.log(nA12(2,2));
+        
+        // newAdd(1)(2,3)(4);
+        // newAdd(1,2)(3)(4);
+        // newAdd(1,2)(3,4);
+        // newAdd(1,2,3)(4);
+        // newAdd(1)(1,2,3);
+        // newAdd(1)(2)(3)(4);
+
+    </script>
+
+
+
+</body>
+</html>

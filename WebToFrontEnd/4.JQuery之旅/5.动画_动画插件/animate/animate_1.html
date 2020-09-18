@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        .demo {
+            margin-top: 50px;
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color:orange;
+        }
+    </style>
+</head>
+<body>
+    <button id='startBtn'>startBtn</button>
+    <button id='stopBtn'>stopBtn</button>
+    <button id='finishedBtn'>finishedBtn</button>
+    <div class="demo"></div>
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+    <!-- 引入jQuery Easing Plugin: 用于扩展jQuery动画过渡效果 -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script> -->
+    <script src="../../jquery-3.4.1/jquery.easing.min.js"></script>
+
+    <script>
+      //.animate(target,duration,easing,callback);  目标点必须传
+      //不传duration的话,默认400ms
+        //animate 有个 内置队列
+
+    //   $('.demo').on('click',function(){
+    //     $(this)
+    //         .animate( {width:'+=50',height:'+=50',left:'+=100',top:'+=100'},1000,'linear',
+    //             function(){
+    //                 console.log('over!');
+    //                 $(this).animate( {width:'+=50',height:'+=50',left:'+=100',top:'+=100'},1000,'linear')
+    //             });
+    //   });
+    $('#startBtn').on('click',function(){
+        $('.demo')
+            .animate( {width:'+=50',height:'+=50',left:'+=100',top:'+=100'},1000,'easeInOutElastic')
+            // 延迟1000ms再执行下一次运动
+                .delay(1000)
+                    .animate( {width:'+=50',height:'+=50',left:'+=100',top:'-=200'},1000,'linear')
+      });
+
+      //stop()
+      $('#stopBtn').on('click',function(){
+        //$('.demo').stop();//不传参的话,只会阻止当前运动,并转向下一次运动
+        $('.demo').stop(true);//传一个true的话,直接停止运动,停了
+        // $('.demo').stop(true,true);//传两个true的话,停止当前运动,并瞬间移动到当前运动目标点
+      });
+
+      //finish()
+      $('#finishedBtn').on('click',function(){
+          $('.demo').finish();//无论后面有多少次运动,直接跳到最后一次运动的目标点
+      });
+
+    //   jQuery.fx.off = true;//关闭运动过程的动画 
+
+    </script>
+</body>
+</html>

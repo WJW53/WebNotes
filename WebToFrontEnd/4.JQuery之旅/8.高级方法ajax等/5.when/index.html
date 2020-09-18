@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+
+        //一错全错,全对才对
+        // $.when(df1,df2,df3)
+        //     .then(function(){
+
+        //     },function(){
+
+        //     });
+
+        //意思是,全是done才会执行then的第一个函数,但只要有一个fail就会执行then的第二个函数
+        
+        //但要是有done,有progress,  那参数就按undefined算
+        //如果全是执行了progress,也就是notify();那就按notify的参数传
+        
+        $.when(createScore1(),createScore2(),createScore3())
+            .then(function(){
+                console.log('Done!Over!');
+            },function(){
+                console.log('Fail!Over!');
+            });
+
+
+        function createScore1 () {
+            var df = $.Deferred();
+
+            setInterval(function () {
+                var score = Math.random() * 100;
+                if (score > 50) {
+                    df.resolve('congradulation!!!');
+                }else if (score < 40) {
+                    df.reject('get out');
+                }else {
+                    df.notify('go on');
+                }
+            }, 1500);
+
+            // done fail progress
+            return df.promise();
+        }   
+
+        function createScore2 () {
+            var df = $.Deferred();
+
+            setInterval(function () {
+                var score = Math.random() * 100;
+                if (score > 50) {
+                    df.resolve('congradulation!!!');
+                }else if (score < 40) {
+                    df.reject('get out');
+                }else {
+                    df.notify('go on');
+                }
+            }, 1500);
+
+            // done fail progress
+            return df.promise;
+        }  
+
+        function createScore3 () {
+            var df = $.Deferred();
+
+            setInterval(function () {
+                var score = Math.random() * 100;
+                if (score > 70) {
+                    df.resolve('congradulation!!!');
+                }else if (score < 30) {
+                    df.reject('get out');
+                }else {
+                    df.notify('go on');
+                }
+            }, 1500);
+
+            // done fail progress
+            return df.promise();
+        }   
+
+        $.when(createScore1(), createScore2(), createScore3())
+            .then(function (ms) {
+                console.log(ms);
+            }, function (ms) {
+                console.log(ms);
+            }, function (ms) {
+                console.log(ms);
+            });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            position: absolute;
+            left: 0px;
+            width: 100px;
+            height: 100px;
+            background: red;
+            
+        }
+        #topDiv {
+            top: 200px;
+        }
+        #bottomDiv {
+            top: 400px;
+        }
+    </style>
+
+</head>
+<body>
+    <div id='topDiv' style="opacity: 1"></div>
+    <div id="bottomDiv"></div>
+    <script>
+        // js div
+// width : 100 -> 400 ;height 100 -> 400 ;left 0 -> 200 ;top 200 -> 300 ;opacity 1 -> 0.5
+        // {width: 400, height: 400, left: 200, top: 300, opacity: 50}
+
+        var oTopDiv = document.getElementById('topDiv');
+        var oBottomDiv = document.getElementById('bottomDiv');
+
+        oTopDiv.onclick = function () {
+            startMove(this, {width: 400, height: 400, left: 200, top: 300, opacity: 50}, function () {
+                startMove(oBottomDiv, {width: 400, height: 400, left: 200, top: 300, opacity: 50}, function () {
+                    alert('over');
+                })
+            })
+        }
+
+        function getStyle (dom, attr) {
+            if (window.getComputedStyle) {//这是最终显示的样式
+                return window.getComputedStyle(dom, null)[attr];
+            }else {//IE
+                return dom.currentStyle[attr];
+            }
+        }
+//NB
+        function startMove (dom, attrObj, callback) {//谁变,变的属性集合,回调函数
+            clearInterval(dom.timer);
+            var iSpeed = null, iCur = null;
+
+            dom.timer = setInterval(function () {
+                var bStop = true;//假设所有属性都到了目标点
+
+                for (var attr in attrObj) {//遍历属性
+                    // 'width' 'height' 
+                    if (attr == 'opacity') {
+                        iCur = parseFloat( getStyle(dom, attr) ) * 100;
+                    }else {
+                        iCur = parseInt( getStyle(dom, attr) );
+                    }
+
+                    iSpeed = (attrObj[attr] - iCur) / 7;
+                    iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
+
+                    if (attr == 'opacity') {
+                       dom.style.opacity = (iCur + iSpeed) / 100 + ""; 
+                    }else {
+                       dom.style[attr] = iCur + iSpeed + 'px';
+                    }
+
+                    if (iCur != attrObj[attr]) {//只要有一个属性值没到达对应目标点的
+                        bStop = false;
+                    }
+                }
+//如果一次for循环都没进(即所有当前属性值刚好等于目标点) 或者 都完成了
+                if (bStop) {
+                    clearInterval(dom.timer);//就可以停止定时器了
+                    typeof callback == 'function' && callback();//是回调函数就执行
+                }
+            }, 30);
+        }
+
+    </script>
+</body>
+</html>

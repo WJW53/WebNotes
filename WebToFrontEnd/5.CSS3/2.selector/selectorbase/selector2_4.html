@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        input{
+            border:1px solid #999;
+        }
+
+        input:enabled{
+            background-color: green;
+        }
+        input:disabled{
+            border:1px solid #f20;
+            background-color:#fcc;
+            box-shadow:1px 2px 3px #f20;
+        }
+        input:read-only{
+            border:1px solid #000;
+            color:red;
+            background-color:silver;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <input type="text">
+    <input type="text" disabled="disabled">
+    <input type="text" readonly value="你只能干瞅着,还真干不了别的!!">
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生管理系统注册</title>
+    <link rel="stylesheet" href="./login.css">
+</head>
+<body>
+    <form action="#" id="register">
+        <h2>注册
+            <a href="./login.html">登录</a>
+        </h2>
+        <div>
+            <label for="username">
+                用户名:
+            </label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div>
+            <label for="account">
+                账号:
+            </label>
+            <input type="text" id="account" name="account">
+        </div>
+        <div>
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div>
+            <label for="rePassword">确认密码:</label>
+            <input type="password" id="rePassword" name="rePassword">
+        </div>
+        <div>
+            <label for=""></label>
+            <input class="btn" type="submit" value="注册" id="register-btn">
+            <input class="btn" type="reset" value="重置">
+        </div>
+    </form>
+    <script src="./js/jquery-3.3.1.js"></script>
+    <script>
+        // appkey=Q_A_Q_1590927055348
+        // var submitBtn = document.getElementById('register-btn');
+        // submitBtn.onclick = function (e) {
+        //     e.preventDefault();
+        //     var form = document.getElementById('register');
+        //     var account = form.account.value;
+        //     var username = form.username.value;
+        //     var password = form.password.value;
+        //     var rePassword = form.rePassword.value;
+        //     if (account && username && password && rePassword) {
+        //         if (password == rePassword) {
+        //             var data = 'appkey=Q_A_Q_1590927055348&account=' + account + '&password=' + password + '&rePassword=' + rePassword + '&username=' + username;
+        //             ajax('POST', 'http://open.duyiedu.com/api/student/stuRegister', data, function (result) {
+        //             if (result.status == 'success') {
+        //                 alert('注册成功');
+        //                 location.href = './login.html'
+        //             } else {
+        //                 alert(result.msg);
+        //             }
+        //         }, true);
+        //         }
+        //     }
+        // }
+        $('#register-btn').click(function(e) {
+            e.preventDefault();
+            var form = $('#register')[0];
+            var account = form.account.value;
+            var username = form.username.value;
+            var password = form.password.value;
+            var rePassword = form.rePassword.value;
+            if (account && username && password && rePassword) {
+                if (password === rePassword) {
+                    $.ajax({
+                        type: 'post',
+                        url: 'http://open.duyiedu.com/api/student/stuRegister',
+                        data: {
+                            appkey: 'Q_A_Q_1590927055348',
+                            account: account,
+                            username: username,
+                            password: password,
+                            rePassword: rePassword
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.status == 'success') {
+                                alert('注册成功');
+                                location.href = './login.html'
+                            } else {
+                                alert(res.msg);
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="show">0</div>
+    <button id="btn">click</button>
+
+    <script>
+        var oDiv = document.getElementById('show');
+        var oBtn = document.getElementById('btn');
+        //wait ms内,让你只能触发一次
+        function throttle (handler, wait) {
+            var lastTime = 0;
+            return function(e){//一旦return后 , 就开始执行返回的结果/函数
+                //arguments : [event]
+                var nowTime = new Date().getTime();
+                if(nowTime - lastTime > wait){
+                    handler.apply(this,arguments);
+                    //这里这个this指向的是oBtn,因为它是事件源对象
+                    lastTime = nowTime;//
+                }
+            }
+        }
+
+        function buy (e){
+            console.log(this,e);//检查this指向,和触发事件
+            oDiv.innerText = parseInt(oDiv.innerText) + 1;
+        }
+
+        oBtn.onclick = throttle(buy,1000);
+        for(var i = 0;i<1000;i++){oBtn.click();}
+        // oBtn.onclick = function(){
+        //     oDiv.innerText = parseInt(oDiv.innerText) + 1;
+        // } 
+    </script>
+</body>
+</html>

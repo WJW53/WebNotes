@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="newReset.css">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .wrapper{
+            width: 300px;
+            height: 500px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -150px;
+            border: 1px solid #000;
+        }
+
+        .wrapper .title h1{
+            font-size: 20px;
+            font-weight: bold;
+            height: 50px;
+            width: 100%;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        .wrapper .content .list{
+            background-color: gray;
+        }
+        .wrapper .content .list .demo{
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .wrapper .content .list .demo span{
+            display: none;
+        }
+        /* .wrapper .content .list .demo.active li::after{
+            
+        } */
+        .wrapper .content .list .demo span.active{
+            display: block;
+            font-size: 12px;
+            /* text-align: center;  */
+            background-color: #fff;
+            border-bottom: 1px solid black;
+        }
+        
+    </style>
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title">
+            <h1>Accordion List</h1>
+        </div>
+        <div class="content">
+            <!-- <select name="select">
+                <option value="content1">content1</option>
+                <option value="content2">content2</option>
+                <option value="content3">content3</option>
+            </select> -->
+            <ul class="list">
+                <li class="demo">
+                    content1
+                    <span class="">text1</span>
+                </li>
+                <li class="demo">
+                    content2
+                    <span>text2</span>
+                </li>
+                <li class="demo">
+                    content3
+                    <span>text3</span>
+                </li>
+            </ul>
+
+            <!-- <input type="text" >
+            <input type="radio"> -->
+
+        </div>
+    </div>
+
+    <script>
+        var li = document.getElementsByClassName("demo");
+
+        for(var i = 0;i<li.length;i++){
+
+            (function(j){
+                // console.log(j);
+
+                li[j].onclick = function(){
+                    // console.log('ok');
+                    // console.log(li[j].getElementsByTagName('span')[0]);
+                    var span = li[j].getElementsByTagName('span')[0];
+                    for(var index = 0;index<li.length;index++){//先清除所有的active
+                        li[index].getElementsByTagName('span')[0].classList.remove('active');
+                    }
+                    span.classList.add('active');
+                    // console.log(span);
+                }
+            }(i));
+
+        }
+
+
+    </script>
+
+</body>
+</html>

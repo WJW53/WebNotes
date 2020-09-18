@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        div:hover{
+            background-position:center center;
+        }
+
+        div{
+            position: absolute;
+            height: 100px;
+            line-height: 100px;
+            font-size: 80px;
+            width: 400px;
+            left: calc(50% - 200px);
+            top: 100px;
+
+            font-weight:bold;
+
+            background-image: url(../../source/pic1.jpeg);
+
+            /* background-clip-text:用文字区域反切背景图片,只在webkit内核下好使 */
+            /* 别问为啥,背住下面四行,其实那两行webkit的就行 */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color:transparent;
+            text-fill-color:transparent;
+
+            background-position: 0 0;
+            transition:all .6s;
+
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div>
+        吴经纬
+    </div>
+
+</body>
+</html>

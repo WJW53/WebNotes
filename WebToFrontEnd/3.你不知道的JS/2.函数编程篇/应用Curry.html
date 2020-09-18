@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        function FixedParmasCurry(fn){
+            //arguments : [1,2]
+            var args = [].slice.call(arguments,1);
+            return function(){
+                //arguments : [3,4]
+                var newArg = args.concat([].slice.call(arguments,0));
+                //newArg : [1,2,3,4]
+                return fn.apply(this,newArg);//这个this指的就是这个function大环境而已
+            }
+        }
+
+        function Curry (fn,length){
+            //length.因为这个length可能为undefined(不传参),所以这时候就拿fn的length
+            var length = length || fn.length;
+            return function(){
+                if(arguments.length < length){
+                    //[fn].concat([1]) --> [fn,1];
+                    var combined = [fn].concat([].slice.call(arguments,0));
+                    // return FixedParmasCurry.apply(this,combined);
+                    //需要递归调用,Curry。而curry里传的参数,就是一个固定参数的函数要让下一次凑齐参数个数
+                    //即上面的FixedParmasCurry,第二个参数是下一次要凑齐的参数个数
+                    return Curry(FixedParmasCurry.apply(this,combined),length-arguments.length);
+                    //但是这个this我没理解啊,老师意思是fn,我没理解为啥是fn
+                }else{
+                    return fn.apply(this,arguments);
+                }
+            }
+        }
+
+        //'POST', "www.test1.com", 'name=wjw&code=01'
+        //'POST', "www.test1.com", 'key=111'
+
+        //'POST', "www.test2.com", 'name=wjw&code=10'
+        //'POST', "www.test2.com", 'key=222'
+        
+        function ajax (method,url,data){
+            console.log(method,url,data);
+        }
+
+        // ajax('POST', "www.test1.com", 'name=wjw&code=01');
+        // ajax('POST', "www.test1.com", 'key=111');
+        // ajax('POST', "www.test2.com", 'name=wjw&code=10');
+        // ajax('POST', "www.test2.com", 'key=222');
+
+        var ajaxCurry = Curry(ajax);
+        var PostAjax = ajaxCurry('POST');
+        var GetAjax = ajaxCurry('Get');
+
+        var PostTest1Ajax = PostAjax('www.test1.com');
+        PostTest1Ajax('name=wjw&code=01');
+        PostTest1Ajax('key111');
+
+        var PostTest2Ajax = PostAjax('www.test2.com');
+        PostTest2Ajax('name=wjw&code=10');
+        PostTest2Ajax('key222');
+        
+
+    </script>
+</body>
+</html>

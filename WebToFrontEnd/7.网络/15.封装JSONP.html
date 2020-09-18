@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONP</title>
+
+    <script>
+        //模拟JSONP实现原理
+        var $ = {
+            ajax: function (options) {
+                var url = options.url;
+                var method = options.type;
+                var dataType = options.dataType;
+                //判断是否同源
+                //获取目标url的域
+                var targetProtocol = ""; //目标接口的协议
+                var targetHost = ""; //host是包含域名和端口的
+
+                //如果url不带http,那么访问的一定是相对路径,而相对路径一定是同源的
+                if (url.indexOf("http://") == 0 || url.indexOf("https://") == 0) {
+                    var targetUrl = new URL(url);
+                    targetProtocol = targetUrl.protocol;
+                    targetHost = targetUrl.host;
+                } else {
+                    //相对路径,就用本地的protocol和host就OK了
+                    targetProtocol = location.protocol;
+                    targetHost = location.host;
+                }
+
+                //首先判断是否为jsonp,因为不是jsonp 就不用做其他的判断,直接发送Ajax
+                if (dataType == "jsonp") {
+                    //要看是否同源
+                    if (location.protocol == targetProtocol && location.host == targetHost) {
+                        //此处省略,因为同源,jsonp会当作普通的Ajax做请求
+                    } else { //不同源,跨域
+                        //随机生成一个callback
+                        var callback = "cb" + Math.floor(Math.random() * 1000000);
+
+                        //给window上添加一个方法
+                        window[callback] = options.success;
+                        // console.log(window[callback]);
+
+                        //生成一个script标签
+                        var script = document.createElement("script");
+                        //url中原本是否包含  ?  
+                        if (url.indexOf("?") > 0) {// = 一定别忘记了
+                            //表示已经有参数了
+                            script.src = url + "&callback=" + callback; //将url赋值给src,但是url要拼接上callback
+                        } else {
+                            //表示没有参数
+                            script.src = url + "?callback=" + callback; //将url赋值给src,但是url要拼接上callback
+                        }
+                        script.id = callback;
+                        document.head.appendChild(script);
+                    }
+                }
+
+            }
+        }
+
+        //
+        $.ajax({
+            url: "http://developer.duyiedu.com/edu/testJsonp",
+            type: "get",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data);
+                console.log(1 + " " + data);
+            }
+        });
+    </script>
+
+
+
+</head>
+
+<body>
+
+
+</body>
+
+</html>

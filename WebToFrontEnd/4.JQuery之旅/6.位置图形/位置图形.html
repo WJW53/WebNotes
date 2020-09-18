@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        /* body{
+            width: 3000px;
+            height: 3000px;
+        }
+        .wrapper{
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background-color: red;
+            left: 100px;
+            top: 100px;
+        }
+        .wrapper .demo{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: orange;
+            left: 50px;
+            top: 50px;
+        } */
+        
+        /* overflow: auto!!! */
+        /* .test{
+            border:5px solid black;
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            overflow: auto;
+        }
+        .test p{
+            width: 3000px;
+            height: 3000px;
+            background-color: orange;
+        } */
+
+
+        .demo2{
+            width: 100px;
+            height: 100px;
+            padding: 15px;
+            border: 5px solid black;
+            margin: 5px;
+            background-color: orange;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- <div class="wrapper">
+        <div class="demo"></div>
+    </div>
+
+    <div class="test">
+        <p></p>
+    </div> -->
+
+    <div class="demo2"></div>
+    <script src="../jquery-3.4.1/jquery-2.1.4.js"></script>
+    <script>
+        var $Demo = $('.demo');
+
+        //offset 永远参照文档定位! 返回一个对象,包含当前元素相对于文档的坐标,{top:...,left:...}
+
+        // console.log($('.demo').offset());//
+        // $('.demo').offset({top:100,left:100});//改变位置
+        // console.log($('.demo').offset());//这时候才变为100px
+
+        
+        // position
+        // console.log( $('.demo').position() );
+        // $('.demo').position({top:200,left:200});//无效,仍然为0,若里面填写字符串类型,则直接返回undefined
+
+
+        //.scrollTop() 、.scrollLeft()  
+
+        // console.log($(window).scrollTop(),$(window).scrollLeft());//获取整个页面的滚动距离
+        // console.log($Demo.scrollTop(),$Demo.scrollLeft());//0因为demo的内容长度并没有达到产生滚动条的地步
+        // $(window).scrollTop(250);//也能赋值成功,好像是得在控制台写,才能看到效果
+        // $(window).scrollLeft(250);
+
+        // $('.test').scrollTop();//同理,这俩也得改变了滚动条距离后才能在控制台打印值非0
+        // $('.test').scrollLeft();
+        // console.log($('.test').scrollTop(400),$('.test').scrollLeft(400));//赋值成功
+
+
+        //width 、 height
+        console.log( typeof $('.demo2').css('width') );//返回的是 "100px"
+        console.log( typeof $('.demo2').width(),$('.demo2').height() );//返回的是数字 100
+        //innerWidth
+        console.log( $('.demo2').innerWidth(),$('.demo2').innerHeight() );//130, 填充盒
+        //outerWidth
+        console.log( $('.demo2').outerWidth(),$('.demo2').outerHeight() );//140, 边框盒
+        //.outerWidth(true);    边框盒+margin
+        console.log( $('.demo2').outerWidth(true),$('.demo2').outerHeight(true) );//150, 边框盒+margin
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        canvas{
+            width: 500px;
+            height: 300px;
+            border: 1px solid #000;
+        }
+    </style>
+
+</head>
+<body>
+    <canvas id="can" width="500px" height="300px"></canvas>
+
+
+    <script>
+
+        var canvas = document.getElementById('can');
+        var ctx = canvas.getContext('2d');
+
+        ctx.beginPath();
+
+        var bg = ctx.createLinearGradient(100,100,200,200);
+        //??????????到底怎么渐变的
+        bg.addColorStop(0,"white");
+        bg.addColorStop(0.5,"red");
+        bg.addColorStop(1,"black");
+        
+        ctx.fillStyle = bg;
+        ctx.translate(100,100);
+        ctx.fillRect(0,0,200,100);
+
+
+    </script>
+</body>
+</html>

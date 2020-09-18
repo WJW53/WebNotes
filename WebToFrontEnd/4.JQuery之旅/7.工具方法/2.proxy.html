@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="demo" style="width:100px;height:100px;background-color:orange;">123</div>
+
+
+    <script src="../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //     //$.proxy();第一个参数,为执行函数;第二个参数为,this指向哪里
+        //     //改变this指向,  类似JS原生bind()
+        function show() {
+            console.log(this);
+        }
+
+        var obj = {
+            //邓旭明,邓虚明
+            name:"dengxuming",
+            age:123,
+        }
+
+        //不能直接show();你得拿个容器把它接收下来
+        var showProxy = $.proxy(show,obj);//意思就是让obj这个对象具有show这个方法
+        showProxy();
+
+
+        var list = {
+            init: function () {
+                this.ms = 123;
+                this.dom = document.getElementsByTagName('div')[0];
+                this.bindEvent();
+            },
+            bindEvent: function () {
+                this.dom.onclick = $.proxy(this.show,this);//所以可以从这里改
+            },
+            //这里面我们需要每个this都指向的是list
+
+            show: function () {//但是这里的this 本来指向的是 list.dom
+                console.log( this.produceMs(this.ms) );
+            },
+            produceMs: function (ms) {
+                return ms + 234;
+            }
+        };
+
+        list.init();
+
+
+        //$.noConflic();    说明jQuery还挺谦虚,因为现在没有什么框架、库会去跟jQuery冲突$
+        //防止变量命名冲突,而且只防止一个变量名冲突,那就是  $
+        var $C = $.noConflict();//自此, $C === $
+        $C('.demo').css('backgroundColor','green');
+        
+        //myQuery();//既想用人家的也想用自己的
+    </script>
+</body>
+
+</html>

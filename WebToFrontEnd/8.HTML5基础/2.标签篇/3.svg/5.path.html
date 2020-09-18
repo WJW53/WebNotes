@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        path{
+            fill: transparent;
+            stroke:red;
+        }
+
+    </style>
+</head>
+<body>
+    <svg width="500px" height="300px" style="border:1px solid #000">
+
+        <!-- M:moveTo , L:lineTo ,大小写有区别!!! -->
+        <!-- 大写:表示绝对位置, 小写:表示相对位置 -->
+        <!-- 相对于(200,100) 再向右移动200px,向下移动200px,就是矢量 -->
+        <!-- <path d="M 100 100 L 200 100 l 200 200"></path> -->
+
+        <!-- H: 水平, V:垂直方向, z不区分大小写 -->
+        <!-- 大写: 移到npx  小写: 移动npx -->
+        <path d="M 100 100 h 200 V 200 z"></path>
+
+    </svg>
+</body>
+</html>

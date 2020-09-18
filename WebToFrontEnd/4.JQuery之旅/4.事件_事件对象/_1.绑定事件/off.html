@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .demo{
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo"></div>
+
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+    </ul>
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //off
+        //不填写参数,则解绑所有的事件
+        function clickOne(){
+            console.log('clickOne');
+        }
+        function clickTwo(){
+            console.log('clickTwo');
+        }
+
+        $('.demo').on('click',clickOne);
+        $('.demo').on('click',clickTwo);
+
+        function enterOne(){
+            console.log('enterOne');
+        }
+        function enterTwo(){
+            console.log('enterTwo');
+        }
+
+        $('.demo').on('mouseenter',enterOne);
+        $('.demo').on('mouseenter',enterTwo);
+
+        // $('.demo').off();
+        // $('.demo').off('click');
+        // $('.demo').off('mouseenter',enterTwo);
+
+        $('ul').on('click','li',clickOne);
+        // $('ul').off();
+        // $('ul').off('click','li',clickOne);//一旦使用第二个参数,参数应一致
+        $('ul').off('click','li:even',clickOne);//这样就解绑不了
+
+    </script>
+</body>
+</html>

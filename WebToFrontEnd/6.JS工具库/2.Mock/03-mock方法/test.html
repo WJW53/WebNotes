@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table{
+            /* 干掉表格之间的缝隙 */
+            border-collapse: collapse;
+            width: 90%;
+            margin: 0 auto;
+            font-size: 20px;
+            line-height: 60px;
+        }
+
+        th,td{
+            padding: 0;
+            border:1px solid #99b0da;
+        }
+        th{
+            background:#dbe3fa;
+        }
+    </style>
+
+</head>
+<body>
+        <button id="btn">请求数据</button>
+    <!-- table:表格；thead:表头；tr：行；td：单元格；th：一行的首个单元格 -->
+        <table>
+            <thead>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>邮箱</th>
+                    <th>生日</th>
+                    <th>手机号</th>
+                    <th>住址</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+
+    <script src="js/mock.js"></script>
+	<script src="js/jquery-3.4.1.min.js"></script>
+
+    <script>
+        $('#btn').click(function(){
+            $.ajax({
+                url:'js/data.json',
+                type:'get',
+                dataType:'json',
+                success:function(data){
+                    console.log(data);
+                    createDom(data.data);//data.json数据里有个属性叫data(数组)
+                }
+            })
+        })
+
+        function createDom(data){
+            var str="";
+            data.forEach(function(item,index){
+                str+=`
+                    <tr>
+                        <td>${item.sNo}</td>
+                        <td>${item.name}</td>
+                        <td>${item.sex}</td>
+                        <td>${item.email}</td>
+                        <td>${item.birth}</td>
+                        <td>${item.phone}</td>
+                        <td>${item.address}</td>
+                        <td>
+                            <button>编辑<button>
+                            <button>删除<button>
+                        </td>
+                    </tr>    
+                `;
+            });
+            $('#table-body').html(str);
+        }
+        
+        // 拦截ajax请求,并创造模拟的新的数据
+        Mock.mock('js/data.json',{
+            "status": "success",
+            "msg": "查询成功",
+            // 把这个数组中的内容重复10次,[{}],这个形式一定要写好,不能写为[],那意义不一样
+            "data|10":[{
+                "id|+1": 1,//每次加1,初始值为1
+                "name": "@cname",//利用占位符随机生成中文姓名,Random.cname()方法
+                "birth": "@date",//日期模板,会随机生成一个日期
+                "sex|1": ['男','女'],//随机取一个数据
+                "sNo|+1": 11000,
+                "email": "@email",
+                "phone": "@natural(13000000000,19900000000)",
+                "address": "@county(true) @ctitle(5,10)",//
+                //时间戳
+                "appkey": "@string()_@date(T)",
+                "ctime": "@date(T)",
+                "utime": "@date(T)",
+            }],
+        });
+
+        //拦截后响应的时间
+        Mock.setup({
+            // timeout: 3000,
+        })
+
+        //下述这个平台 帮我们处理后端的事情,很贴心,而且它支持mock.js
+        //https://github.com/YMFE/yapi
+    </script>
+
+
+
+</body>
+</html>

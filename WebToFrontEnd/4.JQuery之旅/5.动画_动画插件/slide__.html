@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        .demo {
+            width: 100px;
+            border: 1px solid black;
+            font-weight: bold;
+        }
+        ul {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo">
+        <p>Rose</p>
+        <ul>
+            <li>nba状元秀</li>
+            <li>最年轻mvp</li>
+            <li>涅槃重生</li>
+        </ul>
+    </div>
+
+    <script src="../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+
+    <script>
+        //slideDown slideUp         slideToggle
+        //卷入、卷出        他们仨设置opacity无效
+
+        $('p').on('click',function(){
+        //     if( $(this).next().css('display') == 'none' ){
+        //         $(this).next().slideDown(1500,'swing',function(){
+        //             //运动完了才执行这个函数
+        //             console.log('ove1');
+        //         });
+        //    }else{
+        //        $(this).next().slideUp(1500,'linear',function(){
+        //            console.log('over2');
+        //        });
+        //    }
+           //或者用 slideToggle()
+            $(this).next().slideToggle(3000,'swing',function(){
+                console.log('over!');
+            });
+        });
+
+
+        
+    </script>
+</body>
+</html>

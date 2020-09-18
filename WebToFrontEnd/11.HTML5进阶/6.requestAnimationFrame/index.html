@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #main{
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: #abcdef;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+
+    <script>
+        // let timer = null;
+
+        // function move(){
+        //     var square = document.getElementById("main");
+        //     if(square.offsetLeft > 600){
+        //         cancelAnimationFrame(timer);
+        //         return ;
+        //     }
+        //     square.style.left = square.offsetLeft + 20 + "px";
+        //     timer = requestAnimationFrame(move);
+        // }
+        // // setInterval(move,1000/60);//移动不均匀
+        // move();//使用了requestAnimationFrame,移动会均匀
+        // //因为HTML5做了处理,requestAnimation就是每秒60帧
+
+
+        //做兼容处理
+        window.requestAnimationFrame = (function(){
+            return window.requestAnimationFrame || 
+                    window.webkitrequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    function(id){
+                        window.setTimeout(id,1000/60);
+                    }
+        }()); 
+
+
+        window.cancelAnimationFrame = (function(){
+            return window.cancelAnimationFrame || 
+                    window.webkitCancelAnimationFrame ||
+                    window.mozCancelAnimationFrame ||
+                    function(id){
+                        window.setTimeout(id,1000/60);
+                    }
+        }());
+
+        
+    </script>
+</body>
+</html>

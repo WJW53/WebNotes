@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="demo">
+        <span></span>
+        <span></span>
+    </div>
+    <div class="demo">
+        <p></p>
+        <p></p>
+        <div class="demo"></div>
+    </div>
+    <div class="box"></div>
+    <div class="wrapper">
+        <div class="section"></div>
+        <div class="section">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="section"></div>
+    </div>
+
+    <div class="container">
+        <div class="box3">
+            <div class="content"></div>
+            <div class="dem"></div>
+        </div>
+        
+    </div>
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        ////1. wrap
+        ////参数要是填写一个已经存在的标签(或者是jQuery对象)的话,就会把它复制一份用来包裹
+        // $('.demo').wrap('<div class="wrapper"></div>');
+        // $('.demo').wrap($('.box'));
+
+        // $('.demo').wrap(function(index){//就一个参数
+        //     return '<div class = "wrapper' + index + '"></div>' ;
+        // });
+
+
+        //2. wrapInner
+            // $('.demo').wrapInner('<div/>');//或者直接'<div>' 都行,为啥 这啥写法?
+            // $('.demo').wrapInner( $('.box') );
+            // $('.demo').wrapInner(function(index){
+            //     return '<div class = "wrapper' + index +'"></div>'
+            // })
+
+        //3. wrapAll
+        //但是啊,如果它选定的不同级,那就会以第一个标签为基准,把所有的相同标签都剪切到跟它同级,再共同包裹
+            $('.demo').wrapAll('<div></div>');//这是把所有的.demo都加一个共同的div爹
+        // 所以说啊,用它的时候,必须保证标签同级,不然改变HTML结构,要出事儿的
+
+        //4. unwrap 
+            $('.dem').unwrap('container');//不管不写或写任何参数,都只能去除紧挨着父亲标签
+
+    </script>
+    
+</body>
+</html>

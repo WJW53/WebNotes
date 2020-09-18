@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .wrapper{
+            width: 350px;
+            height: 300px;
+            border: 1px solid block;
+            background-color: red;
+            padding: 10px;
+        }
+
+        .content{
+            
+            float: left;
+            width: 100px;
+            height: 100px;
+            color: black;
+            background-color: #fff;
+
+            /* border-right: 1px solid #ffffff; */
+            /* margin-left: 10px;
+            margin-bottom: 10px; */
+        } 
+    
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div><span>3241</span></div>
+        
+        <div class="content">1</div>
+        <div class="content">2</div>
+        <span>12</span>
+        <div class="content">3</div>
+        
+        <div class="content">4</div>
+        <!-- <div style="color:orange;width: 100px;height: 200px;background-color:blue;z-index: 1;">
+            Why?
+        </div> -->
+        <div class="content">5</div>
+        <!-- 这个'Why?'占了43px -->
+        <!-- 这里为何'Why?'会在7处显示,首先该内容只能在这个div的宽度范围内活动！这点很重要！！！
+        然后,因为匿名span包裹着'Why?' 所以,它会避开前面的float元素,那么就只能在4的下面,即7处
+        而此div代码段处在5~6之间,后面的浮动元素不在它前面,故不会影响这个div
+        宽度为0时,在3外面显示;在1-242px时,都在7处显示;243--342px时都在6处显示,>=343px时都在3的外面 -->
+        <div style="color:orange;width: 200px;height: 50px;background-color:blue;z-index: 1;">
+            Why?
+        </div>
+        <div class="content">6</div>
+        
+        <div class="content">7</div>
+        <div class="content">8</div>
+        <div class="content">9</div>
+        <!-- <div>23</div> -->
+        <p>23</p>
+        <span>12asdfsdfdsf</span>
+    </div>
+</body>
+</html>

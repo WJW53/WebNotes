@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 2px;
+        }
+        div{
+            width: 100px;
+            height: 100px;
+            background: orange;
+            position: absolute;
+            left: 500px;
+            /* left: 0; */
+            top: 0;
+        }
+
+        button{
+            margin-top:150px;
+        }
+        span{
+            position: absolute;
+            width: 1px;
+            height: 100px;
+            background-color: black;
+            left: 300px;
+            top: 0;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div></div>
+    <span></span>
+    <button id="btn">run</button>
+
+    <script>
+
+        var oDiv = document.getElementsByTagName('div')[0];
+        var oBtn = document.getElementById('btn');
+        var timer = null;
+        oBtn.onclick = function(){
+            bufferMove(oDiv,300);
+        }
+
+        function bufferMove(dom,target){
+            clearInterval(timer);
+            var iSpeed = null;
+
+            timer = setInterval(function(){
+                iSpeed = (target - dom.offsetLeft) / 7;//缓冲运动不需要管speed的正负号
+                //...
+                // console.log(iSpeed);//因为系统会忽略小数,而speed肯定有小数的时候,所以最后会产生偏差
+                iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
+                //但是正的时候要向上取整,负的时候要向下取整才能精确到达的
+                if(dom.offsetLeft == target){
+                    clearInterval(timer);
+                }else{
+                    dom.style.left = dom.offsetLeft + iSpeed + 'px';    
+                }
+                
+            },30);
+        }
+
+
+    </script>
+
+</body>
+</html>

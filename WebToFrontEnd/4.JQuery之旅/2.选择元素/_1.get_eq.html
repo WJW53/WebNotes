@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div id="demo"></div>
+    <div class="demo">1</div>
+    <div class="demo">2</div>
+    <div class="demo">3</div>
+
+
+    <script src="../jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script src="../MyJQuery/myjQuery.js"></script>
+
+    <script>
+        var oDiv1 = document.getElementById('demo');
+        var oDiv2 = document.getElementsByClassName('demo');
+        // console.log(oDiv1);
+        console.log(oDiv2);
+
+
+        //get里可以填写参数：索引,只有第一个有效;0是正数第一个,-1是倒数第一个
+        //传null undefined时  -->  也是[dom,dom,dom]
+        console.log($('.demo').get(null));
+        console.log($('.demo').get(0,1,2));
+
+
+        //eq --> 得到的是一个jq对象(类数组)  不传参数的话就length为0
+        console.log( $('.demo').eq(-1) );
+        // console.log( $(oDiv2).eq(-1) );//不要搞这个,我吐了,因为oDiv根本不是DOM对象,只是个类数组
+        console.log( $(oDiv1).eq(-1) );//这个就没问题,因为咱们设置了那个selector是否为节点的判断条件
+
+        ////卧槽了?啥意思,只有一个节点才叫DOM对象?!  原来如此?!!  哎,现在才明白,炸了..
+        ////好像不是这么说的,而是统筹叫做  HTML DOM 模型被构造为对象的树, 但是上面的每一个节点才能使其instanceof HTMLElement为真
+        // document.getElementById('demo') instanceof HTMLElement;//true
+        // document.getElementsByClassName('demo') instanceof HTMLElement;//false
+        // document.getElementsByClassName('demo')[0] instanceof HTMLElement;//true
+
+    </script>
+</body>
+
+</html>

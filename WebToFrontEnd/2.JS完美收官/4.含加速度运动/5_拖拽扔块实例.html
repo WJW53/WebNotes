@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="demo"></div>
+    <script>
+// 多方向运动 + 碰撞检测 + 重力加速度 + 能量损失 + 拖拽扔方块
+//这里面如何计算出靠谱的扔出速度,是最难的
+        var oDiv = document.getElementById('demo');
+        
+
+        oDiv.onmousedown = function(e){//鼠标一点下去的时候,未松开呢
+            clearInterval(this.timer);//这个很重要,就是说：甭管你咋飞,只要我抓住你,你就别动了
+
+            var lastX = 0;//记录div上一次移动的坐标
+            var lastY = 0;
+            var iSpeedX = 0;//记录每两次相隔移动间隔的速度
+            var iSpeedY = 0;
+
+            var event = window.event || e;//事件对象兼容性处理
+            var disX = event.clientX - this.offsetLeft;//鼠标相对于div的位置
+            var disY = event.clientY - this.offsetTop;
+            var self = this;//把源对象保存下来
+
+
+            document.onmousemove = function(e){//当鼠标移动时,注意这时一定得在document上监测,
+                var event = window.event || e;
+                var newLeft = event.clientX - disX;//鼠标移动后真正的坐标位置
+                var newTop = event.clientY - disY;
+            //  计算每一次运动后的末速度
+                iSpeedX = newLeft - lastX;
+                iSpeedY = newTop - lastY;
+                lastX = newLeft;
+                lastY = newTop;
+
+    ////如何观察?制造轨迹,利用一个span方块观察。
+                // var oSpan = document.createElement('span');//每次移动都有个小方块
+                // oSpan.style.position = 'absolute';
+                // oSpan.style.left = newLeft + 'px';//跟div方块左上角同一个位置,就是为了跟踪它的
+                // oSpan.style.top = newTop + 'px';
+                // oSpan.style.width = '5px';
+                // oSpan.style.height = '5px';
+                // oSpan.style.backgroundColor = "black";
+                // document.body.appendChild(oSpan);//再把它添加到文档中
+    ////每个事件从它相应到完成也是需要时间的,只不过快而已,不易观察.通过轨迹我们看明白了
+
+                self.style.left = newLeft + "px";
+                self.style.top = newTop + "px";
+            }
+
+            document.onmouseup = function(){//松开鼠标左键的时候,就取消事件绑定
+                document.onmouseup = null;//为啥是这俩呢,up和move
+                document.onmousemove = null;
+                //
+                gravityMove(self,iSpeedX,iSpeedY);//可别手残把self写成了this
+            }
+
+        }
+
+
+        function gravityMove(dom,iSpeedX,iSpeedY){
+            clearInterval(dom.timer);
+            var g = 3;
+            var u = 0.8;
+
+            dom.timer = setInterval(function(){
+                iSpeedY += g;
+                var newTop = dom.offsetTop + iSpeedY;
+                var newLeft = dom.offsetLeft + iSpeedX;
+
+                if(newTop >= document.documentElement.clientHeight - dom.clientHeight){//到最下面了
+//若top等于/超过,当前视口尺寸(不含滚动条)与当前元素的高度之差,就反弹,并且重新赋值newTop,防止出现滚动条
+                    iSpeedY *= -1;
+                    iSpeedY *= u;
+                    iSpeedX *= u;
+                    newTop = document.documentElement.clientHeight - dom.clientHeight;
+                }
+                if(newTop <= 0){//到顶了
+                    iSpeedY *= -1;
+                    iSpeedY *= u;
+                    iSpeedX *= u;
+                    newTop = 0;
+                }
+
+                if(newLeft >= document.documentElement.clientWidth - dom.clientWidth){//到最下面了
+//若left等于/超过,当前视口尺寸(不含滚动条)与当前元素的宽度之差,就反弹,并且重新赋值newLeft,防止出现滚动条
+                    iSpeedX *= -1;
+                    iSpeedX *= u;
+                    iSpeedY *= u;
+                    newLeft = document.documentElement.clientWidth - dom.clientWidth;
+                }
+                if(newLeft <= 0){//到顶了
+                    iSpeedX *= -1;
+                    iSpeedX *= u;
+                    iSpeedY *= u;
+                    newLeft = 0;
+                }
+                //console.log(newTop,document.documentElement.clientWidth - dom.clientWidth);
+                //console.log(iSpeedX,iSpeedY);
+//解决小数问题
+                if(Math.abs(iSpeedY) < 1){
+                    iSpeedY = 0;
+                }
+                if(Math.abs(iSpeedX) < 1){
+                    iSpeedX = 0;
+                }
+
+                if(iSpeedY == 0 && iSpeedX == 0 && newTop == document.documentElement.clientHeight - dom.clientHeight){
+                    //速度为零,Top到达地面,就真正停止运动
+                    clearInterval(dom.timer);
+                    console.log('over!');
+                }else{
+                    dom.style.top = newTop + 'px';
+                    dom.style.left = newLeft + 'px';
+                }
+                
+            },30);
+        }
+
+    </script>
+</body>
+</html>

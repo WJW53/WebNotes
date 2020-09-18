@@ -1,0 +1,234 @@
+*{
+	margin:0;
+	padding:0;
+}
+li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+input,button{
+	border:none;
+	background:none;
+	outline: none;
+}
+html,body{
+	font-size:14px;
+	color:#333;
+	font-family: 'YouYuan';
+}
+
+.wrapper{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.wrapper header{
+    position: fixed;
+    width: 100%;
+    height: 4.5rem;
+    top: 0;
+    background: linear-gradient(90deg,#333,#111,#aaa);
+}
+.wrapper header:after{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url(../images/bg.png) center;
+    opacity: .4;
+}
+
+.logo{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    margin-left: 3rem;
+}
+.logo img{
+    width: 3rem;
+    height: 3rem;
+}
+.logo span{
+    font-size: 1.7rem;
+    font-weight: bold;
+    text-shadow: 4px 2px 6px #ccc;
+    margin-left: 1rem;
+    animation: jumping .7s infinite alternate;
+}
+.logo span:nth-of-type(1){
+    animation-delay: 0s;
+}
+.logo span:nth-of-type(2){
+    animation-delay: .25s;
+}
+.logo span:nth-of-type(3){
+    animation-delay: .5s;
+}
+.logo span:nth-of-type(4){
+    animation-delay: .75s;
+}
+@keyframes jumping{
+    0%{
+        transform: translateY(0);
+        text-shadow: 4px 0px 6px #ccc;
+    }
+    100%{
+        transform: translateY(-20px);
+        text-shadow: 4px 6px 6px #ccc;
+    }
+}
+
+.btn {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1024;
+    display: none;
+}
+.btn span{
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    margin: 4px 0;
+}
+.btn:hover{
+    transform: translateY(-50%) scale(1.1);
+    transition: .3s ease-in-out;
+}
+.btn:hover span{
+    animation: change 2s ease-in-out infinite;
+}
+@keyframes change{
+    0%{
+        transform: rotate(0);
+    }
+    25%{
+        transform: rotate(45deg);
+    }
+    50%{
+        transform: rotate(0deg);
+    }
+    75%{
+        transform: rotate(-45deg);
+    }
+    100%{
+        transform: rotate(0deg);
+    }
+}
+
+.wrapper header .drop-list{
+	display:none;
+	position: absolute;
+	left:0;
+	width:100vw;
+	padding:30px;
+	box-sizing: border-box;
+	background:linear-gradient(#333,#222,#111);
+	text-align: center;
+	z-index:999;
+}
+.wrapper header .drop-list ul li{
+	cursor:pointer;
+	color:#ccc;
+	line-height: 40px;
+	font-size:1.1rem;
+}
+.wrapper header .drop-list ul li:hover {
+	color:#fff;
+}
+
+@media all and (max-width:768px){
+    .btn {
+        display: block;
+    }
+    .logo{
+        transform: translateX(200px);
+    }
+    .left-menu{
+        display: none;
+    }
+}
+
+.left-menu{
+    width: 200px;
+    min-height: calc(100vh - 4.5rem);
+    position: fixed;
+    top: 4.5rem;
+    padding: 2rem 0 0 2rem;
+    box-sizing: border-box;
+    background: linear-gradient(#333,#222,#111);
+}
+.wrapper .left-menu::after{
+	content:"";
+	display:block;
+	position: absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background:url('../images/bg.png') repeat center center;
+	opacity: .4;
+	z-index:-1;
+}
+.wrapper .left-menu .list{
+	width:100%;
+	font-weight:bolder;
+}
+.wrapper .left-menu .list .title{
+	color:#fff;
+	font-size:1.1rem;
+}
+.wrapper .left-menu .list .list-group{
+	margin-top:2rem;
+	text-align: center;
+} 
+.wrapper .left-menu .list .list-group li{
+	width:100%;
+	display: inline-block;
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	margin-bottom:5px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	color:#ccc;
+	line-height:40px;
+	font-size: 1rem;
+	cursor:pointer;
+}
+.wrapper .left-menu .list .list-group .list-item.active{
+	background-color: rgba(255,255,255,.3);
+}
+.wrapper .left-menu .list .list-group .list-item.active,
+.wrapper .left-menu .list .list-group .list-item:hover{
+	transition: all 0.3s ease-in-out;
+	color: rgba(255,255,255,1.4);
+}
+
+
+.right-content{
+    background: rgba(0,0,0,.1);
+    padding: 4.5rem 0 0 200px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.right-content .tab-content-item{
+    padding: 20px;
+    display: none;
+}
+.right-content .show-list{
+    display: block;
+}

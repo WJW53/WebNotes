@@ -1,0 +1,54 @@
+.my-swiper > * {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+.my-swiper {
+    border: 1px solid #000;
+    overflow: hidden;
+    position: relative;
+}
+
+.my-swiper > .my-swiper-lBtn, .my-swiper > .my-swiper-rBtn {
+    width: 25px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    color: #fff;
+    background-color: rgba(0,0,0,.15);
+    position: absolute;
+    top: 50%;
+    margin-top: -17.5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.my-swiper > .my-swiper-lBtn{
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+.my-swiper > .my-swiper-rBtn {
+    right: 0;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+}
+.my-swiper > .my-swiper-spots {
+    position: absolute;
+    bottom: 10px;
+    padding: 0 10px;
+}
+.my-swiper > .my-swiper-spots > span {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    background-color: rgba(255,255,255,.4);
+    border-radius: 50%;
+    margin: 0 2px;
+    cursor: pointer;
+}
+.my-swiper > .my-swiper-spots > span.active {
+    
+    border: 1px solid rgba(0,0,0,.05);
+    background-color: #fff;
+}

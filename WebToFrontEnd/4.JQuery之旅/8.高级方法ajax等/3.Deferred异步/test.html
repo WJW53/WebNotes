@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        function test(){
+            setTimeout(function(){
+                console.log('TEST!');
+            },2000);
+            return {};//返回对象、数组都不报错,
+            // return [];
+            //默认是return undefined;
+        }
+        
+        var me = test();
+        me.ok = function(){
+            console.log('OK!还能这样玩?!?!');
+            return this.ok;
+        }
+        
+        me.ok();//实际上,当然没错啦,只是一开始有个地方我想错了.
+        
+    </script>
+</body>
+</html>

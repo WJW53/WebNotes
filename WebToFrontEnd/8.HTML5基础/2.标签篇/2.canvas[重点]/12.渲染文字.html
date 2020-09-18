@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        canvas{
+            width: 500px;
+            height: 300px;
+            border: 1px solid #000;
+        }
+    </style>
+
+</head>
+<body>
+    <canvas id="can" width="500px" height="300px"></canvas>
+
+
+    <script>
+
+        var canvas = document.getElementById('can');
+        var ctx = canvas.getContext('2d');
+
+        ctx.beginPath();
+        ctx.strokeRect(0,0,200,200);
+
+        ctx.fillStyle = 'red';
+        ctx.font = "30px Georgia";//字体大小、字体
+
+        //大小都会改变,若想要空心的字体,就用font+strokeText
+
+        ctx.strokeText('panda',200,100);//不会变红
+
+        ctx.fillText('monkey',200,250);//会变红
+
+
+    </script>
+</body>
+</html>

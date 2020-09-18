@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		body {
+			margin: 0;
+			overflow: hidden;
+		}
+
+		canvas {
+			background: #000;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="snow"></canvas>
+
+	<script>
+		var canvas = document.getElementById('snow');
+		var context = canvas.getContext('2d');
+
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+		function snow() {
+			context.save();
+			context.beginPath();
+			/* context.moveTo(50, 50);
+			context.lineTo(90, 50); */
+
+			context.translate(100, 100);
+
+
+			context.moveTo(-20, 0);
+			context.lineTo(20, 0);
+
+			context.strokeStyle = '#fff';
+			context.lineWidth = 5;
+			context.lineCap = 'round';
+
+
+			/*
+				sin60=对边/斜边 =>  对边=sin60*斜边 => y=sin60*半径(r)
+				sin30=对边/斜边 =>  对边=sin30*斜边 => x=sin30*半径(r)
+			 */
+
+			var disX = Math.sin(30 * Math.PI / 180) * 20;
+			var disY = Math.sin(60 * Math.PI / 180) * 20;
+
+			context.moveTo(-disX, -disY);
+			context.lineTo(disX, disY);
+
+			context.moveTo(-disX, disY);
+			context.lineTo(disX, -disY);
+
+			context.stroke();
+			context.restore();
+
+			context.save();
+			context.beginPath();
+			/* context.moveTo(50, 50);
+			context.lineTo(90, 50); */
+
+			context.translate(50, 50);
+
+
+			context.moveTo(-20, 0);
+			context.lineTo(20, 0);
+
+			context.strokeStyle = '#fff';
+			context.lineWidth = 5;
+			context.lineCap = 'round';
+
+
+			/*
+				sin60=对边/斜边 =>  对边=sin60*斜边 => y=sin60*半径(r)
+				sin30=对边/斜边 =>  对边=sin30*斜边 => x=sin30*半径(r)
+			 */
+
+			var disX = Math.sin(30 * Math.PI / 180) * 20;
+			var disY = Math.sin(60 * Math.PI / 180) * 20;
+
+			context.moveTo(-disX, -disY);
+			context.lineTo(disX, disY);
+
+			context.moveTo(-disX, disY);
+			context.lineTo(disX, -disY);
+
+			context.stroke();
+			context.restore();
+
+		}
+		//snow();
+
+		function Snow(x, y, scale, rotate, speedX, speedY, speedR) {
+			this.x = x;
+			this.y = y;
+			this.scale = scale;
+			this.rotate = rotate;
+			this.speedX = speedX;
+			this.speedY = speedY;
+			this.speedR = speedR;
+		}
+		Snow.prototype.render = function () {
+			context.save();
+			context.beginPath();
+			/* context.moveTo(50, 50);
+			context.lineTo(90, 50); */
+
+			context.translate(this.x, this.y);
+			context.scale(this.scale, this.scale);
+			context.rotate(this.rotate * Math.PI / 180);
+
+
+			context.moveTo(-20, 0);
+			context.lineTo(20, 0);
+
+			context.strokeStyle = '#fff';
+			context.lineWidth = 5;
+			context.lineCap = 'round';
+
+
+			/*
+				sin60=对边/斜边 =>  对边=sin60*斜边 => y=sin60*半径(r)
+				sin30=对边/斜边 =>  对边=sin30*斜边 => x=sin30*半径(r)
+			 */
+
+			var disX = Math.sin(30 * Math.PI / 180) * 20;
+			var disY = Math.sin(60 * Math.PI / 180) * 20;
+
+			context.moveTo(-disX, -disY);
+			context.lineTo(disX, disY);
+
+			context.moveTo(-disX, disY);
+			context.lineTo(disX, -disY);
+
+			context.stroke();
+			context.restore();
+		}
+
+		var snowArray = [];
+		function init() {
+			var len = 100;
+			for (var i = 0; i < len; i++) {
+				var x = Math.random() * canvas.width;	//0-cavnas.width
+				var scale = Math.random() + 0.5;	//0.5-1.5
+				var rotate = Math.random() * 60;	//0-60
+				var speedX = Math.random() + 1;		//1-2
+				var speedY = Math.random() + 5;		//5-6
+				var speedR = Math.random() * 4 + 2;		//0-4	2-6
+
+				(function (x, y, scale, rotate, speedX, speedY, speedR) {
+					setTimeout(function () {
+						var snow = new Snow(x, y, scale, rotate, speedX, speedY, speedR);
+						snow.render();
+
+						snowArray.push(snow);
+					}, Math.random() * 8000);
+				})(x, 0, scale, rotate, speedX, speedY, speedR);
+			}
+
+			snowing();
+		}
+		init();
+
+		function snowing() {
+			setInterval(function () {
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				for (var i = 0; i < snowArray.length; i++) {
+					snowArray[i].x = (snowArray[i].x + snowArray[i].speedX) % canvas.width;
+					snowArray[i].y = (snowArray[i].y + snowArray[i].speedY) % canvas.height;
+					snowArray[i].rotate = (snowArray[i].rotate + snowArray[i].speedR) % 60;
+
+					snowArray[i].render();
+
+					/*
+						0 1 2 3 4 5 6 7 8	%4	0 1 2 3 0 1 2 3 0 
+					 */
+				}
+			}, 30);
+		}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: #000;
+        }
+/* 一个浏览器一个样,卧槽了,下面模糊值在120/300之间自己看着办,
+然后我在谷歌运行有问题,全是粉色;在火狐运行差不多正确效果
+    怎么说呢,根据自己的电脑自己慢慢调配吧 */
+
+
+/* DEMO_1. */
+        div{
+            position: absolute;
+            left:calc(50% - 150px);
+            top:calc(50% - 150px);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            color:#fff;
+
+
+            box-shadow: inset 0px 0px 50px  #fff,
+                        inset 10px 0px 80px  #f0f,
+                        inset -10px 0px 80px  #0ff,
+                        inset 10px 0px 120px  #f0f,
+                        inset -10px 0px 120px  #0ff,
+                        0px 0px 50px  #fff,
+                        -10px 0px 80px  #f0f,
+                        10px 0px 80px  #0ff;
+        }
+
+/* DEMO_2 */
+        /* div{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            left:calc(50% - 25px);
+            top:calc(50% - 25px);
+            background-color: #fff;
+            border-radius: 50%;
+
+            box-shadow: 0px 0px 100px 50px #fff,
+                        0px 0px 250px 125px #ff0;
+
+        } */
+
+
+    </style>
+
+</head>
+<body>
+    <div>
+
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 为什么要学数组方法并熟练使用
+        // 前端主要做的事情是数据可视化，数据由后台提供，形式很多都是{} [] 结合前端业务展示需求可能会遇到各种各样的情况，所以我们熟练掌握方法后，可最大程度提高开发效率
+        // 为什么要学源码，1.进一步深度理解源码  2.不可能满足所有需求，我们需要拥有空手造轮子的能力 这点很重要，初级工程师往往只会用别人的，我们要有写出给别人用的东西的能力，所以以后学任何库和框架咱们都会深入思想剖析源码，必须具备从无到有的能力。
+
+
+    
+        //数据
+        var personArr = [{name: '王港', src: './src/img/3.png', des: '颈椎不好', sex: 'm', age: 18}, {name: '刘莹', src: './src/img/5.png',des: '我是谁', sex: 'f', age: 23} ,{name: '王秀莹', src: './src/img/4.png', des: '我很好看', sex: 'f', age: 25} , {name: '刘金雷', src: './src/img/1.png', des: '你没有见过陌生的脸', sex: 'm', age: 15}, {name: '刘飞翔', src: './src/img/2.png', des: '瓜皮刘', sex: 'm', age: 20}];
+        
+        //arr.forEach()
+        // personArr.forEach(function (ele, index, self) {
+        //     console.log(ele, index, self, this);
+        // });
+        // Array.prototype.myForEach = function (func) {
+        //     var _arr = this, len = this.length;
+        //     for(var i = 0; i < len; i++) {
+        //         func.apply(arguments[1] || window, [_arr[i], i, _arr]);
+        //     }
+        // }
+
+
+        //回去把纯函数看看
+
+        // filter 过滤
+        // var newArr = personArr.filter(function (ele, index, self) {
+        //     return ele.age > 18;
+        // }, {dom: 'dom'});
+        // console.log(newArr);
+        
+
+        // Array.prototype.myFilter = function (func) {
+        //     var _arr = this, len = this.length, newArr = [];
+        //     for (var i = 0; i < len; i++) {
+        //         func.apply(arguments[1] || window, [_arr[i], i, _arr]) ? newArr.push(_arr[i]) : '';
+        //     }
+        //     return newArr;
+        // }
+                  
+
+        // var newArr2 = personArr.myFilter(function (ele, index, self) {
+        //     console.log(this)
+        //     return ele.age > 20;
+        // }, {dom: 'dom2'});
+        // console.log(newArr2);
+
+
+        // map 映射 [] -> 按照一定规则统一处理 []
+        // var newArr = personArr.map(function (ele, index, self) {
+        //     console.log(ele, index, self, this);
+        //     ele.age = ele.age * 2;
+        //     return ele;
+        // }, {dom: 'domdom'});
+
+        // console.log(newArr);
+
+
+        // Array.prototype.myMap = function (func) {
+        //     var _arr = this, len = this.length, newArr = [];
+        //     for (var i = 0; i < len; i++) {
+        //         newArr.push( func.apply(arguments[1] || window, [_arr[i], i, _arr]) );
+        //     }
+        //     return newArr;
+        // }
+
+        // var newArr = personArr.myMap(function (ele, index, self) {
+        //     console.log(ele, index, self, this);
+        //     ele.age = ele.age * 2;
+        //     return ele;
+        // }, {dom: 'domdom'});
+
+        // console.log(newArr);
+  
+
+        // every  some  
+
+        // console.log(personArr.every(function (ele, index, self) {
+        //     console.log(ele, index, self, this);
+        //     return ele.age > 10;
+        // }, {dom: 'dom'}));
+
+
+        // Array.prototype.myEvery = function (func) {
+        //     var _arr = this, len = this.length, flag = true;
+        //     for (var i = 0; i < len; i++) {
+        //         if( !func.apply(arguments[1] || windonw, [_arr[i], i, _arr]) ) {
+        //             flag = false;
+        //             break;
+        //         }
+        //     }
+        //     return flag;
+        // };
+
+        // console.log(personArr.myEvery(function (ele, index, self) {
+        //     return ele.age > 20;
+        // }, {dom: 'dom'}));
+
+        // some
+
+
+        //reduce 遍历操作一遍
+
+        // prev icur index self initialValue
+        //
+
+        // var obj = {age: 10};
+        // var a = personArr.reduce(function (prev, icur, index, self) {
+        //     // console.log(prev, icur, index, self, this);
+        //     return icur;
+        // }, obj, {dom: 'dom'});
+        // console.log(a);
+
+
+        // var cookie = 'PSTM=1526700942; BIDUPSID=554B58935726788C9635D849B5BC0A60; BD_UPN=12314753; sug=3; sugstore=1; ORIGIN=0; bdime=0; BAIDUID=DBACC7EB61231C6524A91ED28DA81748:SL=0:NR=10:FG=1; H_PS_PSSID=; ispeed_lsm=0; BDSFRCVID=xLKsJeC62Agu2W6774uNhah4GWKkPvRTH6aoQCgBjOKzRAwtoJVwEG0PjM8g0KA-NhpBogKKB2OTHncP; H_BDCLCKID_SF=tJPfoKIXJKP3fP36qRbHh4ItbfR-etJXfanQKtOF5l8-hCQEWhODj6-FDeck0xP8L-DLsRrd5ncxOKQpyJKBKpDw2lrpa-rb3HbKonjN3KJms-P9bT3vLtDVLxjX2-biW2uH2MbdaJOmbC_CD5KajToBeU7H5D6hKCoMsJvHHJOoDDvY-xj5y4LdjG5fLRTkBC_f_h3H0RnHjKbj-foMyft73-Aq54RiWaKD-JTp-ln-D-bsDPAVQfbQ0M6uqP-jW26aBbD5yJ7JOpvtDxnxy-CS0aC8q6t8tb-tV-35b5rWjJrI-tTJbnL_hx605C62aJ3xXt5bWJ5TMCoqLpb6eMRWjPJ-t-vK2nnxaKThKlvjShPC-frZyJFlLno3KlRR2RczBl6O3l02Vhb9e-t2yUoDbaJMW4RMW23Goq7mWnrjVKFwej-BDTv0epJf-K6O2Coh3Rrj5-5HDRcY-DTjh6PPebneBtQmJJrC0-5PWlAbMIbG3P7HM501DlOfWp5ZQg-q3R7u5R3YhKImbbKM2R0eKPJI0x-jLIQuVn0MW-KVeK3TXtnJyUPYD4nnBP62LnLDoIKKfCIbhCv65nt_2-FHbxQXK-btKCoBBRD8Kb7VKROken7dyntpbt-qJfoMbRrU_D05JP5FjbjdjMJRyPPr5R5nBT5Kaa6m0ho_Bhv0Vlj65-nk3R-kQN3TafuO5bRi566k2PJIDn3oyUKKXp0nhxbTqtJHKbDDVC_KtfK; delPer=0; BD_CK_SAM=1; PSINO=2; BDORZ=FFFB88E999055A3F8A630C64834BD6D0; BDSVRTM=0';    
+        // function parseCookie (str) {
+        //     var obj = {}, arr = null;
+        //     arr = str.split('; ');
+        //     arr.reduce(function (prev, icur, index, self) {
+        //         var icurArr = icur.split('=');
+        //         prev[icurArr[0]] = icurArr[1];
+        //         return prev;
+        //     }, obj);
+        //     return obj;
+        // }
+
+
+        // var cookie = 'PSTM=1526700942; BIDUPSID=554B58935726788C9635D849B5BC0A60; BD_UPN=12314753; sug=3; sugstore=1; ORIGIN=0; bdime=0; BAIDUID=DBACC7EB61231C6524A91ED28DA81748:SL=0:NR=10:FG=1; H_PS_PSSID=; ispeed_lsm=0; BDSFRCVID=xLKsJeC62Agu2W6774uNhah4GWKkPvRTH6aoQCgBjOKzRAwtoJVwEG0PjM8g0KA-NhpBogKKB2OTHncP; H_BDCLCKID_SF=tJPfoKIXJKP3fP36qRbHh4ItbfR-etJXfanQKtOF5l8-hCQEWhODj6-FDeck0xP8L-DLsRrd5ncxOKQpyJKBKpDw2lrpa-rb3HbKonjN3KJms-P9bT3vLtDVLxjX2-biW2uH2MbdaJOmbC_CD5KajToBeU7H5D6hKCoMsJvHHJOoDDvY-xj5y4LdjG5fLRTkBC_f_h3H0RnHjKbj-foMyft73-Aq54RiWaKD-JTp-ln-D-bsDPAVQfbQ0M6uqP-jW26aBbD5yJ7JOpvtDxnxy-CS0aC8q6t8tb-tV-35b5rWjJrI-tTJbnL_hx605C62aJ3xXt5bWJ5TMCoqLpb6eMRWjPJ-t-vK2nnxaKThKlvjShPC-frZyJFlLno3KlRR2RczBl6O3l02Vhb9e-t2yUoDbaJMW4RMW23Goq7mWnrjVKFwej-BDTv0epJf-K6O2Coh3Rrj5-5HDRcY-DTjh6PPebneBtQmJJrC0-5PWlAbMIbG3P7HM501DlOfWp5ZQg-q3R7u5R3YhKImbbKM2R0eKPJI0x-jLIQuVn0MW-KVeK3TXtnJyUPYD4nnBP62LnLDoIKKfCIbhCv65nt_2-FHbxQXK-btKCoBBRD8Kb7VKROken7dyntpbt-qJfoMbRrU_D05JP5FjbjdjMJRyPPr5R5nBT5Kaa6m0ho_Bhv0Vlj65-nk3R-kQN3TafuO5bRi566k2PJIDn3oyUKKXp0nhxbTqtJHKbDDVC_KtfK; delPer=0; BD_CK_SAM=1; PSINO=2; BDORZ=FFFB88E999055A3F8A630C64834BD6D0; BDSVRTM=0';    
+        // Array.prototype.myReduce = function (func) {
+        //     var _arr = this, len = this.length, nextValue = arguments[1];
+        //     for (var i = 0; i < len; i++) { 
+        //         nextValue = func.apply(arguments[2] || window, [nextValue, _arr[i], i, _arr]);
+        //     }
+        //     return nextValue;
+        // }
+
+        // var obj = {age: 10};
+        // var a = personArr.myReduce(function (prev, icur, index, self) {
+        //     console.log(prev, icur, index, self, this);
+        //     return icur;
+        // }, obj, {dom: 'dom'});
+        // console.log(a);
+
+        // function parseCookie (str) {
+        //     var obj = {}, arr = null;
+        //     arr = str.split('; ');
+        //     arr.myReduce(function (prev, icur, index, self) {
+        //         var icurArr = icur.split('=');
+        //         prev[icurArr[0]] = icurArr[1];
+        //         return prev;
+        //     }, obj);
+        //     return obj;
+        // }
+
+        //把防抖 节流 看了
+    </script>
+</body>
+</html>

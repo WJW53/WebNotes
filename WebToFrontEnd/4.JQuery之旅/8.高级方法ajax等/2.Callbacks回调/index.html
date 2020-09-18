@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //js
+        //cb就相当于一个大框,可以把我们想要的回调函数,放到框里去
+        //传递'once',只要执行了一次,就不会再执行了
+        //传递'memory',先把所有的add都加到cb中,然后不管在哪儿fire()一次,都会执行所有回调函数
+    //但此时在前面连着执行两次的话,还是不一样的。第一次fire是包含其代码段上面的,第二次是包含所有
+        //传递'unique',就会去掉重复的回调函数
+        //传递'stopOnFalse',碰到return false;的回调函数,就停止回调
+
+
+        // var cb = $.Callbacks('once');
+        // var cb = $.Callbacks('memory');
+        // var cb = $.Callbacks('unique');
+        var cb = $.Callbacks('stopOnFalse');
+
+        //回调处理函数
+        function a (x,y){
+            console.log('a',x,y);
+        }
+        function b(x,y){
+            console.log('b',x,y);
+            return false;
+        }
+        cb.add(a,b);//放进来
+        // cb.add(a,b);
+        cb.add(c);
+        cb.fire('10','20');//当满足条件后,用fire方法依次执行所有回调函数
+        // cb.fire('10','20');
+
+        function c (x,y){
+            console.log('c',x,y);
+        }
+        
+        function d (x,y){
+            console.log('d',x,y);
+        }
+        cb.add(d);
+
+
+        //$.callback()
+        $.ajax({
+            url:'',
+            type:'',
+            succuss:function(res){
+                res =>
+                $.ajax({
+                    success:function(res){
+                        
+                    }
+                })
+            }
+        });
+    </script>
+</body>
+</html>

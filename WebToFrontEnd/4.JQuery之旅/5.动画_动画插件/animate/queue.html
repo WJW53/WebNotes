@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .demo{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo"></div>
+    <script src='../../jquery-3.4.1/jquery-2.1.4.js'></script>  
+    <!-- <script src="../../MyJQuery/myjQuery.js"></script> -->
+    <script>
+        // $('.demo')
+            // .css({position: 'absolute', left: 0, top: 0, width: 100, height: 100, backgroundColor: 'red'})
+            // .on('click', function () {
+            //     $(this)
+            //         .animate({width: 120, height: 120, left: 100, top: 100}, 1000)
+            //         .animate({width: 220, height: 140, left: 200, top: 200}, 1000)
+            //         .animate({width: 320, height: 160, left: 300, top: 300}, 1000);
+            // });
+
+
+        // jQuery queue dequeue clearQueue
+
+        //.queue(); 入队
+        //有两个参数(type,content);type是队列的名字,它本身是个数组,content是type的内容
+        //{ chain: [ functiong(){},functiong,..,] ,  }//这个{}代表queue
+        //如果给function传了next,并在其内部next(); --> 执行完自己后,执行队列中的下一个
+        //此时再出队的话,则会将type内的队员全部出队,队列置空
+
+        // $('.demo')
+        // .queue('chain',function(next){
+        //     console.log('over1');
+        //     next();
+        // }).queue('chain',function(next){
+        //     console.log('over2');
+        //     next();
+        // }).queue('chain',function(next){
+        //     console.log('over3');
+        // });
+
+        // console.log( $('.demo').queue('chain') ,'\n');
+
+        // //.dequeue(type);  使type里最先进来的content出队
+        // $('.demo').dequeue('chain');//如果队列为空,则不进行任何操作
+       
+
+        // //.clearQueue();
+        // $('.demo').clearQueue('chain');//清空队列
+        // console.log( $('.demo').queue('chain') );//[]    
+
+
+
+        //animate内部queue实现的是类似下述的操作
+        //this都指向demo
+        $('.demo').on('click',function(){
+            console.log(this);
+            $(this).dequeue('chain');//???? --> 只有出队才执行type队列里的function
+        }).queue('chain',function(next){
+            console.log(this);
+            $(this).animate({width: 120, height: 120, left: 100, top: 100}, 1000);
+            next();
+        }).queue('chain',function(next){
+            console.log(this);
+            $(this).animate({width: 220, height: 220, left: 200, top: 200}, 1000);
+            next();
+        }).queue('chain',function(next){
+            console.log(this);
+            $(this).animate({width: 320, height: 320, left: 300, top: 300}, 1000);
+        });
+        console.log($('.demo').queue('chain'));
+    </script>  
+</body>
+</html>

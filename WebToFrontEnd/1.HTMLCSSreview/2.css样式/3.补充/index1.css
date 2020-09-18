@@ -1,0 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper{
+    /* 也可以不写不这个100%,我测试得来,
+    不写width,就是默认相对于视口的100% */
+    /* width: 100%; */
+    height: 30px;
+    background-color: #123;
+}
+
+.content{
+    width: 80%;
+    height: 30px;
+    background-color: #0f0;
+/*  */
+    margin: 0 auto;  
+}

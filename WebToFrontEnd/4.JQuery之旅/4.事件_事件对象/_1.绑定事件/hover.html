@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .demo{
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo"></div>
+    <input type="text" class="in">
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+    <!-- <script src="../../MyJQuery/myjQuery.js"></script> -->
+
+    <script>
+        //hover
+        ////第一个参数是移入函数,第二个参数是移出函数
+
+        // $('.demo').on('mouseenter',function(){
+        //     console.log('mouseenter');
+        // }).on('mouseleave',function(){
+        //     console.log('mouseleave');
+        // });
+
+        $('.demo').hover(function(){
+            console.log('hover:enter');
+        },function(){
+            console.log('hover:leave');
+        });
+
+        
+        //.click/.keydown/.mousedown    ...
+        $('.in').keydown(function(){
+            console.log( $(this).val() );
+        });
+
+    </script>
+
+</body>
+</html>

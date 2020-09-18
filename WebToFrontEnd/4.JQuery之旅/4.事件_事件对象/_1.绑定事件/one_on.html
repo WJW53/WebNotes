@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .demo{
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://www.baidu.com" target="_blank">百度</a>
+    <div class="demo"></div>
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //二. one
+        //第一次执行我写的内容,第二次开始,该干嘛干嘛
+
+        $('a').one('click',function(e){
+            // e.preventDefaul();//这是仅仅是阻止默认事件
+            // window.open('https://www.taobao.com');
+            
+            return false;//这句把啥玩意儿默认事件都阻止了,冒泡也没了
+            window.open('https://www.taobao.com');
+        });
+
+
+        //补充on
+        //若要为一个对象绑定多个事件,第一个参数可以传对象类型
+        $('.demo').on({
+            click: function(){
+                console.log('click');
+            },
+            mouseenter: function(){
+                console.log('mouseenter');
+            },
+            mouseleave: function(){
+                console.log('mouseleave');
+            }
+        });
+        
+    </script>
+</body>
+</html>

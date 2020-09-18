@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .demo{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            background-color: #abcdef;
+        }
+        .target{
+            position: absolute;
+            top: 0;
+            left: 600px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+        }
+
+
+    </style>
+
+</head>
+<body>
+
+    <div class="demo" draggable="true"></div>
+    <div class="target" draggable="true"></div>
+    
+
+
+    <script>
+
+        var oDragDiv = document.getElementsByClassName("demo")[0];
+        var beginX = 0;
+        var beginY = 0;
+
+        oDragDiv.ondragstart = function(e){
+            console.log('start');
+            e.dataTransfer.effectAllowed = 'link';//all link copy move copyMove linkMove
+        }
+        oDragDiv.ondrag = function(e){
+        }
+        oDragDiv.ondragend = function(e){
+            console.log('end');
+        }
+
+        var oDragTarget = document.getElementsByClassName("target")[0];
+        oDragTarget.ondragenter = function(e){
+        }
+
+        oDragTarget.ondragover = function(e){
+            e.preventDefault();
+            //console.log('over');//和ondrag事件很像,但是是在目标区域移动才会不断触发
+        }
+        oDragTarget.ondragleave = function(e){
+            console.log('leave');//鼠标离开目标区域
+        }
+        oDragTarget.ondrop = function(e){ 
+            e.dataTransfer.dropEffect = 'link';
+            console.log('drop');
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .tpl {
+            display: none;
+        }
+
+        .wrapper {
+            overflow: hidden;
+            border: 2px solid black;
+            width: 600px;
+            margin: 100px auto 0px;
+        }
+        .movieSection {
+            float: left;
+            width: 180px;
+            height: 180px;
+            padding: 10px;
+        }
+        
+        .movieSection img {
+            width: 100%;
+            height: 150px;
+            cursor: pointer;
+        }
+
+        .movieSection h3 {
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- 基本结构 -->
+    <div class="wrapper">
+        <div class='tpl'>
+            <img src=""></img>
+            <h3 class='movieName'></h3>            
+        </div>
+    </div>     
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //回调地狱
+        //底下那个图片地址,如果我不手动去访问对应图片网址,那么图片我就访问不到,会报错
+        //其他解决方法：1.将图片格式换为.jpg  2.设置请求超时时间为0  timeout:0  永不超时
+        //然而我发现方法二没用,就是我没权限利用这种方式访问
+        $.ajax( {
+            url:'https://open.duyiedu.com/jq/movie/power',//接口文档
+            type:'POST',
+            timeout: 0,
+            data:{
+                username:'wjw',
+                password:'ok',
+            },
+            success:function(res){
+                // console.log(res);
+                // console.log(res.data.power);//other,其实other不是vip但是,我这里当vip吧
+                if(res.data.power == "other"){
+                    // console.log('1');
+                    //vip 网络地址发送请求
+                    $.ajax({
+                        url:'https://open.duyiedu.com/jq/movie/movieList',//电影列表
+                        type:'GET',
+                        timeout: 0,
+                        success:function(res){
+                            console.log(res);//这里拿到的对象里面的data{}才是有效的数据
+                            var data = res.data;//先接收,res.data是个数组,里面元素是对象
+                            var $Wrapper = $('.wrapper');
+
+                            $.each(data,function(index,ele){
+                                //ele.name   ele.poster(这个是图片地址)
+                                console.log(index,ele);
+                                //老样子,走起
+                                var $MovieSection = $('.tpl').clone().removeClass('tpl').addClass('movieSection');
+                                //把数据放进HTML结构里
+                                $MovieSection.data({id:ele.id}).on('click',function(){//给每一个绑定点击事件,用来显示电影详情
+                                    $.ajax({
+                                        url: 'https://open.duyiedu.com/jq/movie/movieInfo',//电影详情
+                                        type:'GET',
+                                        timeout: 0,
+                                        data:{
+                                            movieId: $(this).data('id'),
+                                        },
+                                        success:function(res){
+                                            console.log(res);//看电影详情的信息
+                                            var data = res.data;
+                                            var direct = data.direct;
+                                            var gut = data.gut;
+                                            var mainActor = data.mainActor;//这俩本身都是数组
+                                            var screenWritter = data.screenwritter;
+
+                                            //最后那个\是转义字符,就可以让回车不再是回车了,不阻碍字符串拼接
+                                            //mainActor比较特殊
+                                            var htmlStr = '<div class="mask">\
+                                                <p>导演: ' + direct + '</p>\
+                                                <p>剧情: ' + gut + '</p>\
+                                                <p>主演: ' + mainActor.reduce(function(prev,curv){
+                                                    //prev为累加器,currentValue,是数组当前处理的元素
+                                                    //reduce(callback,initialValue);
+                                                    prev += curv+" ";
+                                                    return prev;
+                                                },'') + '</p>\
+                                                <p>编剧: ' + screenWritter.reduce(function(prev,curv){
+                                                    prev += curv+" ";
+                                                    return prev;
+                                                },'') + '</p>\
+                                                </div>';
+
+                                            // $('.mask').css({display:'none'});//我自己写的这个,老师没写
+                                            $('.mask').remove();//这两个任选其一,都可,避免文字不断重复添加
+
+                                            // $('body').html(htmlStr);
+                                            $(htmlStr)//其实吧,咱也不知道下面(.css)到底怎么个赋值顺序,你想让它水平垂直居中,那个marginleft本来是自身-1/2的
+                                                .appendTo('body')//故最好分两条css方法写进去,避免报错.$(window).outerWidth(true)/2屏幕的一半宽度
+                                                .css({position: 'absolute', left: $(window).outerWidth(true) / 2, marginTop: 50, width: 400, marginLeft: -200});
+                                        }
+                                        
+                                    });
+
+                                }).children()
+                                    .eq(0).attr('src',ele.poster)//图片资源
+                                        .next().text(ele.name);
+                                $Wrapper.append($MovieSection);//加到wrapper里
+
+
+                                
+                            })
+                        }
+
+                        
+                    })
+                }else{
+                    //非vip..
+                }
+            }
+        } );
+
+
+
+    </script>
+</body>
+</html>

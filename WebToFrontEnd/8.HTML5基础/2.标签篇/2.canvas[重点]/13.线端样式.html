@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        canvas{
+            width: 500px;
+            height: 300px;
+            border: 1px solid #000;
+        }
+    </style>
+
+</head>
+<body>
+    <canvas id="can" width="500px" height="300px"></canvas>
+
+
+    <script>
+
+        var canvas = document.getElementById('can');
+        var ctx = canvas.getContext('2d');
+
+        //线端样式
+        ctx.beginPath();
+        ctx.lineWidth = 15;
+        ctx.moveTo(100,100);
+        ctx.lineTo(200,100);
+        ctx.lineTo(100,130);
+
+        ctx.lineJoin = 'miter';//线段交汇时:round变圆,bevel直接砍了,默认值miter锋锐的
+        ctx.lineCap = 'round';//butt默认样式,square前后都多加一些,round把两头变圆增加一点长度        
+        ctx.miterLimit = 7;//防止过度尖锐
+
+
+        ctx.stroke();
+
+    </script>
+</body>
+</html>

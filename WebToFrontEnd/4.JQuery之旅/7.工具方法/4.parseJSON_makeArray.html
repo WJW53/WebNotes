@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //JSON其实也是个对象,但字符串要严格符合json的格式,比如必须对象内部属性名必须用双引号
+        //$.parseJSON();
+       var json = '{"a":123,"b":"str","c":true}';
+       var a = $.parseJSON(json);
+        console.log(a);//a就为{a: 123, b: "str", c: true}
+
+
+        //$.makeArray();
+        //一个参数:传一个类数组,把它变成真正的数组
+        var obj = {
+            0: "a",
+            1: "b",
+            2: "c",
+            length: 3,
+            push: Array.prototype.push,
+            slice: Array.prototype.slice,
+        }
+        // var arr = $.makeArray(obj);
+        // //[].slice.call(obj,0);
+
+        //两个参数的时候,这就强大一些了,向真数组里添加类数组都行
+        console.log( $.makeArray( 'd',obj ) );
+        var newArr = [1,2];
+        console.log( $.makeArray( newArr,obj ) );
+        console.log( $.makeArray( 3,newArr ) );
+        console.log( $.makeArray( obj,newArr ) );
+
+    </script>
+</body>
+
+</html>

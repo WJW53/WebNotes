@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <input type="text" id="search">
+    <button onclick="search()">搜索</button>
+    <div id="main"></div>
+
+    <script>
+        let data = [{
+            name: "HTML"
+        }, {
+            name: "CSS"
+        }, {
+            name: "JS"
+        }, {
+            name: "VUE"
+        }, {
+            name: "REACT"
+        }]
+
+        function search() {
+            let value = document.getElementById("search").value;
+            let result = data.filter(function (obj) {
+                if (obj.name.indexOf(value) >= 0) {
+                    return obj;
+                }
+            });
+            render(result);
+
+            //
+            history.pushState({
+                inpVal: value
+            }, null, "/" + value);
+        }
+
+        function render(renderData) {
+            var content = "";
+            for (var i = 0; i < renderData.length; i++) {
+                content += "<div>" + renderData[i].name + "</div>";
+            }
+            document.getElementById("main").innerHTML = content;
+        }
+
+        render(data);
+
+//只要url变了就会触发
+        window.addEventListener("popstate", function (e) { //回退时的state
+            console.log(e);
+            var value = document.getElementById("search").value = e.state.inpVal ? e.state.inpVal : "";
+            let result = data.filter(function (obj) {
+                if (obj.name.indexOf(value) >= 0) {
+                    return obj;
+                }
+            });
+            render(result);
+
+        });
+//hash值变了才会触发
+        window.addEventListener("hashchange", function (e) {
+            console.log(e);
+        })
+    </script>
+</body>
+
+</html>

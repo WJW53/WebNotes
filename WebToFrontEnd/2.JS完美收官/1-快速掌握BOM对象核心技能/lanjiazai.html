@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height: 3000px;
+            width: 3000px;
+        }
+        div{
+            position: absolute;
+            left: 200px;
+            top: 1500px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="demo" style="opacity: 0.2;"></div>
+
+    <script>
+        function check(_id){
+            var oDiv = document.getElementById('demo');
+            var lock;
+            
+            if(!lock){
+                if(oDiv.offsetTop <= window.pageYOffset + window.innerHeight){
+                    console.log('start:');
+                    lock = true;
+                    var iSpeed = 0.01;
+                    oDiv.timer = setInterval(function(){
+                        if(oDiv.style.opacity == '1'){
+                            console.log('over');
+                            clearInterval(oDiv.timer);
+                        }else{
+                            console.log(oDiv.style.opacity);
+                            oDiv.style.opacity = parseFloat(oDiv.style.opacity) + iSpeed;
+                        }      
+                    },30);
+                }
+            }
+        }
+
+        window.onscroll = function(){
+            check('demo');
+        }
+    </script>
+</body>
+</html>

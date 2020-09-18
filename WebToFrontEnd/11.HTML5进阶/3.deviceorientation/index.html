@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="main"></div>
+
+    <script>
+        //用安卓机来演示
+
+
+        //event中有这三个属性值:
+        //alpha: 指北(指南针) [0,360) 当为0的时候指北,180时指南
+        //beta: 平放的时候值为0.  如果将手机立起来(短边接触桌面),直立的时候值为90
+        //gamma: 平放的时候值为0, 如果将手机立起来(长边接触桌面),直立的时候值为90
+        window.addEventListener("deviceorientation", function (event) {
+            // console.log(event);
+            document.getElementById("main").innerHTML = "alpha: " + event.alpha + "<br/>" +
+                "beta: " + event.beta + "<br/>" + "gama: " + event.gamma;
+        });
+    </script>
+</body>
+
+</html>

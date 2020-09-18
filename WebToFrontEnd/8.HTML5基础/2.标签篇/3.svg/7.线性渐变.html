@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <svg width="500px" height="300px" style="border: 1px solid #000">
+
+        <!-- 渐变都要先定义 -->
+        <defs>
+            <!-- 两个点的坐标决定了渐变的方向 -->
+            <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="100%">
+                <stop offset="50%" style="stop-color:rgb(255,255,0)"></stop>
+                <stop offset="100%" style="stop-color:rgb(255,0,0)"></stop>
+            </linearGradient>
+        </defs>
+
+        <rect x="100" y="100" height="100" width="200" style="fill: url(#bg1);"></rect>
+
+    </svg>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+
+    </div>
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //$.ajax()
+        //先不管返回值
+        //参数  obj
+        //其属性才重要,常用的有:  
+        //  url:请求地址
+        //  type:类型
+        //  data:{}   是个参数,里面存了指定的信息 我们要请求啥数据就在data里写啥:名称类型备注等
+        //  success:请求成功后的处理函数
+        //  error:请求失败后的处理函数(一犯错就是世纪错误,很难受)
+        //  complete:请求完成后(不论成功失败)的处理函数,最后执行
+        //  context(上下文):改变函数上下文
+        //  timeout:设置请求超时的时间,单位毫秒,默认为0,代表永不超时;如果超过这个时间,则进入error
+        //  async:true/false,决定是否异步,一般都是希望异步(true)
+        //  dataType:'jsonp',jsonp是跨域请求
+
+
+        // $.ajax({
+        //     url: 'https://open.duyiedu.com/jq/person',
+        //     type: 'GET',
+        //     // dataType:'jsonp',
+        //     async: true,//不写这个属性,它默认也是异步的,因为jQuery对ajax作了处理
+        //     //我们当前这个例子是不需要写这个data参数的
+        //     // data: {
+        //     //     username:'wjw',
+        //     //     password:'ok'
+        //     // },
+        //     success: function(res){//这里面需要申请一个形参,会把请求回来封装的对象传给res
+        //         console.log(res);
+        //         $.each(res.data,function(index,ele){
+        //             console.log(ele);
+        //         })
+        //         console.log(this);//没写context时 -> 这个this指向ajax对象
+                
+        //     },//到这儿,就生成标签了
+        //     error:function(e){
+        //         console.log(e.status,e.statusText);//状态码 和 ...
+        //     },
+        //     complete: function(){
+        //         //可以作为容错处理,即便错了 , 我还给你返回点什么东西
+        //         console.log();
+        //     },
+        //     context: $('.wrapper')
+        // });
+
+        // console.log('over!');//async:true,就会开启异步,则会先打印over!
+
+        function deal (res) {
+            console.log(res);
+        }
+
+        $.ajax({
+            url:'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+            type:'GET',
+            data:{
+                wd:'nba',//用百度搜索nba时
+                cb:'deal',//cb不能改. 属性值得放一个全局的函数才能配合jsonp使用
+            },
+            dataType:'jsonp',//再配合cb,就可以跨域使用
+            //他会把data里的信息用jsonp的方式发送请求到那个url
+            //然后用deal函数处理返回的东西
+        });
+    </script>
+</body>
+</html>

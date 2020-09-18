@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+
+    <script>
+        //v = v + at
+        //x = v0*t + 1/2*a*t*t  ,  匀加速运动
+
+        var oDiv = document.getElementsByTagName('div')[0];
+        var timer = null;
+        
+        oDiv.onclick = function(){
+            accelerationMove(this);
+        }
+        //加速度不变的运动,初始方向是向右
+        function accelerationMove(dom){
+            clearInterval(timer);
+            var a = -2;
+            var iSpeed = 50;
+
+            timer = setInterval(function(){
+                iSpeed = iSpeed + a;
+                dom.style.left = dom.offsetLeft + iSpeed + 'px';
+            },30);
+        }
+
+        
+    </script>
+</body>
+</html>

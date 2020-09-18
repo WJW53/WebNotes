@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        canvas {
+            width: 500px;
+            height: 300px;
+            border: 1px solid #000;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <canvas id="can" width="500px" height="300px"></canvas>
+
+
+    <script>
+        var canvas = document.getElementById('can');
+
+        var ctx = canvas.getContext("2d");
+
+        // ctx.moveTo(100, 100);//起点
+        // //从(100,100) -->>  (200,100)
+        // ctx.lineTo(200, 100);
+        // ctx.lineTo(200, 200);
+        // // ctx.lineTo(100, 100);
+        // //上面就是个三角形
+
+        // ctx.lineWidth = 10;
+
+        // ctx.lineTo(128, 298);
+        // //如果不容易直接画回去,就用closePath这个方法
+        // ctx.closePath();//封起来,闭合
+        // // ctx.fill();//默认黑色
+
+        // ctx.stroke();
+
+
+//两个画线
+        // ctx.lineWidth = 10;
+        // ctx.moveTo(100,100);
+        // ctx.lineTo(200,100);
+        // ctx.stroke();
+
+        // ctx.beginPath();
+        // ctx.lineWidth = 5;
+        // ctx.moveTo(200,100);
+        // ctx.lineTo(200,200);
+        // ctx.lineTo(150,200);
+        // ctx.closePath();
+        // ctx.stroke();
+
+
+        //画矩形的快速方法
+        //1. 
+        // ctx.rect(100,100,200,100);
+        // ctx.fill();
+        // ctx.stroke();
+
+        //2. 
+        // ctx.strokeRect(100,100,200,100);
+        
+        //3. 最快,带填充
+        ctx.fillRect(100,100,200,100);
+
+    </script>
+
+</body>
+
+</html>

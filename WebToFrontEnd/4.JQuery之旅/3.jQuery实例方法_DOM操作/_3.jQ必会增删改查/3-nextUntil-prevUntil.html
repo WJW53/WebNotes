@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!--  nextUntil -->
+    <!-- 单独一个参数 -->
+    <div class="wrapper">
+        <h1>水果</h1>
+        全选：<input type="checkbox"></input>
+        banana:<input type="checkbox">
+        apple:<input type="checkbox">
+        orange:<input type="checkbox">    
+    
+        <h1>nba</h1>
+        全选：<input type="checkbox"></input>
+        Rose:<input type="checkbox">
+        Curry:<input type="checkbox">
+        James:<input type="checkbox">
+
+        <div></div>
+        <!-- <input type="text"> -->
+
+        <!-- :nth-child(n) 选择器匹配属于其父元素的第 N 个子元素，不论元素的类型。 -->
+    </div>
+    
+    <script src='../../jquery-3.4.1/jquery-2.1.4.js'></script>
+    <script>
+        //nextUntil,可以传两个参数,第一个:直到下个这个元素节点为止(不含);
+        //第二个参数:在这期间,只选......
+
+        $('h1').next().click(function(){//选中所有h1下面的第一个元素节点
+            if( $(this).prop('checked') ){//prop返回的是Boolean值,
+            //如果选中了,那么就使得 直到下一个h1元素并且在此期间只选择input[type="checkbox"]
+                $(this).nextUntil('h1','input[type="checkbox"]').prop('checked',true);
+            }else{
+                $(this).nextUntil('h1','input[type="checkbox"]').prop('checked',false);
+            }
+            
+        });
+
+
+        // $('h1').next().click(function () {
+        //     // 
+        //     $(this).nextUntil('h1', 'input[type="checkbox"]').prop('checked', true);
+        // });
+    </script>
+</body>
+</html> 

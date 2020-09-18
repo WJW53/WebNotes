@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <button>change</button> -->
+    <span class=".demo">duyi-wjw</span>
+    <p class=".demo">duyi-WJW</p>
+    <button>change</button>
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+
+    <script>
+        //next prev 同理,且常用
+        ////返回下一个兄弟元素节点,并且它下一个兄弟元素节点必须是p才行,不是p,那也不行
+        $('button').click(function(){
+            // $(this).next('p').css({fontSize:'20px',color:'orange'});
+            $(this).prev('p').css({fontSize:'20px',color:'orange'});
+
+        });
+
+        
+    </script>
+
+
+</body>
+
+</html>

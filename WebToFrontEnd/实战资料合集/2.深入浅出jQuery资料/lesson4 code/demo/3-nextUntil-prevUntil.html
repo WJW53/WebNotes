@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!--  nextUntil -->
+    <!-- 单独一个参数 -->
+    <div class="wrapper">
+        <h1>水果</h1>
+        全选：<input type="checkbox"></input>
+        banana:<input type="checkbox">
+        apple:<input type="checkbox">
+        orange:<input type="checkbox">    
+    
+        <h1>nba</h1>
+        全选：<input type="checkbox"></input>
+        Rose:<input type="checkbox">
+        Curry:<input type="checkbox">
+        James:<input type="checkbox">
+
+
+
+        <div></div>
+    </div>
+    
+    <script src='./jquery.js'></script>
+    <script>
+        $('h1').next().click(function () {
+            // 
+            $(this).nextUntil('h1', 'input[type="checkbox"]').prop('checked', true);
+        });
+    </script>
+</body>
+</html> 

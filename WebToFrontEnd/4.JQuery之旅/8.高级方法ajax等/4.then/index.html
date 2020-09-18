@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script src="../../jquery-3.4.1/jquery-2.1.4.js"></script>
+
+    <script>
+        //核心 then
+        var df = $.Deferred();
+
+        // df.done(function(){
+        //     console.log('done1');
+        // }).fail(function(){
+        //     console.log('fail');
+        // }).progress(function(){
+        //     console.log('progress');
+        // }).done(function(){
+        //     console.log('done2');
+        // });
+
+        //简化注册的写法
+        // df.then(function(){//done
+        //     console.log('done1');
+        // },function(){//fail
+        //     console.log('fail');
+        // },function(){//progress
+        //     console.log('progress');
+        // }).then(function(){
+        //     console.log('done2');
+        // },function(){
+        //     console.log('fail2');
+        // },function(){
+        //     console.log('progress2');
+        // });
+
+        function createScore(){
+            var df = $.Deferred();
+            setInterval(function(){
+                //
+                var score = Math.random()*100;
+                if(score>60){
+                    df.resolve('Congradulation!');
+                }else if(score<50){
+                    df.reject('Sadness.');
+                }else{
+                    df.notify('Fighting!');
+                }
+            },1500);
+
+            return df.promise();
+        }
+
+        var df = createScore();
+
+// //突然想吹一波链式调用
+        //// then内部显式的return一个参数,就会传递给下次then注册函数的参数
+//         df.then(function(ms){
+//             console.log('oh Yeah!' + " " + ms);
+//             return 'ok,next then"s param';
+//         },function(ms){
+//             console.log('oh No!' + " " + ms);
+//             return 'no,next then\'s param';
+//         },function(ms){
+//             console.log('what?' + " " + ms);
+//             return 'go on';
+//         }).then(function(param){//这里这个param就是上个then的返回值
+//             console.log('really!' + " " + param);
+//         },function(param){
+//             console.log('false' + " " + param);
+//         },function(param){
+//             console.log('jiayou ' + param);
+//         });
+
+
+//then 执行完,其实是返回一个新的被阉割的df对象,如何证明呢,看下面. 下面也是解决回调地狱的方法
+
+//下述注解: 第一个then,先注册那仨,然后那仨内部分别返回新的阉割版的df对象,作为调用下一个then的对象
+//同时1then内的 定时器内的 触发函数内的参数 会作为 下一个then注册状态函数的参数.
+//    最后由,上面的createScore函数,定时器内的触发函数开始触发
+
+        df.then(function(ms){
+            console.log('oh Yeah!' + " " + ms);
+            var innerDf = $.Deferred();
+
+            setTimeout(function(){
+                innerDf.resolve('wjw resolve');//
+            },1500);
+
+            return innerDf.promise();
+        },function(ms){
+            console.log('oh No!' + " " + ms);
+            var innerDf = $.Deferred();
+
+            setTimeout(function(){
+                innerDf.reject('wjw reject');//
+            },1500);
+
+            return innerDf.promise();
+        },function(ms){
+            console.log('what?' + " " + ms);
+            var innerDf = $.Deferred();
+
+            setTimeout(function(){
+                innerDf.notify('wjw notify');//
+            },1500);
+
+            return innerDf.promise();
+        }).then(function(ms){
+            console.log(ms);
+        },function(ms){
+            console.log(ms);
+        },function(ms){
+            console.log(ms);
+        });
+
+
+        $.ajax({url,type,data}).then(function(){//注册done,代替了ajax内部的success
+            //成功resolve的时候(这就是延迟)  就发送请求
+            return $.ajax();
+        }).then(function(){
+            return $.ajax();
+        })
+    </script>
+</body>
+</html>

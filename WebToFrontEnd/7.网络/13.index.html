@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+
+
+    </style>
+</head>
+<body>
+    
+    <script>
+
+        var xhr = null;
+        if(window.XMLHttpRequest){//这里是正常的浏览器的写法
+            xhr = new XMLHttpRequest();
+        }else{//这里是做兼容性处理,IE
+            xhr = new ActiveXObject("Microsoft.XMLHttp");
+        }
+        
+        xhr.open("get","http://developer.duyiedu.com/edu/testAjaxCrossOrigin");
+        // xhr.open()
+        console.log(xhr.readyState);
+        xhr.send();
+        console.log(xhr.readyState);
+        xhr.onreadystatechange = function(){
+            //readyState == 4 表示请求已经完成
+            //status == 200 网络请求,结果都会有一个状态码
+            //200表示成功
+            //实际上2**,都是表示成功
+            //3** 表示重定向
+            //4** 表示客户端错误,404页面没找到
+            //5** 表示服务端错误
+
+            if(xhr.readyState==4 && xhr.status == 200){
+                document.getElementById('test').innerText = xhr.responseText();
+                var data = JSON.parse(xhr.responseText);
+                console.log(data);
+                console.log(xhr.readyState);
+            }else if( xhr.readyState==3){
+                console.log(xhr.readyState);
+            }else{
+                console.log('nothing');
+                
+            }
+            
+        }
+
+        xhr.send();
+        //如果open的第三个传的是true or false 表示的是同步还是异步
+        //
+        console.log('++++');
+        console.log('----');
+
+        //在计算机的世界里,同步表示的是串行,而异步表示的是并行.
+        //可以理解为同线程和异线程
+        
+
+    </script>
+
+</body>
+</html>

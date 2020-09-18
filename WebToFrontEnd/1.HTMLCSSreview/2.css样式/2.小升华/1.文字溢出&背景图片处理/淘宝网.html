@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        a{
+            display: inline-block;
+            text-decoration: none;
+            color: #424242;
+            width: 190px;
+            border: 1px solid black;
+            background-image: url(//img.alicdn.com/tfs/TB1UDHOcwoQMeJjy0FoXXcShVXa-286-118.png);
+            background-size: 190px 90px;
+            
+            /* 方法一: 有个高度,先要求不换行,给我首行缩进200px,也就是移出了a的范围,最后,溢出隐藏*/
+            /* height: 90px;
+            white-space: nowrap;
+            text-indent: 200px;
+            overflow: hidden; */
+
+            /* 方法二: 直接把a的高度设置为0,然后内边距设置为背景图的高度,最后溢出隐藏*/
+            height: 0;
+            padding-top: 90px;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+<!-- 国际企业的想法,就是即便你网速不好使(加载不出来东西)的时候,依然可以完成正常功能。就是去掉css,显示html原有的样子 -->
+    <a href="http://www.taobao.com" target="_blank">淘宝网</a>
+    <!-- <div></div> -->
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <script src="../jquery-3.4.1/jquery-3.4.1.js"></script>
+    <!-- <script src="../MyJQuery/myjQuery.js"></script> -->
+
+    <script>
+        //find 在原有的基础上,往下面查找
+        // $('.wrapper')
+        //     .css({position:'relative'});
+
+        // $('.wrapper ul')
+        //     .css({listStyle:'none'});
+
+        // $('.wrapper ul li')
+        //     .css({color:'red'});
+
+//这样的话,就比较麻烦,所以有了find  -->  查找的次数少了,效率更高了
+
+        $('.wrapper')
+            .css({position:'relative'})
+                .find('ul')
+                    .css({listStyle:'none'})
+                        .find('li')
+                            .css({color:'red'});
+
+//prevObject这个属性很重要
+        console.log( $('.wrapper') );
+        console.log( $('.wrapper').find('ul') );
+        console.log( $('.wrapper').find('ul').find('li').prevObject
+        == $('.wrapper').find('ul') );//false,只是内容一样
+        //prevObject指向的是进行这一步jq对象的前一步的jq对象
+        //false是因为,相当于new了一个,每次的jQuery包装的框架是新的,不一样的
+        console.log($('.wrapper').find('ul').find('li').prevObject.prevObject.prevObject);
+
+    
+    </script>
+</body>
+</html>

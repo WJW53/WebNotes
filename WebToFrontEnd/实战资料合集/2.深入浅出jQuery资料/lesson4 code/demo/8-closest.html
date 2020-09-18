@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- closest  closest('li') -->
+    
+    <div class="wrapper">
+        <ul>
+            <li>
+                <ul data-id='101'>
+                    <li>nike</li>
+                    <li>200$</li>
+                    <li>
+                        <button>add</button>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <ul data-id='102'>
+                    <li>nike</li>
+                    <li>200$</li>
+                    <li>
+                        <button>add</button>
+                    </li>
+                </ul>             
+            </li>
+        </ul>
+    </div>
+
+    <script src='./jquery.js'></script>
+    <script>
+
+        console.log( $('button').eq(0).closest('ul').attr('data-id') );
+        
+    </script>
+</body>
+</html>

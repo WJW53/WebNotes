@@ -1,0 +1,35 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+div{
+    width: 200px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    background: linear-gradient(110deg, #260af8 40%, rgba(0, 0, 0, 0.1) 40%), radial-gradient(farthest-corner at 0% 0%, #7a00cc 60%, #c03fff 60%);
+    color: rgba(255,255,255,0.8);
+}
+
+div::before{
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 11px;
+    background-image: url();
+    background-size: 100% 100%;
+    margin-right: 5px;
+    vertical-align: -1px;
+}
+
+div::after{
+    content: "";
+    /* display: inline-block; */
+    float: right;
+    margin-top: 3px;
+    width: 6px;
+    height: 11px;
+    background-image: url();
+    background-size: 100% 100%;
+}

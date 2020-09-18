@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        
+        banana:<input type="checkbox">
+        apple:<input type="checkbox">
+        orange:<input type="checkbox">
+        <input type="submit" value='login'></input>
+        全选：<input type="checkbox"></input>
+    </div>
+
+
+    <script src='./jquery.js'></script>
+    <script>
+        $('input[type="checkbox"]').eq(-1).click(function () {
+            $(this).prevAll('input[type="checkbox"]').prop('checked', true)
+        });
+
+
+
+
+    </script>
+</body>
+</html>
