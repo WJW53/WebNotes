@@ -1,5 +1,7 @@
 # yarn 简介
 
+- 注意: 现在nodejs还是由npm公司管理的
+
 > yarn 官网：https://www.yarnpkg.com/zh-Hans/
 
 yarn 是由Facebook、Google、Exponent 和 Tilde 联合推出了一个新的 JS 包管理工具，**它仍然使用 npm 的registry**，不过提供了全新 CLI 来对包进行管理
@@ -11,7 +13,7 @@ yarn 是由Facebook、Google、Exponent 和 Tilde 联合推出了一个新的 JS
 
 之所以会出现这种情况，是因为在过去，npm 存在下面的问题：
 
-- 依赖目录嵌套层次深：过去，npm 的依赖是嵌套的，这在 windows 系统上是一个极大的问题，由于众所周知的原因，windows 系统无法支持太深的目录
+- 依赖目录嵌套层次深：过去，npm 的依赖是嵌套的，这在 windows 系统上是一个极大的问题，由于众所周知的原因，windows 系统无法支持太深的目录（顶多256层目录）
 - 下载速度慢
   - 由于嵌套层次的问题，所以npm对包的下载只能是串行的，即前一个包下载完后才会下载下一个包，导致带宽资源没有完全利用
   - 多个相同版本的包被重复的下载

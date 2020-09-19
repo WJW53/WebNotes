@@ -1,3 +1,5 @@
+// 玩家玩游戏的模块
+
 import * as map from "./map.js";
 
 /**
@@ -6,7 +8,7 @@ import * as map from "./map.js";
  */
 export function playerMove(direction) {
     var playerPoint = getPlayerPoint(); //得到玩家位置
-    //得到玩家下一个位置的信息
+    //得到玩家下一个位置的信息(根据这个进而判断如何移动啊)
     var nextInfo = getNextInfo(playerPoint.row, playerPoint.col, direction)
 
     //什么情况下，不能移动
@@ -15,22 +17,22 @@ export function playerMove(direction) {
     }
 
     //能移动
-    if (nextInfo.value === map.SPACE) {
-        //下一个位置是空白
+    if (nextInfo.value === map.SPACE) {//下一个位置是空白
+        //交换两个格子内容
         exchange(playerPoint, nextInfo);
         return true;
     }
     else {
         //下一个位置是箱子
         //获取箱子的下一个位置
-        var nextNextInfo = getNextInfo(nextInfo.row, nextInfo.col, direction)
-        if (nextNextInfo.value === map.SPACE) {
+        var nextNextInfo = getNextInfo(nextInfo.row, nextInfo.col, direction);
+        if (nextNextInfo.value === map.SPACE) {//空白的时候
             //可以移动
             exchange(nextInfo, nextNextInfo);
             exchange(playerPoint, nextInfo);
             return true;
         }
-        else {
+        else {//不管又是一个箱子还是墙,那都不能移动
             return false;
         }
     }
@@ -51,6 +53,7 @@ export function isWin() {
     return true;
 }
 
+
 function exchange(point1, point2) {
     var temp = map.content[point1.row][point1.col];
     map.content[point1.row][point1.col] = map.content[point2.row][point2.col];
@@ -70,12 +73,12 @@ function getPlayerPoint() {
                 }
             }
         }
-    }
-    throw new Error("地图上居然没有玩家");
+    };
+    throw new Error("地图上居然没有玩家,地图有问题!");
 }
 
 /**
- * 得到某个位置在指定方向上的下一个位置的信息（第几行、第几列、内容是啥）
+ * 得到某个位置在指定方向上的下一个位置的信息（第几行、第几列、内容是啥）, 返回的是对象
  * @param row 指定的行
  * @param col 指定的列
  * @param {*} direction 

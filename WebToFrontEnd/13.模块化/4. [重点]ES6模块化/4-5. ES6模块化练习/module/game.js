@@ -1,11 +1,15 @@
-import { playerMove, isWin } from "./play.js"
-import showUI from "./ui.js"
+//按键模块
+
+import { playerMove, isWin } from "./play.js";
+import showUI from "./ui.js";
 
 showUI();
-var over = false
+var over = false;//游戏是否结束
+
 //完成整个游戏
 
 window.onkeydown = function (e) {
+    // console.log(e.key);//测试上下左右对应什么字符串
     if (over) {
         return;
     }
@@ -14,16 +18,16 @@ window.onkeydown = function (e) {
         result = playerMove("up");
     }
     else if (e.key === "ArrowDown") {
-        result = playerMove("down")
+        result = playerMove("down");
     }
     else if (e.key === "ArrowLeft") {
-        result = playerMove("left")
+        result = playerMove("left");
     }
     else if (e.key === "ArrowRight") {
-        result = playerMove("right")
+        result = playerMove("right");
     }
 
-    if (result) {
+    if (result) {//移动成功就重新绘制地图
         showUI();
         if (isWin()) {
             console.log("游戏胜利！");

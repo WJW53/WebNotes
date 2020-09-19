@@ -1,9 +1,10 @@
 //该模块用于将地图显示到页面上
+
 import * as map from "./map.js";
 
 var divContainer = document.getElementById("game");
-var pieceWidth = 45; //每一个小块的宽度
-var pieceHeight = 45; //每一个小块的高度
+const pieceWidth = 45; //每一个小块的宽度
+const pieceHeight = 45; //每一个小块的高度
 
 /**
  * 设置div的宽度
@@ -27,6 +28,7 @@ function isCorrect(row, col) {
     }
     return false;
 
+    //es6写法
     // return map.correct.find(p => p.row === row && p.col === col) !== undefined;
 }
 
@@ -38,13 +40,15 @@ function isCorrect(row, col) {
 function setOnePiece(row, col) {
     var value = map.content[row][col]; //取出地图相应位置的值
     var div = document.createElement("div");
-    div.className = "item";
-    //调整div的位置
+    div.className = "item";//先赋予初始共用样式
+    //调整div的位置,因为暂时都是重叠在一起的
     div.style.left = col * pieceWidth + "px";
     div.style.top = row * pieceHeight + "px";
+    // div.style.border = "1px solid #000000";
 
     //当前位置是否是正确位置
     var correct = isCorrect(row, col);
+    //根据当前格子内容添加类样式
     if (value === map.PLAYER) {
         div.classList.add("player");
     }
@@ -52,7 +56,7 @@ function setOnePiece(row, col) {
         div.classList.add("wall");
     }
     else if (value === map.BOX) {
-        if (correct) {
+        if (correct) {//是正确位置
             div.classList.add("correct-box");
         }
         else {
@@ -61,15 +65,15 @@ function setOnePiece(row, col) {
     }
     else {
         //空白
-        if (correct) {
+        if (correct) {//正确的空白位置
             div.classList.add("correct");
         }
         else {
-            return; //只是一个普通空白
+            return; //只是一个普通空白,那就啥都不干呗
         }
     }
 
-    divContainer.appendChild(div);
+    divContainer.appendChild(div);//加到DOM中
 }
 
 /**

@@ -7,9 +7,15 @@
 
     <style>
         .item {
+            position:relative;
             height: 50px;
             background-color: red;
-            border:2px solid #000000
+            border:2px solid #000000;
+            /* 因为每个都是相对于自己原先的位置发生变化,只是视觉改变
+            但是实际位置不会改变 */
+            /* 所以margin-bottom有效,top就会使得后面的元素在视觉上都失效 */
+            margin-bottom: 10px;
+            /* top: 100px; */
         }
 
 
@@ -17,7 +23,7 @@
 </head>
 <body>
     <div class="item"></div>
-    <div class="item" style="position:relative"></div>
+    <div class="item"></div>
     <div class="item"></div>
 
 
