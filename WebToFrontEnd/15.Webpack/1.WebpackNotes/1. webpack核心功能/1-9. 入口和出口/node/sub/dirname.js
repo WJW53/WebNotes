@@ -8,4 +8,4 @@ __dirname: 所有情况下，都表示当前运行的js文件所在的目录，�
 
 */
 
-console.log(__dirname)
+console.log(__dirname);

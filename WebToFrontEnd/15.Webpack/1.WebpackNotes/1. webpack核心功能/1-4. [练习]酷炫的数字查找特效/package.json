@@ -1,19 +1,20 @@
 {
-    "name": "test",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "dev": "webpack --mode=development --watch",
-        "build": "webpack --mode=production"
-    },
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "webpack": "^4.41.5",
-        "webpack-cli": "^3.3.10"
-    },
-    "dependencies": {
-        "jquery": "^3.4.1"
-    }
+  "name": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode=development --watch",
+    "build": "webpack --mode=production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1"
+  },
+  "keywords": [],
+  "description": ""
 }
