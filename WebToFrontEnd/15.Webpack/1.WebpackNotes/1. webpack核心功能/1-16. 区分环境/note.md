@@ -7,16 +7,16 @@
 为了更好的适应这种要求，webpack允许配置不仅可以是一个对象，还可以是一个**函数**
 
 ```js
-module.exports = env => {
+module.exports = env => {//有第二个参数,但平时不怎么用
     return {
         //配置内容
     }
 }
 ```
 
-在开始构建时，webpack如果发现配置是一个函数，会调用该函数，将函数返回的对象作为配置内容，因此，开发者可以根据不同的环境返回不同的对象
+`在开始构建时，webpack如果发现配置是一个函数，会调用该函数，将函数返回的对象作为配置内容，因此，开发者可以根据不同的环境返回不同的对象`
 
-在调用webpack函数时，webpack会向函数传入一个参数env，该参数的值来自于webpack命令中给env指定的值，例如
+**在调用webpack函数时，webpack会向函数传入一个参数env，该参数的值来自于webpack命令中给env指定的值，例如:**
 
 ```shell
 npx webpack --env abc # env: "abc"

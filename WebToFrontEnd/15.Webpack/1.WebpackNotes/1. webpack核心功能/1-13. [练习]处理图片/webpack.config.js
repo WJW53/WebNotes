@@ -4,10 +4,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(png)|(jpg)|(gif)$/, use: [{
+                test: /\.(png)|(jpg)|(gif)$/,
+                use: [{
                     loader: "./loaders/img-loader.js",
                     options: {
-                        limit: 3000, //3000字节以上使用图片，3000字节以内使用base64
+                        limit: 10000, //10000字节以上使用图片，3000字节以内使用base64格式
                         filename: "img-[contenthash:5].[ext]"
                     }
                 }]

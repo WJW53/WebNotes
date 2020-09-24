@@ -1,4 +1,4 @@
-var MyPlugin = require("./plugins/MyPlugin")
+var MyPlugin = require("./plugins/MyPlugin");
 
 module.exports = {
     mode: "development",

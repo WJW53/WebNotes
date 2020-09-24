@@ -9,4 +9,6 @@ new.target
 //如果使用new调用函数，则得到的是  "[类型,new关键字后面的函数本身的名字]"
 ```
 
-if(new.target === undefined){}
+if(new.target === undefined){
+
+}

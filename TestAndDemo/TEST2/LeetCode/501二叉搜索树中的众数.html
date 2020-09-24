@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //这个是按照 对象数组 中的 每个对象的相同属性的属性值排序
+        // function sortBy(props) {
+        //     return function (a, b) {
+        //         return a[props] - b[props];
+        //     }
+        // }
+        // arr1.sort(sortBy("value"));
+
+
+        var findMode = function (root) {
+
+            let map = {};
+            let dfs = function (root, map) {
+                if (root === null) {
+                    return;
+                }
+                if (map[root.val] === undefined) {
+                    map[root.val] = 1;
+                } else {
+                    map[root.val]++;
+                }
+
+                dfs(root.left, map);
+                dfs(root.right, map);
+            }
+            dfs(root, map);
+
+            //测试let map = {0:1,2:3,3:3,4:2}
+            let keysSorted = Object.keys(map).sort(function (a, b) {
+                return map[b] - map[a]
+            }) //按键值排序，然后取出所有的可枚举属性，它的顺序跟
+            // console.log(keysSorted);//但它里面的内容是字符串类型的
+
+
+            let arr = [];
+            for (let prop in map) {
+                arr.push(map[prop]);
+            }
+
+            arr.sort((a, b) => b - a); //排序
+
+            let index = 0;//找到所有众数总共几个值==index+1
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] == arr[i + 1]) {
+                    continue;
+                } else {
+                    index = i;
+                    break;
+                }
+            }
+
+            return keysSorted.slice(0, index + 1);
+
+        };
+
+        findMode()
+    </script>
+</body>
+
+</html>

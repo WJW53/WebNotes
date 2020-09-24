@@ -1,3 +1,4 @@
+//共有的配置
 module.exports = {
     entry: "./src/index.js",
     output: {

@@ -8,7 +8,7 @@
 context: path.resolve(__dirname, "app")
 ```
 
-该配置会影响入口和loaders的解析，入口和loaders的相对路径会以context的配置作为基准路径，这样，你的配置会独立于CWD（current working directory 当前执行路径）
+**该配置会影响入口和loaders的解析，入口和loaders的相对路径会以context的配置作为基准路径，这样，你的配置会独立于CWD（current working directory 当前执行路径）**
 
 ## output
 
@@ -16,9 +16,14 @@ context: path.resolve(__dirname, "app")
 
 ```js
 library: "abc"
+//相当于
+var abc = (function(modules){})({});
 ```
 
-这样一来，打包后的结果中，会将自执行函数的执行结果暴露给abc 
+这样一来，打包后的结果中，会将自/立即执行函数的执行结果暴露给abc
+
+即 abc 得到的是 入口文件导出的结果,没写就默认是{}
+
 
 ### libraryTarget
 
@@ -37,6 +42,7 @@ libraryTarget: "var"
 - commonjs：暴露给exports的一个属性
 - 其他：https://www.webpackjs.com/configuration/output/#output-librarytarget
 
+
 ## target
 
 ```js
@@ -45,9 +51,11 @@ target:"web" //默认值
 
 设置打包结果最终要运行的环境，常用值有
 
-- web: 打包后的代码运行在web环境中
+- web(默认): 打包后的代码运行在web环境中
+    - **所它找不到fs模块,fs是node的内置模块,不在node环境中**
 - node：打包后的代码运行在node环境中
 - 其他：https://www.webpackjs.com/configuration/target/
+
 
 ## module.noParse
 
@@ -55,11 +63,17 @@ target:"web" //默认值
 noParse: /jquery/
 ```
 
-不解析正则表达式匹配的模块，通常用它来忽略那些大型的单模块库，以提高**构建性能**
+**不解析正则表达式匹配的模块，通常用它来忽略那些`大型的单模块库`，以`提高构建性能`**
+
+不会去解析,故不会分析依赖、ast、转换代码等,直接返回源代码
+
 
 ## resolve
 
 resolve的相关配置主要用于控制模块解析过程
+
+resolve.modules的默认值是["node_modules"]
+
 
 ### modules
 
@@ -67,11 +81,12 @@ resolve的相关配置主要用于控制模块解析过程
 modules: ["node_modules"]  //默认值
 ```
 
-当解析模块时，如果遇到导入语句，```require("test")```，webpack会从下面的位置寻找依赖的模块
+当解析模块时，如果遇到导入语句，`require("test")`，webpack会从下面的位置寻找依赖的模块
 
 1. 当前目录下的```node_modules```目录
 2. 上级目录下的```node_modules```目录
 3. ...
+
 
 ### extensions
 
@@ -84,6 +99,7 @@ extensions: [".js", ".json"]  //默认值
 - test.js
 - test.json
 
+
 ### alias
 
 ```js
@@ -95,7 +111,8 @@ alias: {
 
 有了alias（别名）后，导入语句中可以加入配置的键名，例如```require("@/abc.js")```，webpack会将其看作是```require(src的绝对路径+"/abc.js")```。
 
-在大型系统中，源码结构往往比较深和复杂，别名配置可以让我们更加方便的导入依赖
+**在大型系统中，源码结构往往比较深和复杂，别名配置可以让我们更加方便的导入依赖**
+
 
 ## externals
 
@@ -153,6 +170,7 @@ require("lodash")
 ```
 
 这比较适用于一些第三方库来自于外部CDN的情况，这样一来，即可以在页面中使用CDN，又让bundle的体积变得更小，还不影响源码的编写
+
 
 ## stats
 
