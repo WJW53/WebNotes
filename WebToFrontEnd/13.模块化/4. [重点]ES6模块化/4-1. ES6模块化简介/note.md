@@ -2,6 +2,8 @@
 
 ECMA组织参考了众多社区模块化标准, 终于在2015年, 随着ES6发布了官方的模块化标准,之后成为ES6模块化
 
+<script src="./index.js" type="module"></script>
+
 ES6模块化具有以下的特点: 
 
 1. `它使用依赖 预声明 的方式导入模块(而commonjs是依赖延迟声明,在想用的时候再require)`
