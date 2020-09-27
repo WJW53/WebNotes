@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>{{text}}</h1>
+        <!-- <input type="text" :value="text" @input="text=$event.target.value"> -->
+        <!-- 上述相当于下面这行, v-model, 提供的语法糖 -->
+        <input type="text" v-model="text">
+    </div>
+
+    <script src="./vue.min.js"></script>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                text: "abc",
+            }
+        })
+    </script>
+</body>
+
+</html>
