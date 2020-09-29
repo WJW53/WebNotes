@@ -1,0 +1,19 @@
+<template>
+    <div>
+        {{ msg }}
+    </div>
+</template>
+<script>
+export default {
+    data(){
+        return{
+            msg:"world"
+        }
+    }
+}
+</script>
+<style scoped>
+div{
+    background-color: brown;
+}
+</style>
