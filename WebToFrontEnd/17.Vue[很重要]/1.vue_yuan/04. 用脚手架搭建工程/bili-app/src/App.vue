@@ -1,17 +1,22 @@
 <template>
-    
+  <!--   可以更改width,和columns的值,组件做了处理的 -->
   <div>
         
     <div style="width: 250px">
-        <TitleMenu :isActive="select" @active="select = true">
-            <template v-slot:title>
-                <!-- 给title具名插槽传递内容 -->
-                发现频道         
-            </template>
-            <template v-slot:icon>
-                  >         
-            </template>
-        </TitleMenu>  
+            <TitleMenu :isActive="activeId === 100" @active="activeId = 100">
+                <template v-slot:title>
+                    <!-- 给title具名插槽传递内容 -->
+                    发现频道         
+        </template>
+                <template v-slot:icon>           >          </template>
+            </TitleMenu
+      >  
+      <ChannelList
+        :columns="2"
+        :activeId="activeId"
+        @active="activeId = $event"
+      >
+      </ChannelList>
     </div>
       
   </div>
@@ -40,14 +45,19 @@
 
 // import Item from "./components/Item";
 import TitleMenu from "./components/TitleMenu";
+import Channel from "./components/Channel";
+import ChannelList from "./components/ChannelList";
+
 export default {
   components: {
     // Item,
     TitleMenu,
+    ChannelList,
   }, // data(){ //   return { //     curActive: "dianjing", //   } // },
   data() {
     return {
       select: false,
+      activeId: 100, //默认是热门,也就是发现频道
     };
   },
 };

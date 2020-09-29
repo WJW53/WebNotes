@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //关于一道二叉树后序遍历引发了各种的算法逻辑
+        //说明啥,路还很长,学无止境,保持谦卑,点滴积累、进步
+
+
+        // 另外:
+        // 推荐使用颜色标记法, 它的解题思路适用于解前序、中序、后序遍历。
+        // 颜色标记法(迭代法, 模拟系统栈)
+        // 使用颜色标记法剖析树在中序遍历下的递归操作, 思路如下:
+
+        // 将访问过的元素标记为灰色, 未访问过的元素标记为白色;
+        // 从栈顶取出访问元素:
+        // 若为灰色元素, 则打印之;
+        // 若为白色元素, 按照中 -> 右 -> 左的顺序推入栈, 同时将白色元素标记为灰色元素;
+
+        // var postorderTraversal = function (root) {
+        //     const printArr = []
+        //     if (!root) return printArr
+        //     const stack = []
+        //     stack.push({
+        //         color: 'white',
+        //         node: root
+        //     })
+
+        //     while (stack.length > 0) {
+        //         const {
+        //             color,
+        //             node
+        //         } = stack.pop()
+        //         if (color === 'gray') {
+        //             printArr.push(node.val)
+        //         } else {
+        //             stack.push({
+        //                 color: 'gray',
+        //                 node
+        //             })
+        //             node.right && stack.push({
+        //                 color: 'white',
+        //                 node: node.right
+        //             })
+        //             node.left && stack.push({
+        //                 color: 'white',
+        //                 node: node.left
+        //             })
+        //         }
+        //     }
+
+        //     return printArr;
+        // }
+
+
+
+        /**
+         * Definition for a binary tree node.
+         * function TreeNode(val, left, right) {
+         *     this.val = (val===undefined ? 0 : val)
+         *     this.left = (left===undefined ? null : left)
+         *     this.right = (right===undefined ? null : right)
+         * }
+         */
+        /**
+         * @param {TreeNode} root
+         * @return {number[]}
+         */
+        // let arr = [];
+        let postorderTraversal = function (root) {
+
+            //法一正确,LeetCode到底怎么才算对?
+            // let nums = [];
+            // let recall = (root) => {
+            //     root.left && recall(root.left);
+            //     root.right && recall(root.right);
+            //     nums.push(root.val);
+            // }
+            // root && fun(root);
+            // return nums;
+
+            //这样写为啥错误呢?说是传入[],得到的却是[3,2,1],但我测试时是得到[]啊
+            // if(root === null){
+            //     return arr;
+            // }
+            // postorderTraversal(root.left);
+            // postorderTraversal(root.right);
+            // arr.push(root.val);
+
+            // return arr;
+
+
+
+
+            //法二,利用es6新特性
+            // return root
+            //     ? [
+            //         ...postorderTraversal(root.left),
+            //         ...postorderTraversal(root.right),
+            //         root.val
+            //     ]
+            //     : [];
+
+
+            //法三,迭代版
+            // 1, 先遍历左节点, 当遍历到叶子节点时,装入result里
+            // 2, 然后pop到上一层节点, 顺便让left等于null,代表走过了
+            // 3, 再遍历右节点, 同样是遍历到末尾节点时, 记录值
+            // 4, 第二次返回时, 让右节点等于null,同理
+
+            let res = [],
+                stack = [];
+            while (root || stack.length) {
+                if (root.left) {
+                    stack.push(root);
+                    root = root.left; //指向子树
+                } else if (root.right) {
+                    stack.push(root);
+                    root = root.right;
+                } else {
+                    res.push(root.val);
+                    root = stack.pop(); //回到上一层
+                    if (root && root.left) root.left = null; //堵死
+                    else if (root && root.right) root.right = null;
+                }
+            }
+            return res;
+
+
+            //迭代版优化: 类似 根左右 先改为右左根 再改为左右根 的思想
+            //每次先入左节点, 然后入右节点
+            //每次把值都插到数组的最前面
+            // let res = [], stack = [];
+            // while (root || stack.length) {
+            //     res.unshift(root.val);//这是关键
+            //     if (root.left) stack.push(root.left);
+            //     if (root.right) stack.push(root.right);
+            //     root = stack.pop();
+            // }
+            // return res;
+
+        };
+    </script>
+</body>
+
+</html>
