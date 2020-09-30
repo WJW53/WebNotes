@@ -12,6 +12,11 @@
         //关于一道二叉树后序遍历引发了各种的算法逻辑
         //说明啥,路还很长,学无止境,保持谦卑,点滴积累、进步
 
+        function TreeNode(val, left, right) {
+            this.val = (val === undefined ? 0 : val);
+            this.left = (left === undefined ? null : left);
+            this.right = (right === undefined ? null : right);
+        }
 
         // 另外:
         // 推荐使用颜色标记法, 它的解题思路适用于解前序、中序、后序遍历。
@@ -62,17 +67,13 @@
 
         /**
          * Definition for a binary tree node.
-         * function TreeNode(val, left, right) {
-         *     this.val = (val===undefined ? 0 : val)
-         *     this.left = (left===undefined ? null : left)
-         *     this.right = (right===undefined ? null : right)
-         * }
+         * 
          */
         /**
          * @param {TreeNode} root
          * @return {number[]}
          */
-        // let arr = [];
+ 
         let postorderTraversal = function (root) {
 
             //法一正确,LeetCode到底怎么才算对?
@@ -84,18 +85,6 @@
             // }
             // root && fun(root);
             // return nums;
-
-            //这样写为啥错误呢?说是传入[],得到的却是[3,2,1],但我测试时是得到[]啊
-            // if(root === null){
-            //     return arr;
-            // }
-            // postorderTraversal(root.left);
-            // postorderTraversal(root.right);
-            // arr.push(root.val);
-
-            // return arr;
-
-
 
 
             //法二,利用es6新特性
@@ -114,23 +103,23 @@
             // 3, 再遍历右节点, 同样是遍历到末尾节点时, 记录值
             // 4, 第二次返回时, 让右节点等于null,同理
 
-            let res = [],
-                stack = [];
-            while (root || stack.length) {
-                if (root.left) {
-                    stack.push(root);
-                    root = root.left; //指向子树
-                } else if (root.right) {
-                    stack.push(root);
-                    root = root.right;
-                } else {
-                    res.push(root.val);
-                    root = stack.pop(); //回到上一层
-                    if (root && root.left) root.left = null; //堵死
-                    else if (root && root.right) root.right = null;
-                }
-            }
-            return res;
+            // let res = [],
+            //     stack = [];
+            // while (root || stack.length) {
+            //     if (root.left) {
+            //         stack.push(root);
+            //         root = root.left; //指向子树
+            //     } else if (root.right) {
+            //         stack.push(root);
+            //         root = root.right;
+            //     } else {
+            //         res.push(root.val);
+            //         root = stack.pop(); //回到上一层
+            //         if (root && root.left) root.left = null; //堵死
+            //         else if (root && root.right) root.right = null;
+            //     }
+            // }
+            // return res;
 
 
             //迭代版优化: 类似 根左右 先改为右左根 再改为左右根 的思想
@@ -146,6 +135,8 @@
             // return res;
 
         };
+
+        console.log(postorderTraversal(new TreeNode()));
     </script>
 </body>
 
