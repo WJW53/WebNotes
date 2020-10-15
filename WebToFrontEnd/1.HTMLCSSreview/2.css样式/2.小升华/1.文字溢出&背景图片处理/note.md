@@ -18,6 +18,10 @@
 - 先计算:行数 = height / line-height,然后直接overflow:hidden;
 
 
+## background-position属性
+
+https://blog.csdn.net/ixygj197875/article/details/79333151
+
 ## 图片处理
 1. 
 ```
@@ -31,8 +35,10 @@ background-position: 50% 50%;
 ```
 
 2. *国际企业的想法,就是即便你网速不好使(加载不出来东西)的时候,依然可以完成正常功能。就是去掉css,显示html原有的样子*     ```<a href="http://www.taobao.com" target="_blank">淘宝网</a>```
-- **ps:背景图片或者背景颜色会为所设置的padding和width同时添加**
-```
+
+- `**ps:背景图片或者背景颜色会为所设置的padding和width同时添加**`
+
+```css
 <style>
         *{
             padding: 0;
@@ -63,4 +69,5 @@ background-position: 50% 50%;
 ```
 
 **ps: 行盒只能嵌套行盒,块盒里面可以嵌套任何盒子. 有一个特例: p不能嵌套块盒,你要这么写了,人会把你砍成俩**
+
 **第二个特例: a标签不能嵌套a标签**

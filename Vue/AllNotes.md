@@ -242,7 +242,7 @@
 - 更改数据后，页面会立刻重新渲染吗？
 > vue更新DOM的操作是异步执行的，只要侦听到数据变化，将开启一个异步队列，如果一个数据被多次变更，那么只会被推入到队列中一次，这样可以避免不必要的计算和DOM操作。
 
-> 同步执行栈执行完毕后，会执行异步队列
+> 同步执行栈执行完毕后，会执行异步队列(vue数据变化后的渲染操作是微任务)
 
 ```html
 <div id="app">{{ msg }}</div>
@@ -263,7 +263,7 @@ console.log(vm.$el.innerHTML); // 杉杉。此时页面还未重新渲染
 
 ## vm.$nextTick & Vue.nextTick
 - 如何在更改数据后，看到渲染后的页面上的值？
-> 答：利用vm.\$nextTick或Vue.nextTick，在页面重新渲染，DOM更新后，会立刻执行vm.$nextTick
+> 答：利用vm.$nextTick或Vue.nextTick，在页面重新渲染，DOM更新后，会立刻执行vm.$nextTick
 ```html
 <div id="app">{{ msg }}</div>
 ```
@@ -308,13 +308,13 @@ Vue.nextTick().then(() => {
 ```
 
 - vm.$nextTick 和 Vue.nextTick的区别？
-> Vue.nextTick内部函数的this指向window
+> **Vue.nextTick内部函数的this指向window**
 ```js
   Vue.nextTick(function () {
     console.log(this); // window
   })
 ```
-> vm.\$nextTick内部函数的this指向Vue实例对象
+> **vm.$nextTick内部函数的this指向Vue实例对象**
 ```js
   vm.$nextTick(function () {
     console.log(this); // vm实例
@@ -334,11 +334,14 @@ Vue.nextTick().then(() => {
       console.log('promise');
     })
   ```
+
+## 面试可能考
+
 - 在nextTick的实现源码中，会先判断是否支持微任务，不支持后，才会执行宏任务
   ```js
     if(typeof Promise !== 'undefined') {
       // 微任务
-      // 首先看一下浏览器中有没有promise
+      // 首先看一下浏览器中有没有Promise
       // 因为IE浏览器中不能执行Promise
       const p = Promise.resolve();
 
@@ -356,9 +359,10 @@ Vue.nextTick().then(() => {
     }
   ```
 - 曾经vue用过的宏任务
-  - MessageChannel 消息通道 宏任务
+  - MessageChannel 消息通道 宏任务,现在已经取消了
 
 # vue的响应式-2
+
 - 除了未被声明过和未被渲染的数据外，还有什么数据更改后不会渲染页面？
   > 1.&nbsp;利用索引直接设置一个数组项时：
   ```html
@@ -482,6 +486,7 @@ Vue.nextTick().then(() => {
 - 问题解决了，但是为什么会这样呢？
   > Object.defineProperty的锅，咱们下节课说~
 
+
 # 扩展_剖析Vue响应式原理
 ```js
 const data = {
@@ -495,17 +500,17 @@ const data = {
   arr: [1, 2, 3]
 }
 
-const arrayProto = Array.prototype;
-const arrayMethods = Object.create(arrayProto);
+const arrayProto = Array.prototype;//先保存下来
+const arrayMethods = Object.create(arrayProto);//克隆原型, 避免污染真正的原型
 ['push', 'pop', 'shift', 'unshift' ,'sort', 'splice', 'reverse'].forEach(method => {
-  arrayMethods[method] = function () {
+  arrayMethods[method] = function () {//重写克隆版本的原型上的方法
     arrayProto[method].call(this, ...arguments);
     render();
   }
 })
 
 function defineReactive (data, key, value) {
-  observer(value);
+  observer(value);//递归
   Object.defineProperty(data, key, {
     get () {
       return value;
@@ -522,13 +527,13 @@ function defineReactive (data, key, value) {
 
 function observer (data) {
   if(Array.isArray(data)) {
-    data.__proto__ = arrayMethods;
+    data.__proto__ = arrayMethods;//使得数组变异方法的原型改到我们克隆的重写后的原型上
     return;
   }
 
   if(typeof data === 'object') {
     for(let key in data) {
-      defineReactive(data, key, data[key])
+      defineReactive(data, key, data[key]);
     }
   }
 }
@@ -539,12 +544,12 @@ function render () {
 
 function $set (data, key, value) {
   if(Array.isArray(data)) {
-    data.splice(key, 1, value);
+    data.splice(key, 1, value);//从key处索引开始截取,截取一个,然后将value值插入这个位置
     return value;
   }
   defineReactive(data, key, value);
-  render();
-  return value;
+  render();//这儿得render
+  return value;//最后返回value
 }
 
 function $delete(data, key) {
@@ -558,28 +563,41 @@ function $delete(data, key) {
 
 observer(data);
 ```
+
 > 利用Object.defineProperty实现响应式的劣势
 1. 天生就需要进行递归
-2. 监听不到数组不存在的索引的改变
+2. 监听不到`数组不存在的索引`的改变
+  - 但是vue中是直接不能监听到利用数组索引进行改变的,因为耗费的性能和用户体验不成正比!
+  - vue中先判断下data是不是数组,如果是,就不利用defineObject方法了
+  - 然后重新改写,做一些处理
 3. 监听不到数组长度的改变
 4. 监听不到对象的增删
 
+
+
 # Vue相关指令
+
+`补充：vue监听的区域，最终显示的不是一开始我们写的HTML，只是长得一样，但是是新的东西`
+
 - 具有特殊含义、拥有特殊功能的特性
+  -attribute 特性/属性
 - 指令带有v-前缀，表示它们是Vue提供的特殊特性
 - 指令可以直接使用data中的数据
 
 ## v-pre
-- 跳过这个元素和它的子元素的编译过程。可以用来显示原始 Mustache 标签。跳过大量没有指令的节点会加快编译。
+
+- 跳过当前元素和它的子元素的编译过程。可以用来显示原始 Mustache 标签。跳过大量没有指令的节点会加快编译。 不怎么用,为了避免到时候出错,难以找到错误在哪儿
   ```html
-  <!-- 不会被编译 -->
+  <!-- 不会被编译, 所以页面显示的就是 {{ msg }} , 不采取插值表达式的方式 -->
   <span v-pre>{{ msg }}</span>
   ```
 
 ## v-cloak
+
 - 这个指令保持在元素上直到关联实例结束编译
-- 可以解决闪烁的问题
+- 可以解决 闪烁 的问题(因加载顺序导致的)
 - 和 CSS 规则如 [v-cloak] { display: none } 一起用时，这个指令可以隐藏未编译的 Mustache 标签直到实例准备完毕
+- 现在使用的也不多了, 因为后面用脚手架/webpack就不会有这种闪烁问题了
 
   ```css
   [v-cloak] {
@@ -594,7 +612,8 @@ observer(data);
   ```
 
 ## v-once
-- 只渲染元素一次。随后的重新渲染，元素及其所有的子节点将被视为静态内容并跳过。这可以用于优化更新性能
+
+- 只渲染元素一次。随后的重新渲染，元素及其所有的子节点将被视为静态内容并跳过。这可以用于优化更新性能(这个元素只需要渲染一次时)
   ```html
   <!-- 单个元素 -->
   <span v-once>{{msg}}</span>
@@ -606,30 +625,34 @@ observer(data);
   ```
 
 ## v-text
-- 更新元素的 textContent
+
+- 会更新元素的 textContent
   ```html
   <span v-text="msg"></span>
   <!-- 和下面的一样 -->
   <span>{{msg}}</span>
   ```
 
-> v-text VS Mustache
-- v-text替换元素中所有的文本，Mustache只替换自己，不清空元素内容
+### v-text VS Mustache
+
+- **v-text 优先级高于 {{ }}**
+- `v-text替换元素中所有的文本，Mustache只替换自己，不清空元素内容`
   ```html
   <!-- 渲染为：<span>杉杉最美</span> -->
   <span v-text="msg">----</span>
   <!-- 渲染为：<span>----杉杉最美----</span> -->
   <span>----{{msg}}----</span>
   ```
-- v-text 优先级高于 {{ }}
 
-> textContent VS innerText
+
+### textContent VS innerText (面试)
+
 1. 设置文本替换时，两者都会把指定节点下的所有子节点也一并替换掉。
-2. textContent 会获取所有元素的内容，包括 ```<script>``` 和 ```<style> ```元素，然而 innerText 不会。
+2. **textContent 会获取所有元素的内容，包括 ```<script>``` 和 ```<style> ```元素，然而 innerText 不会**
 3. innerText 受 CSS 样式的影响，并且不会返回隐藏元素的文本，而textContent会。
-4. 由于 innerText 受 CSS 样式的影响，它会触发重排（reflow），但textContent 不会。
+4. `由于 innerText 受 CSS 样式的影响，它会触发重排/回流(reflow), 但textContent 不会`
 5. innerText 不是标准制定出来的 api，而是IE引入的，所以对IE支持更友好。textContent虽然作为标准方法但是只支持IE8+以上的浏览器，在最新的浏览器中，两个都可以使用。
-6. 综上，Vue这里使用textContent是从性能的角度考虑的。
+6. 综上，Vue这里使用textContent是从性能的角度(毕竟重排重绘会影响性能)考虑的。
 
   > 测试一下innerText & textContent两者性能
 
@@ -658,9 +681,11 @@ observer(data);
   
 
 ## v-html
+
 - 更新元素的innerHTML
 - ***注意***：内容按普通 HTML 插入，不会作为 Vue 模板进行编译 
-- 在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 XSS 攻击。只在可信内容上使用 v-html，永不用在用户提交的内容上。
+- `在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 XSS 攻击。比如img标签,src为空字符串,再加个onerror事件,while(1){...};那就死循环了。所以只在可信内容上使用 v-html，永不用在用户提交的内容上`
+
   ```html
   <input type="text" />
   <button>点击</button>
@@ -683,6 +708,7 @@ observer(data);
     vm.msg = oInput.value;
   }
   ```
+  
   
 # 条件渲染
 

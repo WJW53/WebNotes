@@ -54,7 +54,7 @@ ps:我测试得来,顶层块盒不写width,就是默认相对于视口的100%
 
 另一个有趣的现象是position: absolute 和 float会隐式地改变display类型，不论之前什么类型的元素（display:none除外），只要设置了**position: absolute 或 float中任意一个，都会让元素以display:inline-block的方式显示(实际是block,只是排列方式类似inline-block的而已)**：可以设置长宽，默认宽度并不占满父元素。就算我们显式地设置 display:inline或者display:block，也仍然无效（float在IE6 下的双倍边距bug就是利用添加display:inline来解决的）。值得注意的是，position: relative却不改变display的类型。
 
-**好像是错的,还是得按袁老师讲的来**
+**还是再多复习下袁老大讲的吧**
 
 
 ## 文字对齐--怎么说呢,具体还是看原老师讲的吧
