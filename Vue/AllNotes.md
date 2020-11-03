@@ -65,6 +65,7 @@
       }
     })
   ```
+
 ## 插值表达式
 - 使用方法： {{ }}
 - 可以将vue中的数据填在插值表达式中，如：
@@ -759,21 +760,27 @@ observer(data);
   ```
 
 ## v-show
+- 带有 v-show 的元素始终会被渲染并保留在 DOM 中
 - 根据表达式之真假值，切换元素的 display CSS 属性。
   ```html
   <h1 v-show="ok">Hello!</h1>
   ```
 
 ## v-if VS v-show(面试?)
+0. v-if是真正的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
 1. v-if 是惰性的，如果在初始渲染时条件为假，则什么也不做，直到条件第一次变为真时，才会开始渲染条件块。v-show则不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 进行切换。
 2. v-if 有更高的切换开销，v-show 有更高的初始渲染开销，`如果需要非常频繁地切换，则使用 v-show 较好，如果在运行时条件很少改变，则使用 v-if 较好`
 3. `v-show不支持<template>元素`
 4. v-show 不支持 v-else / v-else-if
 
 
-# v-bind 指令
+# v-bind 指令(重要)
+
 - 动态地绑定一个或多个特性
+  - 什么是特性?  <---->  标签天生的属性 和 我们自定义的行间属性, 是这样吗?这是自己理解的
+  
 - :后的为传递的参数
+- [attr]动态特姓名: 是有版本要求的, vue2.6.0+
   ```html
   <!-- 绑定一个属性 -->
   <img v-bind:src="imageSrc">
@@ -789,45 +796,57 @@ observer(data);
 
   <!-- 内联字符串拼接 -->
   <img :src="'/path/to/images/' + fileName">
+
   ```
-- 没有参数时，可以绑定到一个包含键值对的对象。注意此时 class 和 style 绑定不支持数组和对象。
+
+  如何动态绑定多个特性呢? -- 不传参,直接 v-bind="{key1: value1,key2: value2,...}" 即可
+- `没有参数时, 可以绑定到一个包含键值对的对象. 但注意此时: class 和 style 绑定不支持数组和对象. `
+
+
   ```html
   <!-- 绑定一个有属性的对象 -->
   <div v-bind="{ id: someProp, 'other-attr': otherProp }"></div>
   ```
-- 由于字符串拼接麻烦且易错，所以在绑定 class 或 style 特性时，Vue做了增强，表达式的类型除了字符串之外，还可以是数组或对象。
+
+- `由于字符串拼接麻烦且易错,所以在绑定 class 或 style 特性时,Vue做了增强,表达式的类型除了字符串之外,还可以是数组或对象`
 
   - 绑定class
     - 对象语法
       ```html
-      <div v-bind:class="{ red: isRed }"></div>
+      <div v-bind:class="{ active: isActive }"></div>
       ```
       上面的语法表示 active 这个 class 存在与否将取决于数据属性 isActive 的 真假。
 
     - 数组语法
       我们可以把一个数组传给 v-bind:class，以应用一个 class 列表
       ```html
+      <!-- 这个classA,classB可以是data数据里的属性 -->
       <div v-bind:class="[classA, classB]"></div>
       ```
+
     - 在数组语法总可以使用三元表达式来切换class
       ```html
       <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
       ```
+
     - 在数组语法中可以使用对象语法
       ```html
         <div v-bind:class="[classA, { classB: isB, classC: isC }]">
         <div v-bind:class="classA" class="red">
       ```
-    - v-bind:class 可以与普通 class 共存
+
+    - v-bind:class 可以与普通 class 共存(`因为最终还是向普通class中添加:class中的东西`)
       ```html
         <div v-bind:class="classA" class="red">
       ```
     
   - 绑定style
     - 使用对象语法
+
       看着比较像CSS，但其实是一个JavaScript对象
       CSS属性名可以用驼峰式(camelCase)或者短横线分隔(kebab-case)来命名
-      但是使用短横线分隔时，要用引号括起来
+      但是使用短横线分隔时，属性名要用 引号 括起来
+
       ```html
       <div v-bind:style="{ fontSize: size + 'px' }"></div>
       ```
@@ -838,45 +857,56 @@ observer(data);
       ```
       也可以直接绑定一个样式对象，这样模板会更清晰：
       ```html
-      <div v-bind:style="styleObject"></div>
+      <div v-bind:style="styleObjectA"></div>
       ```
       ```js
       data: {
-        styleObject: {
-          fontSize: '13px'
+        styleObjectA: {
+          fontSize: '13px',
         }
       }
       ```
+
     - 使用数组语法
+
       数组语法可以将多个样式对象应用到同一个元素
       ```html
       <div v-bind:style="[styleObjectA, styleObjectB]"></div>
       ```
-    - 自动添加前缀
+
+    - **自动添加前缀**
+
       绑定style时，使用需要添加浏览器引擎前缀的CSS属性时，如 transform，Vue.js会自动侦测并添加相应的前缀。
+
     - 多重值
-      从 2.3.0 起你可以为 style 绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值:
+
+      绑定style时，从 2.3.0 起你可以为 style 绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值:
       ```html
       <div v-bind:style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
       ```
-      这样写只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex。
+      `这样写只会渲染数组中最后一个被浏览器支持的值。`在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex。
+
     
 - 缩写: ```:```
+
 - 修饰符：
+
   修饰符 (modifier) 是以英文句号 . 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定。
+  虽然用的不多吧,但也要了解一下
+
   - .camel
-    由于绑定特性时，会将大写字母转换为小写字母，如：
+    `由于绑定特性时，会将大写字母转换为小写字母，`如：
     ```html
     <!-- 最终渲染的结果为：<svg viewbox="0 0 100 100"></svg> -->
     <svg :viewBox="viewBox"></svg>
     ```
-    所以，Vue提供了v-bind修饰符 camel，该修饰符允许在使用 DOM 模板时将 v-bind 属性名称驼峰化，例如 SVG 的 viewBox 属性
+    所以，Vue提供了v-bind修饰符 camel，该修饰符允许在使用 DOM 模板时将 v-bind 属性名称驼峰化(小驼峰)，例如 SVG 的 viewBox 属性
     ```html
     <svg :view-box.camel="viewBox"></svg>
     ```
 
   - .prop
-    被用于绑定 DOM 属性 (property)
+    被用于绑定 DOM 属性 (property):innerHTML,innerText,textContent,className等
     ```html
     <div v-bind:text-content.prop="text"></div>
     ```
@@ -884,7 +914,9 @@ observer(data);
   - .sync
     讲解组件时再说
 
-# v-on指令
+
+
+# v-on指令(重要)
 - v-on 指令可以监听 DOM 事件，并在触发时运行一些 JavaScript 代码
 - 事件类型由参数指定
   ```html
@@ -901,6 +933,7 @@ observer(data);
     }
   })
   ```
+
 - 但是很多事件处理逻辑是非常复杂的，所以直接把 JavaScript 代码写在 v-on 指令中是不可行的。所以 v-on 还可以接收一个需要调用的方法名称。
   ```html
   <div id="app">
@@ -913,6 +946,7 @@ observer(data);
   const vm = new Vue({
     el: '#app',
     data: {
+      //data 里的 this 指向 window
       counter: 0
     },
     // 在 methods 对象中定义方法
@@ -926,11 +960,13 @@ observer(data);
     }
   })
   ```
+
 - methods中的函数，也会直接代理给Vue实例对象，所以可以直接运行：
   ```js
     vm.addCounter();
   ```
-- 除了直接绑定到一个方法，也可以在内联JavaScript 语句中调用方法：
+
+- `除了直接绑定到一个方法，也可以在内联JavaScript 语句中 调用 方法：`
   ```html
   <div id="app">
     <button v-on:click="addCounter(5)">点击加 5</button>
@@ -950,7 +986,8 @@ observer(data);
     }
   })
   ```
-- 在内联语句中使用事件对象时，可以利用特殊变量 $event:
+
+- 在内联语句中 使用事件对象e 时，可以利用特殊变量 $event，不能直接写 e:
    ```html
   <div id="app">
     <button v-on:click="addCounter(5, $event)">点击加 5</button>
@@ -969,7 +1006,7 @@ observer(data);
   })
   ``` 
 
-- 可以绑定动态事件，Vue版本需要2.6.0+
+- 可以绑定动态事件(就是事件名是动态的,不是给死的)，Vue版本需要2.6.0+
   ```html
   <div v-on:[event]="handleClick">点击，弹出1</div>  
   ```
@@ -986,18 +1023,22 @@ observer(data);
     }
   })
   ```
+
 - 可以不带参数绑定一个对象，Vue版本需要2.4.0+。
   - { 事件名：事件执行函数 }
-  - 使用此种方法不支持函数传参&修饰符
+  - 使用此种方法, **不支持函数传参&修饰符**
   ```html
   <div v-on="{ mousedown: doThis, mouseup: doThat }"></div>
   ```
 - v-on指令简写：```@```
 
 ## 为什么在 HTML 中监听事件?
-1. 扫一眼 HTML 模板便能轻松定位在 JavaScript 代码里对应的方法。
+
+1. 扫一眼 HTML 模板便能 轻松定位 在 JavaScript 代码里对应的方法。
 2. 因为你无须在 JavaScript 里手动绑定事件，你的 ViewModel 代码可以是非常纯粹的逻辑，和 DOM 完全解耦，更易于测试
 3. 当一个 ViewModel 被销毁时，所有的事件处理器都会自动被删除。你无须担心如何清理它们
+
+
 
 # v-on指令的修饰符
 
@@ -1103,17 +1144,21 @@ observer(data);
   ```
 ### .passive
 - 设置 addEventListener 中的 passive 选项
-- 能够提升移动端的性能
+- **能够提升移动端的性能**
 - 2.3.0新增
+
 > why passive？
 - 即使在触发触摸事件时，执行了一个空的函数，也会让页面卡顿。因为浏览器不知道监听器到底会不会阻止默认事件，所以浏览器要等到执行完整个函数后，才能决定是否要滚动页面。passive事件监听器，允许开发者告诉浏览器，监听器不会阻止默认行为，从而浏览器可以放心大胆的滚动页面，这样可以大幅度提升移动端页面的性能，因为据统计只有20%的触摸事件会阻止默认事件。
-- .passive 会告诉浏览器你不想阻止事件的默认行为
+- `.passive 会告诉浏览器你不想阻止事件的默认行为`
+
 
 ### 注意
+
 1. 使用修饰符时，顺序很重要。相应的代码会以同样的顺序产生。因此，
   v-on:click.prevent.self 会阻止所有的点击的默认事件
   v-on:click.self.prevent 只会阻止对元素自身点击的默认事件
-2. 不要把 .passive 和 .prevent 一起使用，因为 .prevent 将会被忽略，同时浏览器可能会向你展示一个警告。
+2. **不要把 .passive 和 .prevent 一起使用，因为 .prevent 将会被忽略，同时浏览器可能会向你展示一个警告。**
+
 
 ## 按键修饰符
 在监听键盘事件时，我们经常需要检查详细的按键。Vue 允许为 v-on 在监听键盘事件时添加按键修饰符
@@ -1127,7 +1172,7 @@ observer(data);
 ```
 在上述示例中，处理函数只会在 $event.key 等于 PageDown 时被调用。
 
-### 按键码
+### 按键码(渐渐被废弃)
 使用 keyCode 特性也是允许的：
 ```html
 <!-- 按回车键会触发执行submit函数 -->
@@ -1135,7 +1180,7 @@ observer(data);
 ```
 <span style="color: red; font-weight: bold;">注意：</span>keyCode 的事件用法已经被[废弃](https://developer.mozilla.org/zh-CN/docs/Web/API/KeyboardEvent/keyCode)了，并可能不会被最新的浏览器支持。
 
-为了在必要的情况下支持旧浏览器，Vue 提供了绝大多数常用的按键码的别名：
+为了在必要的情况下支持旧浏览器，Vue 提供了绝大多数常用的按键码的 别名：
 - .enter（回车键）
 - .tab 
 - .delete (捕获“删除”和“退格”键)
@@ -1150,7 +1195,7 @@ observer(data);
 ```js
 // 全局配置
 // 可以使用 `v-on:keyup.f1`
-Vue.config.keyCodes.f1 = 112
+Vue.config.keyCodes.f1 = 112;
 ```
 ```js
 Vue.config.keyCodes = {
@@ -1168,8 +1213,12 @@ Vue.config.keyCodes = {
 ```
 
 ## 系统修饰键
+
+系统按键修饰符
+
 可以用如下修饰符来实现仅在按下相应按键时才触发鼠标或键盘事件的监听器。
-修饰键与常规按键不同，在和 keyup 事件一起用时，事件触发时修饰键必须处于按下状态，换句话说，只有在按住 ctrl 的情况下释放其它按键，才能触发 keyup.ctrl。而单单释放 ctrl 也不会触发事件。如果你想要这样的行为，请为 ctrl 换用 keyCode：keyup.17。
+修饰键与常规按键不同，在和 keyup 事件一起用时，事件触发时修饰键必须处于按下状态，`换句话说，只有在按住 ctrl 的情况下释放其它按键，才能触发 keyup.ctrl。而单单释放 ctrl 也不会触发事件。如果你想要这样的行为，请为 ctrl 换用 keyCode：keyup.17。`
+
 - .ctrl
 - .alt
 - .shift
@@ -1203,9 +1252,11 @@ Vue.config.keyCodes = {
 ## 鼠标按钮修饰符
 - 仅当点击特定的鼠标按钮时会处理执行函数
 - 2.2.0 +
-- .left
-- .right
-- .middle
+- .left(鼠标左键)
+- .right(右键)
+- .middle(中键)
+
+
 
 # 列表渲染
 利用v-for指令，基于数据多次渲染元素。
@@ -1237,10 +1288,11 @@ const vm = new Vue({
   }
 })
 ```
-可以利用```of```替代```in```作为分隔符，因为它更接近迭代器的语法：
+可以利用```of```替代```in```作为分隔符，Vue官方更推荐of，因为它更接近迭代器的语法，但平时大家基本还是都用in：
 ```html
 <div v-for="item of items"></div>
 ```
+
 ## 在v-for中使用对象
 用法：(value, key, index) in Object
 参数：value: 对象值
@@ -1268,6 +1320,7 @@ const vm = new Vue({
 
 ## 在v-for中使用数字
 用法：n in num
+
 参数：n: 数字，从1开始
 ```html
 <div>
@@ -1285,7 +1338,8 @@ const vm = new Vue({
 
 ## 在v-for中使用字符串
 用法：str in string
-参数：str: 字符串，源数据字符串中的每一个
+
+参数：str: 字符，源数据字符串中的每一个字符
 ```html
 <div>
   <span v-for="str in string">{{ str }} </span>
@@ -1301,7 +1355,7 @@ const vm = new Vue({
 ```
 
 ## 循环一段包含多个元素的内容
-可以利用template元素循环渲染一段包含多个元素的内容
+可以利用template元素循环渲染一段包含多个元素的内容(可以减少改变DOM结构次数)
 ```html
 <ul id="app">
   <template v-for="person in persons">
@@ -1314,12 +1368,22 @@ const vm = new Vue({
 const vm = new Vue({
   el: '#app',
   data: {
-    persons: ['shan', 'jc', 'cst', 'deng']
+    persons: [{
+      name: '杉杉',age: 18
+    },{
+      name: 'jicheng',age: 20
+    },{
+      name: 'yuanjin',age: 22
+    },{
+      name: 'deng',age: 24
+    },]
   }
 })
 ```
+
 ## 关于key
-Vue更新使用v-for渲染的元素列表时，它默认使用“就地更新”的策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序，而是简单复用此处每个元素：
+**Vue更新使用v-for渲染的元素列表时，它默认使用“就地更新”的策略。`如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序，而是简单复用此处每个元素：`**
+
 ```html
 <ul id="app">
   <li v-for="(person, index) in persons">
@@ -1349,6 +1413,7 @@ const vm = new Vue({
 
 ### key的使用方法
 预期值：number | string
+
 有相同父元素的子元素必须有独特的 key，重复的 key 会造成渲染错误，key应唯一。
 ```html
 <ul id="app">
@@ -1372,6 +1437,7 @@ const vm = new Vue({
   {{ person }}
 </li>
 ```
+
 当改变数组时，页面会重新渲染，Vue会根据key值来判断要不要移动元素。例如当页面重新渲染时，key值为"杉杉"的元素为``<li>杉杉</li>``，页面重新渲染前，key值为"杉杉"的元素也为``<li>杉杉</li>``，那么Vue就会移动这个``li``元素，而不是重新生成一个元素。
 当使用数组的索引作为key值时，页面重新渲染后，元素的key值会重新被赋值，例如我们将数组进行反转，
 反转前：
@@ -1388,13 +1454,13 @@ const vm = new Vue({
 ``<li>成哥</li>`` | 1| 
 ``<li>思彤哥</li>`` | 2 |
 ``<li>杉杉</li>`` | 3 |
-Vue会比对渲染前后拥有同样key的元素，发现有变动，就会再生成一个元素，如果用索引作key值得话，那么此时，所有的元素都会被重新生成。
+Vue会比对渲染前后拥有同样key的元素，发现有变动，就会删除原先的元素并再生成一个新的元素，如果用索引作key值得话，那么此时，所有的元素都会被重新生成。这就会增加耗费的性能。
 
 > 那么key如何唯一的？
 
 跟后台协作时，传回来的每一条数据都有一个id值，这个id就是唯一的，用id做key即可。
 
-> key不仅为v-for所有，它可以强制替换元素，而不是重复使用它：
+> key不是仅为v-for所有，它可以强制替换元素，而不是重复使用它：
 
 ```html
 <ul id="app">
@@ -1528,6 +1594,9 @@ html部分可替换成为：
 </ul>
 ```
 将 v-if 置于外层元素上，我们不会再对列表中的每个用户检查 shouldShowUsers。取而代之的是，我们只检查它一次，且不会在 shouldShowUsers 为否的时候运算 v-for。
+
+
+
 
 # 练习_仿淘宝商品筛选
 css文件在文件夹中，自行拷贝
