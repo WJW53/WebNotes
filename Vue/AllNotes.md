@@ -1626,13 +1626,14 @@ css文件在文件夹中，自行拷贝
 
 
 # v-model指令
-可以在表单元素上创建双向数据绑定。即数据更新元素更新、元素更新数据也会更新。
-> 本质上v-model为语法糖
+`**可以在表单元素上创建双向数据绑定。即数据更新元素更新、元素更新数据也会更新。**`
+> 双向数据绑定以往也叫双向数据链路
+> 本质上v-model为语法糖(因为我们自己写也能写出来,但用的比较多,所以出现了这个语法糖)
 
 元素类型 | 属性 |  事件  
 -|-|-
 input[type=text]、textarea | value | input |
-input[checkbox]、input[radio] | checked | change |
+input[type=checkbox](复选框,可多选)、input[type=radio](单选框) | checked | change |
 select | value | change |
 
 
@@ -1726,6 +1727,8 @@ const vm = new Vue({
 ```
 
 ## textarea
+一样的,还是 @input  :value
+
 ```html
 <div id="app">
   <p >多行文本为：{{ message }}</p>
@@ -1741,11 +1744,12 @@ const vm = new Vue({
 })  
 ```
 
-## select
+## select(下拉框)
 匹配的值为option中的汉字
 ### 单选
 ```html
 <div id="app">
+  <!-- 下拉框 -->
   <select v-model="selected">
     <option>A</option>
     <option>B</option>
@@ -1761,9 +1765,12 @@ const vm = new Vue({
     selected: '请选择'
   }
 }) 
+
 ```
 <span style="color: red;">注意：</span>如果 v-model 表达式的初始值未能匹配任何选项，``<select>`` 元素将被渲染为“未选中”状态。在 iOS 中，这会使用户无法选择第一个选项。因为这样的情况下，iOS 不会触发 change 事件。因此，可以提供一个值为空的禁用选项：
 ```html
+
+利用:disabled,'请选择'
 <div id="app">
   <select v-model="selected">
     <option :disabled="selected">请选择</option>
@@ -1816,6 +1823,7 @@ const vm = new Vue({
 ```html
 <input v-model.trim="msg">
 ```
+
 
 # 练习_简易计算器
 # 练习_调查问卷

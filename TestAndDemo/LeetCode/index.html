@@ -1,0 +1,430 @@
+/*==============================================================*/
+/* DBMS name:      Microsoft SQL Server 2008                    */
+/* Created on:     2020/11/6 18:10:03                           */
+/*==============================================================*/
+
+
+/*==============================================================*/
+/* Table: RCP                                                   */
+/*==============================================================*/
+create table RCP (
+   staffNO              char(5)              not null,
+   bookNO               char(5)              not null,
+   renterCardsNO        char(5)              not null,
+   rcpOrderNO           char(5)              not null,
+   rcpDate              datetime             null,
+   rcpNumber            int                  null,
+   rcpType              varchar(11)          null
+      constraint CKC_RCPTYPE_RCP check (rcpType is null or (rcpType in ('return','compensate','penalty'))),
+   constraint PK_RCP primary key (staffNO, bookNO, renterCardsNO, rcpOrderNO)
+)
+go
+
+/*==============================================================*/
+/* Index: RCP_FK                                                */
+/*==============================================================*/
+create index RCP_FK on RCP (
+staffNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: RCP2_FK                                               */
+/*==============================================================*/
+create index RCP2_FK on RCP (
+bookNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: RCP3_FK                                               */
+/*==============================================================*/
+create index RCP3_FK on RCP (
+renterCardsNO ASC
+)
+go
+
+/*==============================================================*/
+/* Table: appointment                                           */
+/*==============================================================*/
+create table appointment (
+   staffNO              char(5)              not null,
+   buyCardsID           char(5)              not null,
+   renterCardsNO        char(5)              not null,
+   bookNO               char(5)              not null,
+   appointmentNO        char(5)              not null
+      constraint CKC_APPOINTMENTNO_APPOINTM check (appointmentNO in ('purchaserID','leaseholderID')),
+   appointmentType      varchar(10)          null
+      constraint CKC_APPOINTMENTTYPE_APPOINTM check (appointmentType is null or (appointmentType in ('purchase','rent'))),
+   appointmentBookNum   int                  null,
+   appointmentDate      datetime             null,
+   constraint PK_APPOINTMENT primary key (staffNO, buyCardsID, renterCardsNO, bookNO, appointmentNO)
+)
+go
+
+/*==============================================================*/
+/* Index: appointment_FK                                        */
+/*==============================================================*/
+create index appointment_FK on appointment (
+staffNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: appointment2_FK                                       */
+/*==============================================================*/
+create index appointment2_FK on appointment (
+buyCardsID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: appointment3_FK                                       */
+/*==============================================================*/
+create index appointment3_FK on appointment (
+renterCardsNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: appointment4_FK                                       */
+/*==============================================================*/
+create index appointment4_FK on appointment (
+bookNO ASC
+)
+go
+
+/*==============================================================*/
+/* Table: book                                                  */
+/*==============================================================*/
+create table book (
+   bookNO               char(5)              not null,
+   bookName             varchar(30)          null,
+   bookSalePrice        money                null,
+   bookNumber           int                  null,
+   constraint PK_BOOK primary key nonclustered (bookNO)
+)
+go
+
+/*==============================================================*/
+/* Table: buy                                                   */
+/*==============================================================*/
+create table buy (
+   buyCardsID           char(5)              not null,
+   buyName              varchar(10)          null,
+   constraint PK_BUY primary key nonclustered (buyCardsID)
+)
+go
+
+/*==============================================================*/
+/* Table: rent                                                  */
+/*==============================================================*/
+create table rent (
+   staffNO              char(5)              not null,
+   renterCardsNO        char(5)              not null,
+   bookNO               char(5)              not null,
+   rentOrderNO          char(5)              not null,
+   rentDate             datetime             null,
+   rentBookNumber       int                  null,
+   rentReturnDate       datetime             null,
+   constraint PK_RENT primary key (staffNO, renterCardsNO, bookNO, rentOrderNO)
+)
+go
+
+/*==============================================================*/
+/* Index: rent_FK                                               */
+/*==============================================================*/
+create index rent_FK on rent (
+staffNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: rent2_FK                                              */
+/*==============================================================*/
+create index rent2_FK on rent (
+renterCardsNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: rent3_FK                                              */
+/*==============================================================*/
+create index rent3_FK on rent (
+bookNO ASC
+)
+go
+
+/*==============================================================*/
+/* Table: renter                                                */
+/*==============================================================*/
+create table renter (
+   renterCardsNO        char(5)              not null,
+   renterName           varchar(10)          null,
+   constraint PK_RENTER primary key nonclustered (renterCardsNO)
+)
+go
+
+/*==============================================================*/
+/* Table: sale                                                  */
+/*==============================================================*/
+create table sale (
+   staffNO              char(5)              not null,
+   buyCardsID           char(5)              not null,
+   bookNO               char(5)              not null,
+   saleOrderNO          char(5)              not null,
+   saleDate             datetime             null,
+   bookSalePrice        money                null,
+   bookSaleNumber       int                  null,
+   constraint PK_SALE primary key (staffNO, buyCardsID, bookNO, saleOrderNO)
+)
+go
+
+/*==============================================================*/
+/* Index: sale_FK                                               */
+/*==============================================================*/
+create index sale_FK on sale (
+staffNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: sale2_FK                                              */
+/*==============================================================*/
+create index sale2_FK on sale (
+buyCardsID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: sale3_FK                                              */
+/*==============================================================*/
+create index sale3_FK on sale (
+renterCardsNO ASC
+)
+go
+
+/*==============================================================*/
+/* Table: staff                                                 */
+/*==============================================================*/
+create table staff (
+   staffNO              char(5)              not null,
+   staffName            varchar(10)          null,
+   staffSex             varchar(6)           null
+      constraint CKC_STAFFSEX_STAFF check (staffSex is null or (staffSex in ('female','male'))),
+   staffAge             int                  null,
+   staffPoliticalStatus varchar(20)          null,
+   constraint PK_STAFF primary key nonclustered (staffNO)
+)
+go
+
+/*==============================================================*/
+/* Table: store                                                 */
+/*==============================================================*/
+create table store (
+   storeNO              char(5)              not null,
+   storeName            varchar(30)          null,
+   constraint PK_STORE primary key nonclustered (storeNO)
+)
+go
+
+/*==============================================================*/
+/* Table: work                                                  */
+/*==============================================================*/
+create table work (
+   storeNO              char(5)              not null,
+   staffNO              char(5)              not null,
+   bookNO               char(5)              not null,
+   constraint PK_WORK primary key (storeNO, staffNO, bookNO)
+)
+go
+
+/*==============================================================*/
+/* Index: work_FK                                               */
+/*==============================================================*/
+create index work_FK on work (
+storeNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: work2_FK                                              */
+/*==============================================================*/
+create index work2_FK on work (
+staffNO ASC
+)
+go
+
+/*==============================================================*/
+/* Index: work3_FK                                              */
+/*==============================================================*/
+create index work3_FK on work (
+bookNO ASC
+)
+go
+
+alter table RCP
+   add constraint FK_RCP_RCP_STAFF foreign key (staffNO)
+      references staff (staffNO)
+go
+
+alter table RCP
+   add constraint FK_RCP_RCP2_BOOK foreign key (bookNO)
+      references book (bookNO)
+go
+
+alter table RCP
+   add constraint FK_RCP_RCP3_RENTER foreign key (renterCardsNO)
+      references renter (renterCardsNO)
+go
+
+alter table appointment
+   add constraint FK_APPOINTM_APPOINTME_STAFF foreign key (staffNO)
+      references staff (staffNO)
+go
+
+alter table appointment
+   add constraint FK_APPOINTM_APPOINTME_BUY foreign key (buyCardsID)
+      references buy (buyCardsID)
+go
+
+alter table appointment
+   add constraint FK_APPOINTM_APPOINTME_RENTER foreign key (renterCardsNO)
+      references renter (renterCardsNO)
+go
+
+alter table appointment
+   add constraint FK_APPOINTM_APPOINTME_BOOK foreign key (bookNO)
+      references book (bookNO)
+go
+
+alter table rent
+   add constraint FK_RENT_RENT_STAFF foreign key (staffNO)
+      references staff (staffNO)
+go
+
+alter table rent
+   add constraint FK_RENT_RENT2_RENTER foreign key (renterCardsNO)
+      references renter (renterCardsNO)
+go
+
+alter table rent
+   add constraint FK_RENT_RENT3_BOOK foreign key (bookNO)
+      references book (bookNO)
+go
+
+alter table sale
+   add constraint FK_SALE_SALE_STAFF foreign key (staffNO)
+      references staff (staffNO)
+go
+
+alter table sale
+   add constraint FK_SALE_SALE2_BUY foreign key (buyCardsID)
+      references buy (buyCardsID)
+go
+
+alter table sale
+   add constraint FK_SALE_SALE3_RENTER foreign key (renterCardsNO)
+      references renter (renterCardsNO)
+go
+
+alter table work
+   add constraint FK_WORK_WORK_STORE foreign key (storeNO)
+      references store (storeNO)
+go
+
+alter table work
+   add constraint FK_WORK_WORK2_STAFF foreign key (staffNO)
+      references staff (staffNO)
+go
+
+alter table work
+   add constraint FK_WORK_WORK3_BOOK foreign key (bookNO)
+      references book (bookNO)
+go
+
+------------------------------------------------------------
+-----------------------------------------SelectAllTables-------------------------------------
+select * from book
+select * from staff
+select * from store
+select * from work
+select * from renter
+select * from buy
+select * from rent
+select * from sale
+select * from appointment
+select * from RCP 
+-------------------------------------------------------------
+insert into book values
+('B0001','将进酒',26.00,20),
+('B0002','巴菲特之道',19.00,30),
+('B0003','一千零一夜',21.00,40),
+('B0004','JavaScript',50.00,30),
+('B0005','你不知道',28.00,50)
+
+insert into staff values
+('S0001','丁俊洋','male',  21,'人民群众'),
+('S0002','杨超','female',20,'积极分子'),
+('S0003','张涛','male',  19,'共青团员'),
+('S0004','王剑丰','male',  20,'预备党员'),
+('S0005','徐家乐','male',  21,'共青团员')
+
+insert into store values
+('ST001','店铺1'),
+('ST002','店铺2'),
+('ST003','店铺3'),
+('ST004','店铺4'),
+('ST005','店铺5')
+
+insert into work values
+('ST001','S0001','B0001'),
+('ST001','S0002','B0002'),
+('ST001','S0003','B0003'),
+('ST002','S0004','B0004'),
+('ST003','S0005','B0005')
+
+
+insert into renter values
+('R0001','马佳星'),
+('R0002','吴经纬'),
+('R0003','程科文'),
+('R0004','袁振悦'),
+('R0005','范春扬')
+
+insert into buy values
+('By001','甲1'),
+('By002','乙2'),
+('By003','丙3'),
+('By004','丁4'),
+('By005','戊5')
+
+insert into rent values
+('S0001','R0001','B0001','RD001','2020-01-10',1,'2020-03-10'),
+('S0002','R0001','B0001','RD002','2020-01-20',1,'2020-03-20'),
+('S0003','R0003','B0003','RD003','2020-01-25',2,'2020-03-25'),
+('S0004','R0004','B0004','RD004','2020-01-31',3,'2020-03-31'),
+('S0001','R0005','B0002','RD005','2020-02-01',4,'2020-05-01'),
+('S0002','R0004','B0003','RD006','2020-02-14',5,'2020-10-01')
+
+insert into sale values
+('S0001','By001','B0004','SD001','2020-10-01',50.00,2),
+('S0002','By002','B0002','SD002','2020-10-01',19.00,1),
+('S0005','By005','B0005','SD003','2020-10-10',28.00,3),
+('S0004','By004','B0004','SD004','2020-10-15',50.00,1),
+('S0003','By003','B0003','SD005','2020-11-05',21.00,5),
+('S0002','By001','B0001','SD006','2021-01-01',26.00,1),
+('S0001','By001','B0002','SD007','2021-01-01',19.00,1)
+
+insert into appointment values
+('S0001','By001','L0001','B0001','A0001','purchaser',  2,'2020-11-01'),
+('S0002','By002','L0002','B0002','A0002','purchaser',  2,'2020-12-01'),
+('S0003','By003','L0003','B0003','A0003','leaseholder',3,'2021-10-01'),
+('S0004','By004','L0004','B0004','A0004','leaseholder',4,'2020-08-15'),
+('S0005','By005','L0005','B0005','A0005','leaseholder',5,'2020-09-05')
+														
+insert into RCP values									
+('E0001','B0001','L0001','RD001','2020-03-05',1,'return'),
+('E0002','B0001','L0001','RD002','2020-03-31',1,'return'),
+('E0003','B0003','L0003','CM001','2020-04-01',200.00,'compensate'),
+('E0004','B0004','L0004','PN001','2020-05-03',100.00, 'penalty')
