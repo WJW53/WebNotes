@@ -2459,7 +2459,8 @@ url: https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su
 
 
 # vue-resource
-在Vue中实现异步加载需要使用到vue-resource库，利用该库发送ajax。
+
+在Vue中实现`异步加载需要使用到vue-resource库`，利用该库发送ajax
 
 ## 引入vue-resource
 ```js
@@ -2474,7 +2475,8 @@ vue-resource使用了promise，所以\$http中的方法的返回值是一个prom
 ## 请求方法
 
 ### POST请求
-用于提交数据
+
+**用于提交数据**
 <br/>
 
 <span style="font-weight: bold;">常用data格式：</span>
@@ -2482,6 +2484,7 @@ vue-resource使用了promise，所以\$http中的方法的返回值是一个prom
   - 文件上传：application/json，现在大多数情况下都是用这个格式
 <br/>
 
+[]在下面的意思是可选,不是代表数组啥啥啥的!
 <span style="font-weight: bold;">使用方法：</span>vm.\$http.post(url, [body], [options])
 - url: 必需，请求目标url
 - body: 非必需，作为请求体发送的数据
@@ -2501,7 +2504,8 @@ this.$http.post('https://developer.duyiedu.com/vue/setUserInfo', {
 ```
 
 ### GET请求
-获取数据
+
+**用于获取数据**
 
 <span style="font-weight: bold;">使用方法：</span>vm.\$http.get(url, [options])
 
@@ -2558,8 +2562,8 @@ this.$http.jsonp('https://developer.duyiedu.com/vue/jsonp').then(res => {
 
 
 this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su', {
-  params: {
-    wd: 'nn',
+  params: {//拼接到url后面相当于, ?wd=nn
+    wd: 'nn',//百度就写 '百度'
   },
   jsonp: 'cd', //jsonp默认是callback,百度缩写成了cb，所以需要指定下 
 })
@@ -2605,7 +2609,7 @@ statusText | String | HTTP 响应状态 |
 方法 |  描述  
 :-: | :-:
 text() |  以字符串方式返回响应体 |
-json() | 以格式化后的 json 对象方式返回响应体 |
+json() | 以格式化后的 json 对象方式返回响应体(是一个Promise对象) |
 blob() |  以二进制 Blob 对象方式返回响应体 |
 
 以json()为例：
@@ -2623,7 +2627,12 @@ this.$http.get('https://developer.duyiedu.com/vue/getUserInfo')
 ## 最后的话
 很不幸，Vue官方已不再维护这个库了，so...哈哈哈，我们再学点其他的୧[ * ಡ ▽ ಡ * ]୨
 
+
+
 # Axios
+
+----------------------------------axios_1--------------------------------
+
 Axios是一个基于promise的HTTP库
 
 浏览器支持情况：Chrome、Firefox、Safari、Opera、Edge、IE8+
@@ -2673,7 +2682,7 @@ axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
 axios.defaults.timeout = 1000;
 ```
 
-在实际项目中，很少用全局配置。
+**在实际项目中，很少用全局配置。**
 
 ### 实例配置
 
@@ -2700,23 +2709,28 @@ instance.get('/getUserInfo', {
 
 ### 配置的优先顺序
 
-全局 < 实例 < 请求
+`全局 < 实例 < 请求当中配置的,简单说就是,谁近谁老大`
 
 ## 并发
-同时进行多个请求，并统一处理返回值
 
-- axios.all(iterable)
-- axios.spread(callback)
+**同时进行多个请求，并统一处理返回值**
+
+- axios.all(iterable);
+  - all方法也会返回一个promise,所以可以继续then
+- axios.spread(callback);
+  - 可在then中写spread方法
 
 ```js
 axios.all([
   axios.get('/a'),
   axios.get('/b')
-]).then(axios.spread((aRes, bRes) => {
+]).then(axios.spread((aRes, bRes) => {//有几个参数是由几个请求决定的
   console.log(aRes, bRes);
 }))
 ```
 
+
+----------------------------------axios_2--------------------------------
 ## 拦截器
 interceptors，在发起请求之前做一些处理，或者在响应回来之后做一些处理。
 
@@ -2738,6 +2752,7 @@ axios.interceptors.response.use(response => {
 
 ### 移除拦截器
 ```js
+//它们的返回值都是一个拦截器,所以可以用一个变量接收着,再移除
 const myInterceptor = axios.interceptors.request.use(config => {});
 axios.interceptors.request.eject(myInterceptor);
 ```
@@ -2751,11 +2766,12 @@ instance.interceptors.request.use(config => {});
 ## 取消请求
 用于取消正在进行的http请求
 ```js
-const source = axios.CancelToken;
-const source = CancelToken.source();
+// const cancelToken = axios.CancelToken;
+// const source = cancelToken.source();
+cosnt source = axios.CancelToken.source();
 
 axios.get('/getUserInfo', {
-  cancelToken: source.token
+  cancelToken: source.token //将这个请求标记,然后才能利用source调用cancel方法,取消请求
 }).then(res => {
   console.log(res);
 }).catch(error => {
@@ -2775,32 +2791,35 @@ source.cancel('取消请求');
 在请求错误时进行的处理
 request / response 是error的上下文，标志着请求发送 / 得到响应
 在错误中，如果响应有值，则说明是响应时出现了错误。
-         如果响应没值，则说明是请求时出现了错误。
+         如果响应没值，则说明是请求时(已经发送出去了)出现了错误。
 在错误中，如果请求无值，则说明是请求未发送出去，如取消请求。
 
 ```js
 axios.get('/user/12345')
   .catch(function (error) {
     // 错误可能是请求错误，也可能是响应错误
-    if (error.response) {
+    if (error.response) {//得优先判断response是否有值才行
       // 响应错误
     } else if (error.request) {
       // 请求错误
-    } else {
+    } else { //请求未发送出去
       console.log('Error', error.message);
     }
     console.log(error.config);
   });
 ```
 
-在实际开发过程中，一般在拦截器中统一添加错误处理
-请求拦截器中的错误，会当请求未成功发出时执行，但是要注意的是：取消请求后，请求拦截器的错误函数也不会执行，因为取消请求不会抛出异常，axios对其进行了单独的处理。
-在更多的情况下，我们会在响应拦截器中处理错误。
+**在实际开发过程中，一般在拦截器中统一添加错误处理**
+
+> 请求拦截器中的错误，会当请求未成功发出时执行，但是要注意的是：取消请求后，请求拦截器的错误函数也不会执行，**因为取消请求不会抛出异常，axios对其进行了单独的处理，所以拦截器中不需要考虑取消请求这类错误。**
+> 在更多的情况下，我们会在响应拦截器中处理错误。
+
+
 ```js
 const instance = axios.create({});
 instance.interceptors.request(config => {
 
-}, error => {
+}, error => {//所以这个error很少用到,但最好还是alert一下xxxx
   return Promise.reject(error);
 })
 
@@ -2812,13 +2831,21 @@ instance.interceptors.response(response => {
 ```
 
 ## axios 预检
-当axios的请求为非简单请求时，浏览器会进行预检，及发送OPTIONS请求。请求到服务器，询问是否允许跨域。如果响应中允许预检中请求的跨域行为，则浏览器会进行真正的请求。否则会报405错误。
+
+当axios的请求为非简单请求(比如POST请求)时，浏览器会进行预检，以及发送OPTIONS请求。请求到服务器，询问是否允许跨域。如果响应中允许预检中请求的跨域行为，则浏览器会进行真正的请求。否则会报405/4..错误，这时是请求时错误，因为人家都不同意你请求。??最后这行我写的好像有问题.
+
+
 
 # template 选项
 
 > 关于el
 
-提供一个在页面上已存在的 DOM 元素作为 Vue 实例的挂载目标。可以是 CSS 选择器，也可以是一个 HTML 元素 实例。
+从初始化到挂载的流程:
+
+>> el --> 拿到el.outerHTML -->作为模板 -->编译到render中 --> 编译好成$el -->>替换掉el
+>> vm.$mount(el)
+
+提供一个在页面上已存在的 DOM 元素作为 Vue 实例的挂载目标。可以是 CSS 选择器，也可以直接是一个 HTML 元素 实例。
 
 如果在实例化时存在这个选项，实例将立即进入编译过程，否则，需要显式调用 vm.$mount() 手动开启编译。
 
@@ -2837,12 +2864,17 @@ const vm = new Vue({
 })
 ```
 
+优先级：template > el
+
+
 > Vue初始化到挂载的流程
 
 ![](https://developer.duyiedu.com/myVue/template.png) 
 
+
+
 # Vue生命周期
-每个 Vue 实例在被创建时都要经过一系列的初始化过程，例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会。
+**每个 Vue 实例**在被创建时都要经过一系列的初始化过程，例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会。
 
 ## 生命周期图示
 ![](https://developer.duyiedu.com/myVue/lifecycle1.png) 
@@ -2852,8 +2884,10 @@ const vm = new Vue({
 
 ![](https://developer.duyiedu.com/myVue/lifecycle2.png) 
 
+
 ### beforeCreate
-在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。
+
+`在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。`
 
 ```html
 <div id="app">
@@ -2899,9 +2933,9 @@ undefined
 ### created
 在实例创建完成后被立即调用。
 
-在这一步，实例已完成以下的配置：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调。
+**在这一步，实例已完成以下的配置：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调。**
 
-如果要在第一时间调用methods中的方法，或者操作data中的数据，可在此钩子中进行操作。
+`如果要在第一时间调用methods中的方法，或者操作data中的数据，可在此钩子中进行操作。`
 需要注意的是，执行此钩子时，挂载阶段还未开始，$el 属性目前不可见。
 
 此时，可以进行数据请求，将请求回来的值赋值给data中的数据。
@@ -2954,13 +2988,14 @@ undefined
 
 在此钩子函数中，可以获取到模板最初始的状态。
 
-此时，可以拿到vm.$el，只不过为旧模板
+**此时，可以拿到vm.$el，只不过为旧模板**
 
 ```js
 const vm = new Vue({
   el: '#app',
   beforeMount () {
     console.log(this.$el);
+    console.log("-----beforeMount-----");
   }
 })
 ```
@@ -2972,19 +3007,20 @@ el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子
 
 执行完该钩子函数后，代表实例已经被完全创建好。
 
-如果要在第一时间，操作页面上的dom节点时，可以在此钩子函数中操作
+`如果要在第一时间，操作页面上的dom节点时，可以在此钩子函数中操作`
 
 ```js
 const vm = new Vue({
   el: '#app',
   mounted () {
     console.log(this.$el);
+    console.log("-----mounted-----");
   }
 })
 ```
 
 ### beforeUpdate
-数据更新时调用，发生在虚拟 DOM 打补丁之前。此时数据已经更新，但是DOM还未更新
+`数据更新时调用，发生在虚拟 DOM 打补丁之前。此时数据已经更新，但是DOM还未更新(但是由于控制台打印的是引用值,所以如果正常打印还会看到更新后的DOM.那如何拿到未更新时候的DOM呢?打印this.$el.outerHTML即可)`
 
 ```html
 <div id="app">
@@ -3001,6 +3037,7 @@ const vm = new Vue({
   beforeUpdate () {
     console.log(this.msg);
     console.log(this.$el);
+    console.log("-----beforeUpdate-----");
   },
   methods: {
     handleClick () {
@@ -3033,7 +3070,9 @@ const vm = new Vue({
     timer: 0,
   },
   created () {
-    this.timer = setInterval(() => {
+    this.timer = setInterval(() => {//因为最早只是在created时才能操作data中的数据
+    //但是33写在了beforeCreate里也对,why?应该是因为这个定时器是异步的,同步已经执行到了
+    //created状态了,所以这个this.timer才能正确使用
       console.log('xxx');
     }, 500)
   },
@@ -3043,8 +3082,16 @@ const vm = new Vue({
 })
 ```
 
+### vm.$destroy()
+调用这个才会执行beforeDestroy和destroyed这俩钩子函数
+
+
 ### destroyed
 Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除。
+
+
+
+
 
 # 练习_bilibili首页
 
@@ -3069,10 +3116,16 @@ Request:
   start | Number | 数据起始值
   offset | Number | 偏移量
 
-  # 组件基础
+
+
+
+
+# 组件基础
 
 ## 组件是什么？
-组件是可复用的Vue实例，且带有一个名字，例如名字为shanshan-cmp，那么我们则可以在一个通过new Vue创建的根实例中，把这个组件作为自定义元素来使用：
+
+`组件是可复用的Vue实例，且带有一个名字，例如名字为shanshan-cmp，那么我们则可以在一个通过new Vue创建的根实例中，把这个组件作为自定义元素来使用：`
+
 ```html
 <div id="app">
   <shanshan-cmp></shanshan-cmp>
@@ -3083,6 +3136,7 @@ const vm = new Vue({
   el: '#app'
 })
 ```
+
 因为组件是可复用的 Vue 实例，所以它们与 new Vue 接收相同的选项，例如 data、computed、watch、methods 以及生命周期钩子等。仅有的例外是像 el 这样根实例特有的选项。
 
 ## 组件注册
@@ -3168,14 +3222,15 @@ Vue.component('my-component', {/***/});
 
 当使用kebab-case定义一个组件时，你必须在引用这个自定义元素时使用kebab-case，例如：``<my-component></my-component>``。
 
-> 使用PascalCase (大驼峰命名)
+> 使用PascalCase (大驼峰命名),不能直接写在HTML中,因为HTML会自动把所有大写自动换成小写
 
 ```js
 Vue.component('MyComponent', {/***/});
 ```
-当使用PascalCase定义一个组件时，你在引用这个自定义元素时两种命名法都可以。也就是说``<my-component-name>`` 和 ``<MyComponentName>`` 都是可接受的。注意，尽管如此，直接在 DOM (即字符串模板或单文件组件) 中使用时只有 kebab-case 是有效的。
+当使用PascalCase定义一个组件时，你在引用这个自定义元素时两种命名法都可以。也就是说``<my-component-name>`` 和 ``<MyComponentName>`` 都是可接受的。`注意，尽管如此，直接在 DOM (除非写在字符串模板或单文件组件) 中使用时只有 kebab-case 是有效的。`
 
-另：我们强烈推荐遵循 W3C 规范中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
+**另：我们强烈推荐遵循 W3C 规范中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。**
+
 
 ### 组件复用
 可以将组件进行任意次数的复用：
@@ -3186,12 +3241,16 @@ Vue.component('MyComponent', {/***/});
   <button-counter></button-counter>
 </div>
 ```
+
 ### 自闭合组件
-在单文件组件、字符串模板和 JSX 中没有内容的组件应该是自闭合的——但在 DOM 模板里永远不要这样做。
+< xxx />
 
-自闭合组件表示它们不仅没有内容，而且刻意没有内容。其不同之处就好像书上的一页白纸对比贴有“本页有意留白”标签的白纸。而且没有了额外的闭合标签，你的代码也更简洁。
+`在单文件组件、字符串模板和 JSX 中没有内容的组件应该是自闭合的——但在 DOM 模板(HTML)里永远不要这样做(此时复用,只会生效一次)。`
 
-不幸的是，HTML 并不支持自闭合的自定义元素——只有官方的“空”元素。所以上述策略仅适用于进入 DOM 之前 Vue 的模板编译器能够触达的地方，然后再产出符合 DOM 规范的 HTML。
+自闭合组件表示它们不仅没有内容，`而且刻意没有内容`。其不同之处就好像书上的一页白纸对比贴有“本页有意留白”标签的白纸。而且没有了额外的闭合标签，你的代码也更简洁。
+
+**不幸的是，HTML 并不支持自闭合的自定义元素——只有官方的“空”元素。所以上述策略仅适用于进入 DOM 之前 Vue 的模板编译器能够触达的地方，然后再产出符合 DOM 规范的 HTML。**
+
 
 ### 组件的data选项
 当我们定义一个组件时，它的 data 并不是像这样直接提供一个对象：
@@ -3200,7 +3259,8 @@ data: {
   count: 0
 }
 ```
-取而代之的是，一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+
+`取而代之的是，一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立(因为组件是复用的,所以需要每次返回一个不同的对象,不共享)的拷贝：`
 ```js
 data () {
   return {
@@ -3213,12 +3273,17 @@ data () {
 ![avatar](https://developer.duyiedu.com/myVue/data.gif)
 
 ### 单个根元素
-每个组件必须只有一个根元素，当模板的元素大于1时，可以将模板的内容包裹在一个父元素内。
+
+`每个组件必须只有一个根元素!! 当模板的元素大于1时, 可以将模板的内容包裹在一个父元素内`
+
+
+
 
 # 组件_Prop
 
 ## 注册自定义特性
-组件默认只是写好结构、样式和行为，使用的数据应由外界传递给组件。
+
+`组件默认只是写好结构、样式和行为，使用的数据应由外界传递给组件。`
 > 如何传递？注册需要接收的prop，将数据作为一个自定义特性传递给组件。
 
 如：
@@ -3251,13 +3316,15 @@ Vue.component('video-item', {
 ```js
 Vue.component('video-item', {
   props: ['title', 'poster', 'play', 'rank'],
+  //template里的html代码中可以写vue语法的,比如 <img :src = "poster">
   template: `<div>{{ title }}</div>`
 })
 ```
 
 ## Prop的大小写
 
-HTML 中的特性名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。故：当 传递的prop为 短横线分隔命名时，组件内 的props 应为 驼峰命名 。
+**HTML 中的特性名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。故：当 传递的prop为 短横线分隔命名时，组件内 的props 应为 小驼峰命名 。**
+
 如：
 ```html
 <div id="app">
@@ -3286,7 +3353,7 @@ Vue.component('video-item', {
 ```
 
 ### 传递一个对象的所有属性
-如果你想要将一个对象的所有属性都作为 prop 传入，你可以使用不带参数的 v-bind 。例如，对于一个给定的对象 person：
+**如果你想要将一个对象的所有属性都作为 prop 传入，你可以使用不带参数的 v-bind 。例如，对于一个给定的对象 person：**
 ```js
 person: {
   name: 'shanshan',
@@ -3307,6 +3374,8 @@ person: {
 ></my-component>
 ```
 
+
+
 # 组件_Prop验证
 我们可以为组件的 prop 指定验证要求，例如你可以要求一个 prop 的类型为什么。如果说需求没有被满足的话，那么Vue会在浏览器控制台中进行警告，这在开发一个会被别人用到的组件时非常的有帮助。
 
@@ -3326,7 +3395,7 @@ Vue.component('my-component', {
 })
 ```
 
-上述代码中，对prop进行了基础的类型检查，类型值可以为下列原生构造函数中的一种：``String``、``Number``、``Boolean``、``Array``、``Object``、``Date``、``Function``、``Symbol``、任何自定义构造函数、或上述内容组成的数组。
+上述代码中，对prop进行了基础的类型检查，类型值可以为下列原生构造函数中的一种：``String``、``Number``、``Boolean``、``Array``、``Object``、``Date``、``Function``、``Symbol``、``Promise``、任何自定义构造函数、或上述内容组成的数组。
 需要注意的是`null` 和 `undefined` 会通过任何类型验证。
 除基础类型检查外，我们还可以配置高级选项，对prop进行其他验证，如：类型检测、自定义验证和设置默认值。
 如：
@@ -3334,8 +3403,8 @@ Vue.component('my-component', {
 Vue.component('my-component', {
   props: {
     title: {
-      type: String, // 检查 prop 是否为给定的类型
-      default: '杉杉最美',   // 为该 prop 指定一个默认值，对象或数组的默认值必须从一个工厂函数返回，如：default () { return {a: 1, b: 10} },
+      type: String, //检查 prop 是否为给定的类型; [String,Array]代表必须是这两种中的一种
+      default: '杉杉最美',   // 为该 prop 指定一个默认值，对象或数组的默认值必须从一个工厂函数返回，如：default () { return {a: 1, b: 10} },//这样也是为了保证独立性
       required: true, // 定义该 prop 是否是必填项
       validator (prop) {  // 自定义验证函数，该prop的值回作为唯一的参数代入，若函数返回一个falsy的值，那么就代表验证失败
         return prop.length < 140;
@@ -3345,11 +3414,13 @@ Vue.component('my-component', {
 })
 ```
 
-为了更好的团队合作，在提交的代码中，prop 的定义应该尽量详细，至少需要指定其类型。
+> 为了更好的团队合作，在提交的代码中，prop 的定义应该尽量详细，至少需要指定其类型。
+
+
 
 # 组件_单向数据流
 
-所有的 prop 都使得其父子 prop 之间形成了一个**单向下行绑定**：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
+`所有的 prop 都使得其父子 prop 之间形成了一个**单向下行绑定**：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。`
 
 这里有两种常见的试图改变一个 prop 的情形：
 
@@ -3359,7 +3430,7 @@ Vue.component('my-component', {
 props: ['initialCounter'],
 data: function () {
   return {
-    counter: this.initialCounter
+    counter: this.initialCounter//如果这个也是引用值,那就需要返回它的深度克隆的值了
   }
 }
 ```
@@ -3375,11 +3446,17 @@ computed: {
 }
 ```
 
+`总之,就是子组件不要影响改父组件的数据,所以要防止调用引用值时,改变了父组件的数据`
+
+
+
 # 组件_非Prop特性
-非Prop特性指的是，一个未被组件注册的特性。当组件接收了一个非Prop特性时，该特性会被添加到这个组件的根元素上。
+非Prop特性指的是，`一个未被组件注册的特性，不能用作数据使用`。当组件接收了一个非Prop特性时，该特性会被添加到这个组件的根元素上。
 
 
 ## 替换/合并已有的特性
+
+- 非prop特性会替换 /  合并(只有class、style) 已有特性
 
 想象一下 ``<my-cmp>`` 的模板是这样的：
 
@@ -3403,6 +3480,11 @@ computed: {
 对于绝大多数特性来说，从外部提供给组件的值会替换掉组件内部设置好的值。所以如果传入 type="text" 就会替换掉 type="date" 并把它破坏！庆幸的是，class 和 style 特性会稍微智能一些，即两边的值会被合并起来，从而得到最终的值：my-cmp b。
 
 ## 禁用特性继承
+```html
+<div id="app">
+        <my-cmp type="radio"></my-cmp>
+    </div>
+```
 如果不希望组件的根元素继承特性，那么可以在组件选项中设置 ``inheritAttrs: false``。如：
 ```js
 Vue.component('my-cmp', {
@@ -3410,7 +3492,7 @@ Vue.component('my-cmp', {
   // ...
 })
 ```
-在这种情况下，非常适合去配合实例的 $attrs 属性使用，这个属性是一个对象，键名为传递的特性名，键值为传递特性值。
+在这种情况下，非常适合去配合实例的` $attrs `属性使用，这个属性是一个对象，键名为传递的特性名，键值为传递特性值。
 
 ```js
 {
@@ -3439,6 +3521,10 @@ Vue.component('base-input', {
 ```
 
 注意：inheritAttrs: false 选项不会影响 style 和 class 的绑定。
+
+
+
+
 
 # 组件_监听组件事件
 首先，我们来写一个博文组件，如：
@@ -3589,7 +3675,8 @@ this.$emit('myEvent')
 
 并且 v-on 事件监听器在 DOM 模板中会被自动转换为全小写，所以 @myEvent 将会变成 @myevent，导致 myEvent 不可能被监听到。
 
-因此，推荐**始终使用 kebab-case 的事件名**。
+`因此，推荐**始终使用 kebab-case 的事件名**。`
+
 
 ## 将原生事件绑定到组件
 在组件上去监听事件时，我们监听的是组件的自动触发的自定义事件，但是在一些情況下，我们可能想要在一个组件的根元素上直接监听一个原生事件。这是，可以使用 v-on 指令的 .native 修饰符，如：
@@ -3612,7 +3699,7 @@ Vue.component('base-input', {
 ```
 可以看到，此时组件的根元素实际上是一个<label>元素，那么父级的.native监听器将静默失败。它不会产生任何报错，但是``onFocus``处理函数不会如预期被调用。
 
-为了解决这个问题，Vue提供了一个$listeners属性，它是一个对象，里面包含了作用在这个组件上的所有监听器。例如：
+为了解决这个问题，Vue提供了一个`$listeners属性`，它是一个对象，里面包含了作用在这个组件上的所有监听器。例如：
 ```js
 {
   focus: function (event) { /* ... */ }
@@ -3620,7 +3707,7 @@ Vue.component('base-input', {
 }
 ```
 
-有了这个 \$listeners 属性，我们可以配合 v-on="\$listeners" 将所有的事件监听器指向这个组件的某个特定的子元素，如：
+**有了这个 \$listeners 属性，我们可以配合 v-on="\$listeners" 将所有的事件监听器指向这个组件的某个特定的子元素，如：**
 ```js
 Vue.component('base-input', {
   template: `
@@ -3633,7 +3720,7 @@ Vue.component('base-input', {
 ```
 
 ## 在组件上使用 v-model
-由于自定义事件的出现，在组件上也可以使用v-model指令。
+> 由于自定义事件的出现，在组件上也可以使用v-model指令。
 
 在 input 元素上使用v-mode指令时，相当于绑定了value特性以及监听了input事件：
 
@@ -3664,6 +3751,7 @@ Vue.component('base-input', {
 所以，为了让 v-model 指令正常工作，这个组件内的``<input>``必须：
 - 将其value特性绑定到一个叫 value 的prop 上
 - 在其input事件被触发时，将新的值通过自定义的input事件抛出
+
 如：
 ```js
 Vue.component('base-input', {
@@ -3702,6 +3790,7 @@ Vue.component('base-checkbox', {
 <base-checkbox v-model="lovingVue"></base-checkbox>
 ```
 这里的 lovingVue 的值将会传入这个名为 checked 的 prop。同时当 <base-checkbox> 触发一个 change 事件并附带一个新的值的时候，这个 lovingVue 的属性将会被更新。
+
 
 ## .sync 修饰符
 除了使用 v-model 指令实现组件与外部数据的双向绑定外，我们还可以用 v-bind 指令的修饰符 .sync 来实现。
@@ -3756,7 +3845,7 @@ Vue.component('base-input', {
 }) 
 ```
 
-所以，.sync 修饰符 本质上也是一个语法糖，在组件上使用：
+`所以，.sync 修饰符 本质上也是一个语法糖，在组件上使用：`
 ```html
 <base-input :value.sync="searchText"></base-input>
 ```
@@ -3769,22 +3858,24 @@ Vue.component('base-input', {
 />
 ```
 
-当我们用一个对象同时设置多个prop时，也可以将.sync修饰符和 v-bind配合使用：
+`当我们用一个对象同时设置多个prop时，也可以将.sync修饰符和 v-bind配合使用：`
 ```html
 <base-input v-bind.sync="obj"></base-input>
 ```
 
 **注意：**
 - 带有.sync修饰符的v-bind指令，只能提供想要绑定的属性名，**不能**和表达式一起使用，如：``:title.sync="1+1"``，这样操作是无效的
-- 将 ``v-bind.sync`` 用在 一个字面量对象上，如 ``v-bind.sync="{ title: 'haha' }"``，是无法工作的，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。
+- 将 ``v-bind.sync`` 用在 一个字面量对象上，如 ``v-bind.sync="{ title: 'haha' }"``，`是无法工作的`，因为在解析一个像这样的复杂表达式的时候，有很多边缘情况需要考虑。
 
 ## v-model VS .sync
-先明确一件事情，在 vue 1.x 时，就已经支持 .sync 语法，但是此时的 .sync 可以完全在子组件中修改父组件的状态，造成整个状态的变换很难追溯，所以官方在2.0时移除了这个特性。然后在 vue2.3时，.sync又回归了，跟以往不同的是，现在的.sync完完全全就是一个语法糖的作用，跟v-model的实现原理是一样的，也不容易破环院有的数据模型，所以使用上更安全也更方便。
+先明确一件事情，在 vue 1.x 时，就已经支持 .sync 语法，但是此时的 .sync 可以完全在子组件中修改父组件的状态，造成整个状态的变换很难追溯，所以官方在2.0时移除了这个特性。然后在 vue2.3时，.sync又回归了，跟以往不同的是，现在的.sync完完全全就是一个语法糖的作用，跟v-model的实现原理是一样的，也不容易破坏原有的数据模型，所以使用上更安全也更方便。
 
 
 - 两者都是用于实现双向数据传递的，实现方式都是语法糖，最终通过 ``prop`` + ``事件`` 来达成目的。
 - vue 1.x 的 .sync 和 v-model 是完全两个东西，vue 2.3 之后可以理解为一类特性，使用场景略微有区别
-- 当一个组件对外只暴露一个受控的状态，切都符合统一标准的时候，我们会使用v-model来处理。.sync则更为灵活，凡是需要双向数据传递时，都可以去使用。
+- 当一个组件对外只暴露一个受控的状态，且都符合统一标准的时候，我们会使用v-model来处理。.sync则更为灵活，凡是需要双向数据传递时，都可以去使用。
+
+
 
 
 # 组件_插槽

@@ -58,6 +58,8 @@
           // })
 
           this.$http.get('https://developer.duyiedu.com/vue/getUserInfo').then(res => {
+            // console.log(res);
+            // console.log(res.json());//它是一个Promise对象
             return res.json();
           }).then(res => {
             console.log(res);
