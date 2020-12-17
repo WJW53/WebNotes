@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+	<script type="text/javascript">
+		
+		// console.log("abc");
+		// var c = document.querySelector("div");
+		// console.log(c);
+		// // c.class = "duyi";
+		// c.className = "duyi";
+
+		console.log(typeof NaN == 'number',typeof Object);
+
+		function a(xx){
+			this.x = xx;
+			console.log(this);
+			return this;
+		}
+		var x = a(5);
+		console.log(x);//x == window
+		var y = a(6);//最终window.x == 6
+		console.log(y);//y == window
+		console.log(x.x);//window.x.x  -> Number(6).x  -> undefined
+		console.log(Number(5).x);
+		console.log(y.x);//window.y.x --> window.x --> 6
+
+
+		var bar = 1;
+		function foo(bar){
+			bar = 2;
+			console.log(bar);
+		}
+		foo(bar);
+		console.log(bar);
+		console.log('\n');
+
+		(function(x){
+			return (function(y){
+				console.log(x);
+			}(2));
+		}(1));
+	</script>
+</body>
+</html>
