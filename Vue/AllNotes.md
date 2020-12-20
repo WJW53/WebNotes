@@ -5150,7 +5150,32 @@ yarn global add @vue/cli-service-global
 ## 安装vscode插件
 名字：Vetur。用于高亮.vue文件代码
 
+
+
+# 练习_日期选择器
+
+css中有个样式是user-select:none;即不能被用户选中了
+
+使用flex布局, 则代码较为方便简单了, 只是兼容性问题
+
+主轴的排列效果 justify-content: space-around;
+交叉轴居中 align-items: center;
+溢出换行 flex-wrap: wrap;
+
+
+
 # 练习_树形组件
+
+`递归这个组件即可,但需要先给组件name赋值`
+
+- 数组的索引方式无法实时渲染，所以可以用数组的变异方法splice，但是如果这时设计到循环数组中的index，那可能也会出问题，因为第n个怎样的时候，它只会从第0项开始怎样。。
+- `所以，最后，还是用 $set() 吧. this.$set(this.showChildren, index, flag);`
+
+- v-if会完全的生成或销毁，所以如果想保存上一次样子，那就用v-show，但这样也不好，耗费性能
+- 所以，最后要怎么办呢？
+- 利用vue提供的缓存实例：`keep-alive组件,然后里面再写base-tree这个组件且配合v-if`
+
+
 
 数据：
 
@@ -5214,6 +5239,9 @@ data: [
 ]
 ```
 
+
+
+
 # 利用脚手架搭建项目
 
 拉取 2.x 模板 (旧版本)
@@ -5222,7 +5250,14 @@ data: [
 npm install -g @vue/cli-init
 # `vue init` 的运行效果将会跟 `vue-cli@2.x` 相同
 vue init webpack my-project
+# vue脚手架搭建项目的可视化创建界面,运行以下命令
+# 但不推荐使用这种方式,还是最好用命令/代码手写,比较"程序员"
+vue ui
+#.vuerc文件中存在 presets(预设的代码)
 ```
+
+
+
 
 # 渲染函数
 
@@ -5283,6 +5318,7 @@ return createElement('h1', this.blogTitle);
 ```
 createElement 会返回什么呢？
 它不会返回一个实际的DOM元素。更准确的名字可能是：``createNodeDescription``，因为它所包含的信息会告诉Vue页面上需要渲染什么样的节点，包括其子节点的描述信息。我们把这样的节点描述为“虚拟节点（virtual node）”，也常简写它为“VNode”。“虚拟DOM”是我们对由Vue组件树建立起来的整个VNode树的称呼。
+
 
 ## createElement参数
 createElement接收的参数：
@@ -5348,6 +5384,7 @@ createElement(标签名(必需), 与模板中属性对应的数据对象(可选)
   },
 }
 ```
+
 
 ## 使用JavaScript代替模板功能
 
@@ -5483,6 +5520,10 @@ render: function (createElement) {
   ])
 }
 ```
+
+
+
+
 
 # JSX 
 在Vue中使用JSX语法。可以让我们回到更接近模板的语法上。
