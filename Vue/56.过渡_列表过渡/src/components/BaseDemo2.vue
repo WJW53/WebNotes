@@ -31,7 +31,7 @@ export default {
       const randomIndex = Math.floor( Math.random() * this.lists.length );
       this.lists.splice(randomIndex, 1);
     },
-    handleShuffle () {
+    handleShuffle () {//打乱数组, 此时若想要有过渡效果, 则需要使用.v-move css类
       this.lists.sort(() => Math.random() - 0.5);
     },
   },

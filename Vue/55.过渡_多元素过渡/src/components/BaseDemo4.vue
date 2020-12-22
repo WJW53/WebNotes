@@ -47,8 +47,7 @@ button {
   color: #fff;
 }
 
-.v-enter,
-.v-leave-to {
+.v-enter{
   opacity: 0;
   transform: translateX(80px);
 }
