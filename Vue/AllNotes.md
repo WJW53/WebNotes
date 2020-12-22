@@ -5261,6 +5261,31 @@ vue ui
 
 # 渲染函数
 
+用vue脚手架搭建工程项目时:
+
+```js
+new Vue({
+  render: h => h(App),//
+}).$mount("#app");
+```
+
+`h中可以传入组件对象,也可以传入一个标签的名字(那样就会渲染生成这个标签)`
+
+> 用的是outerHTML,然后render渲染。template即便在对象中配置了,也还是不会生效,因为这里缺少了模板编译器
+
+1. 完整版
+2. 运行时版 (少了编译器,所以体积比完整版小了30%,所以加载速度更快了)
+
+**所以,优先级：.vue组件中的template标签 > render > vue实例中的template选项 > el.outerHTML**
+
+`h其实是render的参数的别名,它真正的名字是: createElement,是一个函数`
+
+```js
+render (createElement) {
+  return createElement('h'+this.level, this.$slots.default);  
+}
+```
+
 ## 基础
 当我们需要使用JavaScript的编程能力时，可以利用渲染函数。渲染函数比模板更接近于编译器。
 
@@ -5284,6 +5309,8 @@ render: function (createElement) {
 },
 ```
 
+**所以render函数的编程能力是要强于template的**
+
 ## 节点、树、以及虚拟DOM
 在深入渲染函数之前，先来了解一些浏览器的工作原理。例如，下面这段HTML：
 ```html
@@ -5297,7 +5324,7 @@ render: function (createElement) {
 以上HTML对应的DOM节点树如下图所示：
 ![avatar](https://cn.vuejs.org/images/dom-tree.png)
 
-每个元素都是一个节点。每段文字也是一个节点。甚至注释也都是节点。一个节点就是页面的一个部分。就像家谱树一样，每个节点都可以有孩子节点。
+> 每个元素都是一个节点。每段文字也是一个节点。甚至注释也都是节点。一个节点就是页面的一个部分。就像家谱树一样，每个节点都可以有孩子节点。
 
 高效地更新所有这些节点是比较困难的，不过幸运的是，我们不需要手动完成这个工作。只需要告诉Vue希望页面上的HTML是什么，例如在模板中：
 ```html
@@ -5316,15 +5343,19 @@ Vue通过建立一个**虚拟DOM**来追踪自己要如何改变真实DOM。例�
 ```js
 return createElement('h1', this.blogTitle);
 ```
-createElement 会返回什么呢？
-它不会返回一个实际的DOM元素。更准确的名字可能是：``createNodeDescription``，因为它所包含的信息会告诉Vue页面上需要渲染什么样的节点，包括其子节点的描述信息。我们把这样的节点描述为“虚拟节点（virtual node）”，也常简写它为“VNode”。“虚拟DOM”是我们对由Vue组件树建立起来的整个VNode树的称呼。
+
+- createElement 会返回什么呢？
+
+**它不会返回一个实际的DOM元素。更准确的名字可能是：``createNodeDescription``，因为它所包含的信息会告诉Vue页面上需要渲染什么样的节点，包括其子节点的描述信息。我们把这样的节点描述为“虚拟节点（virtual node）”，也常简写它为“VNode”。“虚拟DOM”是我们对由Vue组件树建立起来的整个VNode树的称呼。**
 
 
 ## createElement参数
 createElement接收的参数：
 ```js
-createElement(标签名(必需), 与模板中属性对应的数据对象(可选), 子级虚拟节点(可选));
+createElement(标签名(必需), 与模板中属性对应的数据对象(可选), 子级虚拟节点(可选,字符串/数组));
 ```
+
+**一般来说特性是写在行间的, 属性是xxx.属性名**
 
 ### 深入数据对象
 ```js
@@ -5345,15 +5376,16 @@ createElement(标签名(必需), 与模板中属性对应的数据对象(可选)
   },
   // 组件 prop
   props: {
+    name: 'bar组件?',
     myProp: 'bar',
   },
   // DOM属性
   domProps: {
-    innerHTML: 'baz',
+    innerHTML: '<span>innerHTML</span>',
   },
   // 事件监听器，不支持如“v-on:keyup.enter”这样的修饰器
   on: {
-    click: this.onClick
+    click: this.onClick//onClick是一个函数
   },
   // 仅用于组件，用于监听原生事件，而不是组件内部使用 vm.$emit 触发的事件。
   nativeOn: {
@@ -5367,7 +5399,7 @@ createElement(标签名(必需), 与模板中属性对应的数据对象(可选)
       expression: '1 + 1',
       arg: 'foo',
       modifiers: {
-        bar: true
+        number: true
       }
     }
   ],
@@ -5375,11 +5407,12 @@ createElement(标签名(必需), 与模板中属性对应的数据对象(可选)
   key: 'myKey',
   ref: 'myRef',
   // 如果在渲染函数中给多个元素都应用了相同的 ref 名，那么 `$refs.myRef` 会变成一个数组。
-  refInFor: true
+  refInFor: true,//得配合refInFor: true, $refs.myRef 才会生效为一个数组,$refs本身是个对象
+
   // 作用域插槽，格式为：{ name: props => VNode | Array<VNode> }
   // 如果组件是其它组件的子组件，需为插槽指定名称
   slot: 'name-of-slot',
-  scopedSlots: {
+  scopedSlots: {//父级组件使用子组件的数据
     default: props => createElement('span', props.text)
   },
 }
@@ -5427,7 +5460,7 @@ render (createElement) {
       value: self.value
     },
     on: {
-      input (e) {
+      input (e) {//因为这里的this默认指向null
         self.value = e.target.value;
       }
     },
@@ -5465,7 +5498,8 @@ on: {
 修饰键：.ctrl, .alt, .shift, .meta | if (!event.ctrlKey) return (将 ctrlKey 分别修改为 altKey、shiftKey 或者 metaKey)
 
 ### 插槽
-可以通过 this.$slots 访问静态插槽的内容，每个插槽都是一个 VNode 数组：
+**可以通过 this.$slots 访问静态插槽的内容，每个插槽都是一个 VNode 数组：**
+
 ```html
 <div>
   <slot></slot>
@@ -5477,7 +5511,7 @@ render: function (createElement) {
 }
 ```
 
-也可以通过 this.$scopedSlots 访问作用域插槽，每个作用域插槽都是一个返回若干 VNode 的函数：
+**也可以通过 this.$scopedSlots 访问作用域插槽，每个作用域插槽都是一个返回若干 VNode 的函数：**
 ```html
 <div>
   <slot :text="message"></slot>
@@ -5497,7 +5531,8 @@ render: function (createElement) {
   ])
 }
 ```
-如果要用渲染函数向子组件中传递作用域插槽，可以利用 VNode 数据对象中的 scopedSlots 字段：
+
+**如果要用渲染函数向子组件中传递作用域插槽，可以利用 VNode 数据对象中的 scopedSlots 字段：**
 ```html
 <div>
   <base-slot v-slot="slotProps">
@@ -5521,34 +5556,54 @@ render: function (createElement) {
 }
 ```
 
+`C了个DJ,最后你跟我说 render 不是那么常用?只需要了解,需要的时候回来看看能写出来就行, 你咋不早说?!!`
+`因为render中的createElement非常难以阅读,所以就难以维护,故不常使用,常用的是JSX`
 
+
+
+
+# 给组件绑定原生事件的含义
+
+- 我们引入一个原生标签(div、li、p......)的概念，那么原生事件（存在于标准当中的如'click', 'mouseover'）应该绑定到原生标签上。自定义组件上应该绑定自定义事件。
+
+- `如果我们想给自定义组件标签（注意是标签，不是内部元素）绑定原生事件（使原生事件生效于组件template的root element上）怎么办，加.native修饰符。`给自定义组件标签绑定js标准的原生事件是不会生效的，所以需要加native修饰符。
 
 
 
 # JSX 
-在Vue中使用JSX语法。可以让我们回到更接近模板的语法上。
+
+JSX === (JS + XML(HTML)); 主要是用在render函数中渲染元素时使用JSX;React是主要用JSX的
+
+**在Vue中使用JSX语法。可以让我们回到更接近模板的语法上。**
+
 ```js
 render () {
   return (
     <h1>这是一个标题</h1>
-  )
+  )//圆括号的作用是,避免标签换行后可能只返回一个空白?反正显示上是空白的
 }
 ```
 
 ## 插值
+用一个大括号包裹起来js即可,它这里左右两边可以无空格
+
 ```js
 <div>{ this.value }</div>
 ```
 
 ## 指令
-在JSX中，一些指令并不存在，所以我们可以换一种方式来处理。
+**`在JSX中，一些指令并不存在，所以我们可以换一种方式来处理。`**
 
 ### v-text
+domPropsTextContent
+
+v-text 指令用的实际就是TextContent, 这里也一样
 ```html
 <div domPropsTextContent="<p>i am a p</p>"></div>
 ```
 
 ### v-html
+domPropsInnerHTML
 ```html
 <div domPropsInnerHTML="<p>i am a p</p>"></div>
 ```
@@ -5560,41 +5615,67 @@ jsx支持v-show指令：
 ```
 
 ### v-if 
+前面的表达式为true时就会渲染后面的元素
 ```html
 <!-- v-if -->
 {true && <div>div</div>}
 {true ? <div>div</div> : <span>span</span>}
 ```
 
+- 而if-elseif-else没有什么能很好的替代, 但是可以在methods里写个函数: 
+```js
+methods:{
+  vIf(){
+    if(this.num === 1){
+      return <div>1</div>;
+    }else if(this.num === 2){
+      return <span>2</span>
+    }else{
+      return <p>{ this.num }</p>
+    }
+  }
+}
+```
+- 然后再在render要返回的模板中需要的地方写上  { this.vIf() }
+
+
 ### v-for
+不支持, 所以也需要模拟. 利用数组的map方法
 ```html
 { [1, 2, 3].map(item => (<div key={item}>{ item }</div>))}
 ```
 
 ### v-on
+小驼峰或者短横线命名,但是注意风格要统一
+
 ```html
 <button onClick={this.handleClick}>点击事件</button>
 <button on-click={this.handleClick}>点击事件</button>
 <!-- 对应@click.native -->
 <cmp-button nativeOnClick={this.handleClick}>原生点击事件</cmp-button>
-<!-- 传递参数 -->
+<!-- 传递参数(直接传参的话就会成函数执行了) -->
+<!-- 所以可以先绑定匿名函数,然后其内部再执行传参了的handleClick函数 -->
 <button onClick={e => this.handleClick(this.id)}>触发点击事件时，传递参数</button>
 ```
 
 ### v-bind
+直接写成: 特姓名 = { js代码 };即可等效于v-bind绑定
 ```html
 <input value={this.value} />
 ```
 
 在JSX中可以直接使用class="xx"来指定样式类，内联样式可以直接写成style="xxx"
+
+`注意：这里不是双大括号的插值语法, 而是render的插值方法--一个大括号,另外一个是对象的意思`
 ```html
 <div class="a b" style="font-size: 12px;">Content</div>
+<div class={['a','b']} style={{fontSize: '14px', color:'red'}}>Content</div>
 <div class={{a: true, b: false}}>Content</div>
 <div style={{color: 'red', fontSize: '14px'}}>Content</div>
 ```
 
 ### v-model
-有相应的插件 支持 v-model，所以可以直接使用：
+`有相应的插件 支持 v-model，所以可以直接使用：`
 
 ```html
 <input type="text" v-model={this.value} />
@@ -5613,7 +5694,8 @@ jsx支持v-show指令：
 ### v-once
 以上三个指令，不常用，无替代方案
 
-## Ref 
+## Ref
+ref引用：当作对应元素的特性即可 
 ```html
 <div ref="xxx">xxx</div>
 ```
@@ -5626,6 +5708,7 @@ jsx支持v-show指令：
 ```js
 [1, 2, 3].map(item => <div ref="xx" refInFor={true} key={item}>{ item }</div>)
 ```
+
 
 ## 自定义指令
 ```js
@@ -5645,12 +5728,15 @@ render () {
   ];
 
   return (
-    <div {...{ directives} }></div>
+    <div {...{directives} }></div>//里面的括号应该写在扩展符外面那层吧?好像都可以,因为这里最外层是插值
   )
 }
 ```
 
 ## 过滤器
+如何找到 `过滤器们` 呢?
+this.$options.filters('capitalize')('this.msg);
+
 ```html
 <!-- 正常使用过滤器 -->
 <div>{{ msg | capitalize }}</div>
@@ -5661,6 +5747,9 @@ render () {
 
 
 ## 插槽
+
+以前组件写法时, `#default === v-slot:default  , 要放在template上`
+
 模板写法：
 ```html
 <!-- 组件内 -->
@@ -5726,26 +5815,33 @@ JSX写法：
 </div>
 ```
 
-# 函数式组件
-当一个组件不需要状态（即响应式数据）、不需要任何生命周期场景、只接受一些props来显示组件时，我们可以将其标记为函数式组件。
 
+
+
+
+# 函数式组件
+**当一个组件不需要状态（即响应式数据）、不需要任何生命周期场景、只接受一些props来显示组件时，我们可以将其标记为函数式组件。**
+
+在组件内添加选项fucntional: true, 此时this为undefined
 ```js
 functional: true,
 ```
 
-因为函数式组件只是函数，所以渲染开销会低很多。
+`因为函数式组件只是函数，所以渲染开销会低很多。`
 
-在 2.3.0 之前的版本中，如果一个函数式组件想要接收 prop，则 props 选项是必须的。在 2.3.0 或以上的版本中，你可以省略 props 选项，所有组件上的 attribute 都会被自动隐式解析为 prop。
+> 在 2.3.0 之前的版本中，如果一个函数式组件想要接收 prop，则 props 选项是必须的(`必须先被注册`)。在 2.3.0 或以上的版本中，你可以省略 props 选项，所有组件上的 attribute 都会被自动隐式解析为 prop, 但最好还是写 props 选项!!。
 
-为了弥补缺少的实例，render 函数提供第二个参数context作为上下文。context包括如下字段：
+`为了弥补缺少的实例，render 函数提供第二个参数context作为上下文。context包括如下字段:`
+
 - props：提供所有 prop 的对象
-- slots: 一个函数，返回了包含所有插槽(非作用域)的对象
+- slots: 它是一个函数，执行会返回一个包含了所有插槽(非作用域)的对象
 - scopedSlots: (2.6.0+) 一个暴露传入的作用域插槽的对象。也以函数形式暴露普通插槽。
 - data：传递给组件的整个数据对象，作为 createElement 的第二个参数传入组件
+  - `这里打印data,里面的attrs是一个包含 未注册属性 的对象,所以`
 - parent：对父组件的引用
 - listeners: (2.3.0+) 一个包含了所有父组件为当前组件注册的事件监听器的对象。这是  data.on 的一个别名。
 - injections: (2.3.0+) 如果使用了 inject 选项，则该对象包含了应当被注入的属性。
-- children: VNode 子节点的数组，包含了所有的非作用域插槽和非具名插槽。
+- **children: VNode 子节点的数组，包含了所有的非作用域插槽和非具名插槽，`即便插槽的名字是default也不会放里面，这个是真正的默认插槽`。**
 
 ## slots() VS children
 
@@ -5808,27 +5904,36 @@ children的结果为：
 [<div>div</div>, <p>p</p>, template]
 ```
 
+`就是说如果有显式的default插槽，则slots以它为主，而children会把显式以及真正隐式的default插槽都给放入数组中`
 
 
 ## 基于模板的函数式组件
 在 2.5.0 及以上版本中，如果你使用了单文件组件，那么基于模板的函数式组件可以这样声明：
 ```html
 <template functional>
+  <div>
+    {{ props.level }}
+    <slot :text="hello"></slot>
+  </div>
 </template>
 ```
 
+
+
+
+
 # 过渡_单元素过渡
-Vue 在插入、更新或者移除 DOM 时，提供多种不同方式的应用过渡效果。
+Vue 在插入、更新或者移出 DOM 时，提供多种不同方式的应用过渡效果。
 
 ## 单元素/组件的过渡
-Vue 提供了 transition 的封装组件，在下列情形中，可以给任何元素和组件添加进入/离开过渡
+**`Vue 提供了 transition 的封装组件，在下列情形中，可以给任何元素和组件添加进入/离开过渡`**
 - 条件渲染 (使用 v-if)
 - 条件展示 (使用 v-show)
 - 动态组件
 - 组件根节点
 
 ## 过渡的类名
-在进入/离开的过渡中，会有 6 个 class 切换。
+**在进入/离开的过渡中，会有 6 个 class 切换。**
 
 <hr />
 
@@ -5856,7 +5961,7 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
   在整个离开过渡的阶段中应用，在离开过渡被触发时立刻生效，在过渡/动画完成之后移除。
   这个类可以被用来定义离开过渡的过程时间，延迟和曲线函数。
 
-5. v-leave-to: 
+6. v-leave-to: 
   定义离开过渡的结束状态(2.1.8+) 。
   在离开过渡被触发之后下一帧生效 (与此同时 v-leave 被删除)，在过渡/动画完成之后移除。
 <hr />
@@ -5866,17 +5971,43 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
 
 ## 类名前缀
 
+`用transition标签包裹起来想要变化的元素,然后给其name特性赋值`
+
 1. transition 无 name 特性
   类名前缀为 v-。
 
 2. transition 有 name 特性
-  如 name 为 fade，则类名前缀为fade-。
+  **如 name 为 fade，则类名前缀为fade-, 不再为v- (例如: .box1-enter-active)**
 
 ## CSS 动画
-CSS 动画用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点插入 DOM 后不会立即删除，而是在 animationend 事件触发时删除。
+**`CSS 动画用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点插入 DOM 后不会立即删除，而是在 animationend 事件触发时删除。`**
+
+```css
+.v-enter-active {
+  animation: animate 1s;
+}
+.v-leave-active {
+  animation: animate 1s reverse;
+}
+
+@keyframes animate{
+  0%{
+    opacity: 0;
+    transform: translateX(400px) scale(1);
+  }
+  50%{
+    opacity: 0.5;
+    transform: translateX(200px) scale(1.5);
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+```
 
 ## 自定义过渡的类名
-我们可以通过以下 attribute 来自定义过渡类名：
+我们可以通过transition标签的以下 attribute 来自定义过渡类名, 改变以后, v-enter...就不会生效了, 若果想让它们继续生效就得再放进以下自定义类名的值中：
 
 - enter-class
 - enter-active-class
@@ -5885,21 +6016,31 @@ CSS 动画用法同 CSS 过渡，区别是在动画中 v-enter 类名在节点�
 - leave-active-class
 - leave-to-class (2.1.8+)
 
-他们的优先级高于普通的类名，这对于 Vue 的过渡系统和其他第三方 CSS 动画库（如 Animate.css）结合使用十分有用。
+```html
+<transition enter-active-class = "animated bounceInRight v-enter-active"></transition>
+```
+
+`他们的优先级高于普通的类名`，这对于 Vue 的过渡系统和其他第三方 CSS 动画库（如 Animate.css）结合使用十分有用。
 
 Animate.css 官网地址：https://daneden.github.io/animate.css/
 安装方式：``npm install animate.css --save``
 
+> 真方便, 真好使
+
+
 ## 同时使用过渡和动画
 
-可使用 type 属性，来声明需要 Vue 监听的类型，type值可为 animation 或 transition 。
+可使用 `type` 属性，来声明需要 Vue 监听的类型，type值可为 animation 或 transition 。
 
-当不设置type时，默认会取 transitioned 和 animationed 两者更长的为结束时刻。
+**当不设置type时，默认会取 transitioned 和 animationed 两者更长的为结束时刻。**
+
 
 ## 显性的过渡时间
 在一些情况下，Vue可以自动得出过渡效果的完成时机，从而对dom进行处理。
 
-但是有些时候，我们会设置一系列的过渡效果，例如嵌套元素也有过渡动效，其过渡效果的时间长于父元素。此时我们可以设置duration属性，定制一个显性的过渡持续时间（以毫秒记）：
+但是有些时候，我们会设置一系列的过渡效果，例如嵌套元素也有过渡动效，其过渡效果的时间长于父元素(那就会提前消失了,这显然是不合理的,因为父元素消失那就都消失啦)。此时我们可以设置duration属性，定制一个显性的过渡持续时间（以毫秒记）：
+
+`duration只记过渡的时长,不记录延时等待/动画的时长?`
 
 ```html
 <transition :duration="1000">...</transition>
@@ -5913,7 +6054,7 @@ Animate.css 官网地址：https://daneden.github.io/animate.css/
 ## 初始渲染的过渡
 可以通过 ``appear`` attribute 设置节点在初始渲染的过渡。
 
-和进入/离开过渡一样，同样也可以自定义 CSS 类名。如：
+和进入/离开过渡一样，同样也可以自定义 CSS 类名, 同样的,可以为多个类名。如：
 ```js
 appear-class="appear-enter"
 appear-active-class="appear-enter-active"
@@ -5921,7 +6062,7 @@ appear-to-class="appear-enter-to"
 ```
 
 ## JavaScript 钩子
-可以在属性中声明 JavaScript 钩子:
+可以在属性中声明 JavaScript 钩子, 然后写到methods中:
 
 ```html
 <transition
@@ -5944,7 +6085,13 @@ appear-to-class="appear-enter-to"
 - after-enter 动画完成后
 - enter-cancelled 取消动画
 
-对于仅使用 JavaScript 过渡的元素添加 v-bind:css="false"，Vue 会跳过 CSS 的检测。这也可以避免过渡过程中 CSS 的影响。
+**钩子函数中第一个参数el, 就是具体对应的DOM元素;第二个参数done是回调函数,比如在enter中,如果enter没有执行完毕(包括定时器),则afterEnter就不能执行,在enter里最后一行写`done();`就行.**
+
+- **如何标识取消动画事件**
+  - 在enter当中写`done.canceled = true`;
+
+
+**对于仅使用 JavaScript 过渡的元素添加 `v-bind:css="false"`，Vue 会跳过 CSS 的检测。这也可以避免过渡过程中 CSS 的影响。**
 
 设置了 appear 特性的 transition 组件，也存在自定义 JavaScript 钩子：
 ```html
@@ -5959,10 +6106,31 @@ appear-to-class="appear-enter-to"
 </transition>
 ```
 
-> 结合 Velocity.js
+> 结合 Velocity.js (它是JS的一个动画库)
 
 Velocity.js 官网地址：http://velocityjs.org/
 安装方式: ``npm install velocity-animate``
+
+
+在钩子函数enter中使用Velocity, 第二个参数中只要是css transform中的属性名,都可以直接写进去:
+```js
+enter(el,done){
+  Velocity(el, { opacity: 1 }, { duration: 500 });
+  Velocity(el, { rotateZ: 10 }, { duration: 300 });//这个是当上一个动画完事儿才会调用这个Velocity
+  Velocity(el, { rotateZ: -10 }, { duration: 300 });
+  Velocity(el, { rotateZ: 0 }, { duration: 300, complete:function(){
+    console.log("xxx");//当这个动画结束时就会执行这个complete,可以直接把done赋值给它
+  } });
+}
+```
+
+`注意：如果done不调用的话,那么就会同步执行那些钩子函数;所以在enter、leave中即便没调用done也必须给done这个参数,否则它会直接跳过这个enter/leave转而去触发afterenter,afterleave,也就是直接跳到过渡完成,没有过渡效果了`
+
+`调用完done之后,该dom元素才会被删除`
+
+
+
+
 
 # 过渡_多元素过渡
 
@@ -6019,10 +6187,20 @@ Vue提供一个一个 mode 特性，可以给多个元素过渡应用不同的�
 ## 列表的交错过渡
 如果要给列表中的元素，应用更丰富的过渡效果，可以配合JavaScript钩子。
 
+
+
+
+
+
 # 过渡_复用过渡
 过渡可以通过 Vue 的组件系统实现复用。要创建一个可复用过渡组件，你需要做的就是将 <transition> 或者 <transition-group> 作为根组件，然后将任何子组件放置在其中就可以了。
 
 注意：当使用函数式组件复用过渡时，不要设置css作用域。
+
+
+
+
+
 
 # 组件_异步组件
 在项目中，有些组件不会在第一次进入首屏时加载，而是当执行了某些操作时，才会加载进来，所以此时，我们可以将该组件设置成异步加载，什么时候用，什么时候再加载进来，以达到提升首屏性能的目的。
@@ -6044,6 +6222,12 @@ components: {
 ```
 
 异步加载的文件，会在link标签上设置 el="prefech"。浏览器会在空闲时间内下载对应的资源，使用时可以直接从缓存中获取。与之对应的 el="preload"，会及时下载对应的资源。
+
+
+
+
+
+
 
 
 # VueRouter_基础
@@ -6149,3 +6333,242 @@ VueRouter({
 不过这种模式要玩好，还需要后台配置支持。因为我们的应用是个单页客户端应用，如果后台没有正确的配置，当用户在浏览器直接访问 http://oursite.com/user/id 就会返回 404，这就不好看了。
 
 所以呢，你要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面，这个页面就是你 app 依赖的页面。
+
+
+
+
+
+# VueRouter_命名路由-嵌套路由-重定向-别名
+
+## 命名路由
+可以通过一个名称标识一个路由，这样在某些时候会显得更方便一些，特别是在链接一个路由，或者是执行一些跳转时，可以在创建Router实例时，在routes配置中给某个路由设置名称：
+```js
+routes = [
+  {
+    path: '/activity/personal',
+    name: 'personal',
+    component: Personal,
+  }
+];
+```
+要链接到一个命名路由，可以给 ``router-link`` 的 to 属性传一个对象：
+```html
+<router-link :to="{ name: 'personal' }">个人中心</router-link>
+```
+
+## 嵌套路由
+一个被 router-view 渲染的组件想要包含自己的嵌套 router-view 时，可以使用嵌套路由，如：
+```js
+{
+  path: '/activity',
+  component: () => import('./views/Activity'),
+  children: [
+    {
+      path: '/activity/academic',
+      name: 'academic',
+      component: () => import('./views/Academic'),
+    },
+    {
+      path: '/activity/personal',
+      name: 'personal',
+      component: () => import('./views/Personal'),
+    },
+    {
+      path: '/activity/download',
+      name: 'download',
+      component: () => import('./views/Download'),
+    }
+  ],
+}
+```
+经过这样的设置，在 Activity 组件中就可以使用 router-view 了。
+子路由的path可以简写：
+```js
+path: 'personal'
+```
+这样会自动将父路由的路径，拼接在子路由前，最终结果为：/activity/personal。
+
+当访问 /activity 下的其他路径时，并不会渲染出来任何东西，如果想要渲染点什么，可以提供一个空路由：
+```js
+{
+  path: '/activity',
+  children: [
+    {
+      path: '',
+      component: () => import('./views/Academic'),
+    },
+  ],
+}
+```
+
+## 重定向
+重定向也是通过 routes 配置来完成，下面例子是从 /a 重定向到 /b
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', redirect: '/b' }
+  ]
+})
+```
+重定向的目标也可以是一个命名的路由：
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', redirect: { name: 'foo' }}
+  ]
+})
+```
+甚至是一个方法，动态返回重定向目标：
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', redirect: to => {
+      // 方法接收 目标路由 作为参数
+      // return 重定向的 字符串路径/路径对象
+    }}
+  ]
+})
+```
+
+## 别名
+“重定向”的意思是，当用户访问 /a时，URL 将会被替换成 /b，然后匹配路由为 /b，那么“别名”又是什么呢？
+
+/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a，就像用户访问 /a 一样。
+
+上面对应的路由配置为：
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', component: A, alias: '/b' }
+  ]
+})
+```
+
+
+
+# VueRouter_编程式的导航
+通过在 Vue 根实例的 router 配置传入 router 实例，\$router、 \$route 两个属性会被注入到每个子组件。
+
+## $router
+路由实例对象。
+
+除了使用  ``<router-link>`` 创建 a 标签来定义导航链接，我们还可以借助 router 的实例
+方法，通过编写代码来实现。
+
+### $router.push
+想要导航到不同的 URL，则使用 router.push 方法。这个方法会向 history 栈添加一个新的记录，所以，当用户点击浏览器后退按钮时，则回到之前的 URL。
+
+当你点击 ``<router-link>`` 时，这个方法会在内部调用，所以说，点击 ``<router-link :to="...">`` 等同于调用 \$router.push(...)。
+
+声明式 | 编程式
+:-: | :-:
+``<router-link :to="...">`` | this.$router.push(...) 
+
+该方法的参数可以是一个字符串路径，或者一个描述地址的对象。例如：
+```js
+// 字符串
+this.$router.push('home')
+
+// 对象
+this.$router.push({ path: 'home' })
+
+// 命名的路由
+this.$router.push({ name: 'user' })
+```
+
+### $router.replace
+跟 router.push 很像，唯一的不同就是，它不会向 history 添加新记录，而是替换掉当前的 history 记录。
+
+声明式 | 编程式
+:-: | :-:
+``<router-link :to="..." replace>`` | this.$router.replace(...) 
+
+### $router.go(n)
+这个方法的参数是一个整数，意思是在 history 记录中向前或者后退多少步，类似 window.history.go(n)。
+
+```js
+// 在浏览器记录中前进一步，等同于 history.forward()
+this.$router.go(1)
+
+// 后退一步记录，等同于 history.back()
+this.$router.go(-1)
+
+// 前进 3 步记录
+this.$router.go(3)
+
+// 如果 history 记录不够用，那就默默地失败呗
+this.$router.go(-100)
+this.$router.go(100)
+```
+
+## $route
+只读，路由信息对象。
+
+### $route.path
+字符串，对应当前路由的路径，总是解析为绝对路径，如 "/foo/bar"。
+
+### $route.params
+一个 key/value 对象，包含了动态片段和全匹配片段，如果没有路由参数，就是一个空对象。
+
+### $route.query
+一个 key/value 对象，表示 URL 查询参数。例如，对于路径 /foo?user=1，则有 \$route.query.user == 1，如果没有查询参数，则是个空对象。
+
+### $route.hash
+路由的 hash 值 (带 #) ，如果没有 hash 值，则为空字符串。
+
+### $route.fullPath
+完成解析后的 URL，包含查询参数和 hash 的完整路径。
+
+### $route.matched
+一个数组，包含当前路由的所有嵌套路径片段的路由记录 。路由记录就是 routes 配置数组中的对象副本 (还有在 children 数组)。
+    ```js
+      const router = new VueRouter({
+        routes: [
+          // 下面的对象就是路由记录
+          {
+            path: '/foo',
+            component: Foo,
+            children: [
+              // 这也是个路由记录
+              { path: 'bar', component: Bar }
+            ]
+          }
+        ]
+      })
+    ```
+
+    当 URL 为 /foo/bar，\$route.matched 将会是一个包含从上到下的所有对象 (副本)。
+
+### $route.name
+当前路由的名称，如果有的话
+
+### $route.redirectedFrom
+如果存在重定向，即为重定向来源的路由的名字。
+
+
+
+
+
+# VueRouter_动态路由匹配
+当我们需要把某种模式匹配到的所有路由，全都映射到同个组件。例如，我们有一个 User 组件，对于所有 ID 各不相同的用户，都要使用这个组件来渲染。那么，我们可以在 vue-router 的路由路径中使用“动态路径参数”来达到这个效果：
+```js
+const User = {
+  template: '<div>User</div>'
+}
+
+const router = new VueRouter({
+  routes: [
+    // 动态路径参数 以冒号开头
+    { path: '/user/:id', component: User }
+  ]
+})
+```
+经过这样的设置，像 /user/foo 和 /user/bar 都将映射到相同的路由。
+
+一个“路径参数”使用冒号 : 标记。当匹配到一个路由时，参数值会被设置到 this.$route.params，可以在每个组件内使用。
+
+
+
+
+
