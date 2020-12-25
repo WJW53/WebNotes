@@ -72,12 +72,13 @@ export default {
       })
     },
   },
-  watch: {
+  watch: {//得配合watch才行,放在mounted里时,因为用的是同一个路由组件,所以不会二次渲染
+  //钩子函数生命周期只有一次啊
     '$route': {
       handler () {
         this.getData();
       },
-      immediate: true,
+      immediate: true,//这个相当于mounted中的一次
     } 
   }
 }

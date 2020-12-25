@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="./jquery-3.4.1.js"></script>
+</head>
+
+<body>
+    <div id="uploadForm">
+        <input id="file" type="file" name="userfile" />
+        <button id="upload" type="button">upload</button>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript">
+    $(function () {
+        $("#upload").click(function () {
+            var formData = new FormData();
+            formData.append('file', $('#file')[0].files[0]);
+            // console.log(formData);
+            $.ajax({
+                url: "http://29s13l8324.wicp.vip/up_photo",
+                type: 'POST',
+                cache: false, // 不缓存
+                data: {
+                    "tn": "pc",
+                    "image": ("123.jpg",formData,"image/jpeg"),
+                    "from": "pc",
+                    "image_source": "PC_UPLOAD_SEARCH_FILE",
+                    "range": '{"page_from": "searchIndex"}'
+                }, // 上传formdata封装的数据
+                processData: false, // jQuery不要去处理发送的数据
+                contentType: false, // jQuery不要去设置Content-Type请求头
+                success: function (data) {
+                    console.log("success!!");
+                    console.log(data);
+                },
+                error: function (err) {
+                    console.log("error!!");
+                }
+            })
+            // .done(function(res) {
+            //     console.log('success!');
+            // }).fail(function(error) {
+            //     console.log('error!');
+            // });
+
+        });
+    });
+</script>
