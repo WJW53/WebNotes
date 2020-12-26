@@ -99,8 +99,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const isRequiresLogin = to.matched.some(item => item.meta.requiresLogin);
-
+  //to里面的matched就是包含了它的祖先路由对象的信息
   if(isRequiresLogin) {
+    // const isLogin = document.cookie.includes('login=true');
     const isLogin = auth.isLogin();
     if(isLogin) {
       next();
@@ -113,7 +114,7 @@ router.beforeEach((to, from, next) => {
     next();
   }
 
-  // const from.meta.backAsk
+  // const isBackAsk = from.meta.backAsk;//它不需要拿到所有的祖先路由去判断是否回退
 });
 
 export default router;

@@ -6824,6 +6824,8 @@ beforeRouteLeave (to, from, next) {
 # VueRouter_路由元信息
 定义路由的时候可以配置 meta 字段，用于自定义一些信息。
 
+常用于验证是否需要登录路由才能访问
+
 ```js
 const router = new VueRouter({
   routes: [
@@ -7293,7 +7295,6 @@ modules: {
 同样，对于模块内部的 action，局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState。
 
 对于模块内部的 getter，根节点状态会作为第三个参数暴露出来。
-
 
 
 

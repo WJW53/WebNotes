@@ -34,9 +34,9 @@ export default {
 </script>
 
 <style scoped>
-#app {
-  /* overflow-x: hidden; */
-}
+/* #app {
+  overflow-x: hidden;
+} */
 /* enter */
 .v-enter {
   transform: translateX(1000px);

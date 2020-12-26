@@ -18,13 +18,13 @@
 
 <script>
 export default {
-  beforeRouteUpdate (to, from, next) {
+  beforeRouteUpdate (to, from, next) {//路径改变组件复用-->动态路由切换的时候调用 2.
     next();
   },
-  // beforeRouteLeave (to, from, next) {
-  //   // const isGo = window.confirm('真的要走吗，不再看看了？');
-  //   // isGo ? next() : next(false);
-  // },
+  beforeRouteLeave (to, from, next) {
+     const isGo = window.confirm('真的要走吗，不再看看了？');
+     isGo ? next() : next(false);
+  },
   props: {
     id: {
       type: [String, Number],

@@ -19,7 +19,7 @@ export default {
         auth.cancelLogin();
       } else {
         auth.login();
-        this.goBack();
+        this.goBack();//登录成功后返回原先页面的处理
       }
       this.isLogin = !this.isLogin;
     },

@@ -29,10 +29,13 @@
                 {
                     url: 'http://29s13l8324.wicp.vip/up_photo', //用于文件上传的服务器端请求地址
                     // url: 'http://29s13l8324.wicp.vip/123.jpg', //用于文件上传的服务器端请求地址
+                    type: 'post',
                     secureuri: false, //是否需要安全协议，一般设置为false
                     fileElementId: 'file1', //文件上传域的ID
+                    contenType: 'multipart/form-data',
                     dataType: 'json', //返回值类型 一般设置为json
-                    success: function (data, status)  //服务器成功响应处理函数
+                    //不知道咋回事儿 还是有问题,进入了error的回调函数里
+                    success: function (data)  //服务器成功响应处理函数
                     {
                         console.log(data);
                         console.log("success");
