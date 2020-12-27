@@ -48,7 +48,7 @@ export default {
 
       // this.$store.commit(CHANGE_OBJ);
 
-      // this.countIncrement()
+      // this.countIncrement();
     },
     handleInput (e) {
       this.$store.commit(UPDATE_MSG, { value: e.target.value });

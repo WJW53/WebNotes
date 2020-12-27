@@ -4,7 +4,7 @@ import router from './router';
 import store from './store';
 import "./assets/reset.css";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = falsep;
 
 new Vue({
   render: h => h(App),

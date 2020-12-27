@@ -18,7 +18,7 @@
   <script src="./jquery-3.4.1.js"></script>
 
   <script>
-    function uploadpic(e) {//check
+    function uploadpic(e) {
       //1. 获取到上传的文件
       var self = this;
       console.log(e.target);
@@ -26,51 +26,9 @@
 
       //图片
       // //2. 创建form对象,将文件内容添加到form对象中
-      let param = new FormData() // 创建form对象
-      param.append("file", file, file.name) // 通过append向form对象添加数据
+      let param = new FormData(); // 创建form对象
+      param.append("file", file, file.name); // 通过append向form对象添加数据
       console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
-
-      ////文档
-      ////文件配置params
-      // let param = {
-      //   "text": "",
-      // }
-
-      // var objFile = document.getElementById("fileId");
-      // if (objFile.value == "") {
-      //   alert("不能空")
-      // }
-      // console.log(objFile.files[0].size); // 文件字节数
-
-      // var files = $("#fileId").prop('files'); //获取到文件列表
-      // if (files.length == 0) {
-      //   alert('请选择文件');
-      // } else {
-      //   var reader = new FileReader(); //新建一个FileReader
-      //   reader.readAsText(files[0], "UTF-8"); //读取文件 
-      //   reader.onload = function (evt) { //读取完文件之后会回来这里
-      //     var fileString = evt.target.result; // 读取文件内容
-      //     param.text = fileString;
-
-      //     const url = "http://29s13l8324.wicp.vip/up_text"; //文档
-
-      //     let config = {
-      //       headers: {
-                  //都换成双引号格式,草了
-                  //"Content-Type": "application/json",
-      //         // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      //         'Content-Type': 'multipart/form-data',//反正这个不论是txt文件上传还是图片上传,都是正确的
-      //       }
-      //     }
-      //     console.log(param.text);
-      //     axios.post(url, param).then(response => {
-
-      //       //打印请求成功后返回的值
-      //       console.log("success");
-      //       console.log(response.data);
-      //     })
-      //   }
-      // }
 
 
       // 上传图片设置请求头
@@ -89,9 +47,63 @@
 
         //打印请求成功后返回的值
         console.log("success");
-        console.log(response.data);
+        console.log(response.data.photos);//这个是对象
+        console.log(JSON.stringify(response.data.photos));//这个是JSON字符串
       })
     }
+
+    function check(e) { //check
+
+      ////文档
+      ////文件配置params
+      let param = {
+        "text": "",
+      }
+
+      var objFile = document.getElementById("fileId");
+      if (objFile.value == "") {
+        alert("不能空")
+      }
+      console.log(objFile.files[0].size); // 文件字节数
+
+      var files = $("#fileId").prop('files'); //获取到文件列表
+      if (files.length == 0) {
+        alert('请选择文件');
+      } else {
+        var reader = new FileReader(); //新建一个FileReader
+        reader.readAsText(files[0], "UTF-8"); //读取文件 
+        reader.onload = function (evt) { //读取完文件之后会回来这里
+          var fileString = evt.target.result; // 读取文件内容
+          param.text = fileString;
+
+          const url = "http://29s13l8324.wicp.vip/up_text"; //文档
+
+          let config = {
+            headers: {
+              ////都换成双引号格式,草了
+              // "Content-Type": "application/json",
+              // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+              "Content-Type": "multipart/form-data", //反正这个不论是txt文件上传还是图片上传,都是正确的
+            }
+          }
+          console.log(param.text);
+          axios.post(url, param).then(response => {
+
+            //打印请求成功后返回的值
+            console.log("success");
+            console.log(response.data);
+            console.log(JSON.stringify(response.data));
+          })
+        }
+      }
+
+    }
+
+    // axios.get("http://29s13l8324.wicp.vip/get_hot").then(response => {
+    //   console.log('百度热榜');
+    //   console.log(response.data);
+    //   console.log(JSON.stringify(response.data));
+    // })
   </script>
 </body>
 

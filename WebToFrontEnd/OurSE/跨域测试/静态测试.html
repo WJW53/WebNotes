@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闻海</title>
+    <link rel="stylesheet" href="./reset.css">
+</head>
+<body>
+    <!-- 首页主体部分 -->
+    <div class="wrapper">
+        <div class="logo">
+            <img src="" alt="" class="img-lg">
+            <span class="logo-title">百度</span>
+        </div>
+        <div class="se">
+            <div class="search-box">
+                <span class="iconfont img-se"></span>
+                <span class="iconfont file-se"></span>
+                <span class="iconfont qa-se"></span>
+                <input type="text" class="search-text">
+
+                <!-- 下面三个span文本一开始是隐藏着的 -->
+                <span class="img-tips">按图片搜索</span>
+                <!-- 点击图片/文件对应的icon之后弹出一个框框，就是选择文件的 -->
+                <span class="file-tips">我想上传文件</span>
+                <!-- 我要提问的话就用路由转新的页面 -->
+                <span class="qa tips">我要提问</span>
+            </div>
+            <div class="submit-box">
+                <!-- 点击提交之后,就请求拿到数据,然后动态实时渲染页面. 
+                    这也是路由换新的页面哦 -->
+                <input type="submit" value="百度一下" class="btn-sub"  />
+            </div>
+        </div>
+    </div>
+
+    <!-- 首页里的百度热榜 -->
+    <div class="hot-news-wrapper">
+        <div class="hot-news-header">
+            <span class="hot-news-title">百度热榜</span>
+            <span class="iconfont hot-refresh-icon">字体图标更新</span>
+            <span class="hot-refresh-text">换一换</span>
+        </div>
+        <ul class="hot-news-list">
+            <li class="news-meta-item clearfix">
+                <a href="" class="news-title-content">
+                    <span class="title-content-index">1</span>
+                    <span class="title-content-title">蚂蚁回应被约谈:成立整改工作组</span>
+                    <span class="title-content-mark">这个是留着标印记的</span>
+                </a>
+                <span class="news-count">452万</span>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

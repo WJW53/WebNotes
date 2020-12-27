@@ -14,9 +14,9 @@ export default {
       count: 100,
     }
   },
-  computed: {
+  computed: {//计算属性可以跟随着某一个值的改变而改变
     ...mapState({
-      storeCount: 'count',// state => state.count + 10
+      storeCount: 'count',// state => state.count,想作操作,就还是写成函数形式
     }),
   },
   created () {
