@@ -1,19 +1,31 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import Home from './views/Home';
+import Home from './views/Home';
 
 Vue.use(VueRouter);
 
 const routes = [
-//   {
-//     path: '/',
-//     redirect: '/home',
-//   },
-//   {
-//     path: '/home',
-//     component: Home,
-//     // alias: '/',
-//   },
+  {
+    path: '/',
+    redirect: '/home',
+  },
+  {
+    path: '/home',
+    component: Home,
+    alias: '/',
+  },{
+    path: '/image',
+    component: () => import('./views/Image'),
+  },
+  {
+    path: '/page',
+    component: () => import('./views/Page'),
+  },
+  {
+    path: '/question',
+    component: () => import('./views/Question'),
+  },
+  
 //   {
 //     path: '/learn',
 //     component: () => import('./views/Learn'),

@@ -1,57 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>闻海</title>
     <link rel="stylesheet" href="./reset.css">
 </head>
+
 <body>
-    <!-- 首页主体部分 -->
+    <!-- 首页&网页组件的HTML -->
     <div class="wrapper">
-        <div class="logo">
-            <img src="" alt="" class="img-lg">
-            <span class="logo-title">百度</span>
-        </div>
-        <div class="se">
+
+
+
+        <!-- 网页头部 -->
+        <div class="se-header">
+            <!-- logo v-if 最初的页面，还没输入东西的时候，要显示这个logo1
+                但总之要一直有下面那个search-box组件，但是下面那个组件的样式却又不一样了
+                切换组件的时候 只是样式改变了而已还有位置，位置也能用样式改
+            -->
+            <div class="logo">
+                <!-- <img src="" alt="" class="img-lg"> -->
+                <span class="logo-title">Wenhai</span>
+                <span class="iconfont icon-logo"></span>
+                <span class="logo-title">闻海</span>
+            </div>
+            <!-- v-else -->
+            
+
+
+            <!-- 搜索部分 -->
             <div class="search-box">
-                <span class="iconfont img-se"></span>
-                <span class="iconfont file-se"></span>
-                <span class="iconfont qa-se"></span>
-                <input type="text" class="search-text">
+                <!-- 第一排 -->
+                <div class="search">
+                    <span class="search-area">
+                        <span class="iconfont img-se"></span>
+                        <span class="iconfont file-se"></span>
+                        <span class="iconfont qa-se"></span>
+                        <input type="text" class="search-text">
 
-                <!-- 下面三个span文本一开始是隐藏着的 -->
-                <span class="img-tips">按图片搜索</span>
-                <!-- 点击图片/文件对应的icon之后弹出一个框框，就是选择文件的 -->
-                <span class="file-tips">我想上传文件</span>
-                <!-- 我要提问的话就用路由转新的页面 -->
-                <span class="qa tips">我要提问</span>
+                        <!-- 下面三个span文本一开始是隐藏着的 -->
+                        <span class="img-tips">按图片搜索</span>
+                        <!-- 点击图片/文件对应的icon之后弹出一个框框，就是选择文件的 -->
+                        <span class="file-tips">我想上传文件</span>
+                        <!-- 我要提问的话就用路由转新的页面 -->
+                        <span class="qa tips">我要提问</span>
+                    </span>
+                    <span class="submit-box">
+                        <!-- 点击提交之后,就请求拿到数据,然后动态实时渲染页面. 
+                            这也是路由换新的页面哦 -->
+                        <input type="submit" value="百度一下" class="se-btn-sub" />
+                    </span>
+                </div>
+
+
+                <!-- 一开始没有的实时预览记录 -->
+                <ul class="se-prev-list">
+                    <li data-key="" class="prev-keys">dataKey的属性值</li>
+                    <li data-key="" class="prev-keys">dataKey的属性值</li>
+                    <li data-key="" class="prev-keys">dataKey的属性值</li>
+                </ul>
+
+
+                <!-- 第二排 ....好像没必要,我不用写这个 -->
+                <!-- <div class="search-tab">
+                    
+                </div> -->
+                <div class="search tips">请按“回车”键盘发起检索</div>
             </div>
-            <div class="submit-box">
-                <!-- 点击提交之后,就请求拿到数据,然后动态实时渲染页面. 
-                    这也是路由换新的页面哦 -->
-                <input type="submit" value="百度一下" class="btn-sub"  />
+        </div>
+
+
+
+
+        <!-- 网页主体内容部分 -->
+        <div class="se-container">
+            <!-- 网页内容最上面的部分 -->
+            <div class="search-head-nums">
+                <span class="head-nums-text">百度为您找到相关结果约6,360,000个</span>
+                <span class="iconfont search-tool"></span>
+                <span class="search-tool-text">搜索工具</span>
+            </div>
+
+
+            <!-- 网页内容左边主体部分 -->
+            <div class="search-content-left">
+                <ul class="search-content-list">
+                    <li class="news-result">
+                        <div class="news-result-title">
+                            <h3 class="title">
+                                <a href="">
+                                    <!-- 这里关键词高亮显示,可能有多个词都需要,正则JS替换模板 -->
+                                    <em class="key-word">斗罗大陆</em>
+                                    title的剩余部分
+                                </a>
+                            </h3>
+                        </div>
+                        <div class="news-result-content">
+                            <span class="news-result-content-text">看数据传的啥内容</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
+            <!-- 百度热榜放在右边，两栏布局 -->
+            <div class="search-content-right">
+                <!-- 首页里的百度热榜 -->
+                <div class="hot-news-wrapper">
+                    <div class="hot-news-header">
+                        <span class="hot-news-title">百度热榜</span>
+                        <span class="iconfont hot-refresh-icon">字体图标更新</span>
+                        <span class="hot-refresh-text">换一换</span>
+                    </div>
+                    <ul class="hot-news-list">
+                        <li class="news-meta-item clearfix">
+                            <a href="" class="news-title-content">
+                                <span class="title-content-index">1</span>
+                                <span class="title-content-title">蚂蚁回应被约谈:成立整改工作组</span>
+                                <span class="title-content-mark">这个是留着标印记的</span>
+                            </a>
+                            <span class="news-count">452万</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            
+        </div>
+
+
+
+
+        <!-- 网页底部，分页部分等 -->
+        <div class="se-footer">
+            <ul class="search-footer-page">
+                <li class="first-page">&lt;&lt;第一页</li>
+                <li class="prev-page">&lt; 上一页</li>
+                <li class="index-page">1</li>
+                <li class="index-page">2</li>
+                <li class="index-page">3</li>
+                <li class="index-page">4</li>
+                <li class="index-page">5</li>
+                <li class="next-page">下一页 &gt;</li>
+                <li class="end-page">最后一页 &gt;&gt;</li>
+            </ul>
+            <div class="search-footer-foot">
+                <span class="search-foot-help">
+                    <a href="">帮助</a>
+                    <a href="">举报</a>
+                    <a href="">用户反馈</a>
+                </span>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <!-- 问答组件的HTML -->
+    <div class="question-answer">
+        <!-- 纵向三栏布局 -->
+
+        <!-- 提问区域 -->
+        <div class="question">
+            <div class="question-header">
+                <span class="iconfont icon-qst"></span>
+                <span class="qa-qst-title">提问</span>
+                <span class="qa-qst-text">如何提问</span>
+            </div>
+            <div class="question-title">
+                <!-- 记得有那个if判断placeholder -->
+                <textarea id="question-area" class="question-title-area" type="text" value="" placeholder="一句话完整的描述你的问题">
+                    a 
+                </textarea>
+                <span class="question-title-count">
+                    <b>0</b>
+                    /49
+                </span>
+            </div>
+            <div class="question-decription">
+                <textarea id="question-inp" type="text" value="" placeholder="详细说明问题,以便更好的获得回答(选填)">
+                    啊
+                </textarea>
+            </div>
+            <div class="question-submit">
+                <input type="radio" id="anonymous">
+                <label for="anonymous">匿名</label>
+                <button type="submit" value="提交">提交</button>
+            </div>
+        </div>
+        <!-- 回答区域 -->
+        <div class="answer">
+            <textarea name="" id="answer-area" cols="30" rows="10" class="answer-text"></textarea>
+        </div>
+
+        <!-- 要跳转的都跳转到百度给的链接里去 -->
+        <div class="qa-footer">
+            <div class="qa-footer-help">
+                <a class="qa-footer-text">帮助&nbsp;|&nbsp;</a>
+                <a class="qa-footer-text">意见反馈&nbsp;|&nbsp;</a>
+                <a class="qa-footer-text">投诉举报</a>
+            </div>
+            <div class="qa-footer-others">
+                <span class="qs-footer-text">adsf&nbsp;&nbsp;</span>
+                <span class="qs-footer-text">dsf&nbsp;&nbsp;</span>
+                <span class="qs-footer-text">dsf&nbsp;&nbsp;</span>
+                <span class="qs-footer-text">@2020Wenhai&nbsp;&nbsp;</span>
+                <a href="" class="qa-footer-text">使用闻海前必读&nbsp;|&nbsp;</a>
+                <a href="" class="qa-footer-text">知道协议</a>
             </div>
         </div>
     </div>
 
-    <!-- 首页里的百度热榜 -->
-    <div class="hot-news-wrapper">
-        <div class="hot-news-header">
-            <span class="hot-news-title">百度热榜</span>
-            <span class="iconfont hot-refresh-icon">字体图标更新</span>
-            <span class="hot-refresh-text">换一换</span>
-        </div>
-        <ul class="hot-news-list">
-            <li class="news-meta-item clearfix">
-                <a href="" class="news-title-content">
-                    <span class="title-content-index">1</span>
-                    <span class="title-content-title">蚂蚁回应被约谈:成立整改工作组</span>
-                    <span class="title-content-mark">这个是留着标印记的</span>
-                </a>
-                <span class="news-count">452万</span>
-            </li>
-        </ul>
+
+
+    <!-- 图片组件的HTML -->
+    <div class="img-waterfall">
+        <img width="100" height="100"
+            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.99danji.com%2Fuploadfile%2F2017%2F0721%2F20170721102954465.jpg&refer=http%3A%2F%2Fimg.99danji.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1611718559&t=15a4d9271ac201ccf1b3181cb8754bc3"
+            alt="">
     </div>
+
+
+
+
+
+
+
+
+
 </body>
+
 </html>
