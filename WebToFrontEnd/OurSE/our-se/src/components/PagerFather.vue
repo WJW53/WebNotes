@@ -1,8 +1,4 @@
 <template>
-  <div id="app">
-    <base-home1 v-if="!isInpSe"></base-home1>
-    <base-home2 v-else></base-home2>
-
   <Pager
     v-if="!dataChanged"
     ref="pager"
@@ -12,43 +8,22 @@
     @setPage="gotoPage"
     @setRowNum="changeRowNum"
   />
-
-
-    <!-- <transition>
-      <router-view>
-
-      </router-view>
-    </transition> -->
-  </div>
 </template>
 
 <script>
-// import $ from '../node_modules/jquery';
-import BaseHome1 from "./components/BaseHome1";
-import BaseHome2 from "./components/BaseHome2";
-
 import Pager from "@/components/Pager";
-
 export default {
-  name: "App",
-  components: {
-    BaseHome1,
-    BaseHome2,
-
-    Pager,
-  },
   data() {
     return {
-      isInpSe: false,
-      wordsList: [],
-
       curPage: 1, //当前页
       total: 0, //总共页数
       pageSize: 20, //每页记录数
       dataChanged: false,
     };
   },
-
+  components: {
+    Pager: Pager,
+  },
   methods: {
     refresh() {
       //用于刷新组件，需手动调用
@@ -64,15 +39,5 @@ export default {
         
     },
   },
-
-  created() {
-
-  },
 };
 </script>
-
-<style scoped>
-/* #app {
-  
-} */
-</style>

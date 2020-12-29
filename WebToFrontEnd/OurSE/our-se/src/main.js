@@ -8,7 +8,8 @@ import "./assets/reset.css";
 import "./assets/index.css";
 // import qs from "qs";
 
-axios.defaults.baseURL = "/api";
+// axios.defaults.baseURL = "/api";
+
 // //配置token
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // //配置请求头数据格式
