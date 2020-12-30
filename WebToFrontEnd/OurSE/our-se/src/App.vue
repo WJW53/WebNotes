@@ -36,7 +36,7 @@
 import BaseHome1 from "./components/BaseHome1";
 import BaseHome2 from "./components/BaseHome2";
 
-import Pager from "@/components/Pager";
+// import Pager from "@/components/Pager";
 
 export default {
   name: "App",

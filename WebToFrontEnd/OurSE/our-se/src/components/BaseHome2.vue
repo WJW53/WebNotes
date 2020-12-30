@@ -72,7 +72,7 @@
       <!-- 网页内容最上面的部分 -->
       <div class="search-head-nums">
         <span class="head-nums-text"
-          >闻海为您找到相关结果约{{ articleList.length }}个</span
+          >闻海为您找到相关结果约{{ pageList.length }}个</span
         >
         <span class="iconfont search-tool">&#xe677;</span>
         <span class="search-tool-text">搜索工具</span>
@@ -80,28 +80,34 @@
 
       <!-- 网页文章内容 -->
       <ul class="search-result-list">
+        <!-- <template v-if"> -->
         <li
           class="search-list-article"
           v-for="article in articleList"
           :key="article.id"
         >
+          <!-- <template v-if="index < pageSize"> -->
           <h3 class="t">
             <a
               :href="article.url"
               class="search-result-article"
               target="blank"
-              >{{ article.title }}</a
+              v-html="article.title"
             >
+              {{ article.title }}
+            </a>
           </h3>
-          <div class="article-main-text">
+          <div class="article-main-text" v-html="article.main_text">
             {{ article.main_text }}
           </div>
+          <!-- </template> -->
         </li>
+        <!-- </template> -->
       </ul>
     </div>
 
     <!-- 网页底部，分页部分等 -->
-    <div class="search-footer" v-if="articleList && articleList.length != 0">
+    <!-- <div class="search-footer" v-if="articleList && articleList.length != 0">
       <ul class="search-footer-page">
         <li class="first-page other-page"><span>&lt;&lt;第一页</span></li>
         <li class="prev-page other-page"><span>&lt;上一页</span></li>
@@ -124,19 +130,31 @@
           <a href="javascript:void(0);">用户反馈</a>
         </span>
       </div>
-    </div>
+    </div> -->
+
+    <pager
+      v-if="!dataChanged && articleList && articleList.length != 0"
+      ref="pager"
+      :pageSize="pageSize"
+      :curPage="curPage"
+      :totalPage="totalPage"
+      @setPage="gotoPage"
+      @setRowNum="changeRowNum"
+    />
   </div>
 </template>
 
 
 
 <script>
+import Page from "../views/Page.vue";
 // <template>
 
 //     <base-home><slot> </slot></base-home>
 // </template>
 
 // import BaseHome from "./BaseHome"
+import Pager from "./Pager";
 export default {
   name: "BaseHome2",
   data() {
@@ -144,12 +162,16 @@ export default {
       isSearchTip: false,
       inputVal: "",
       articleList: [],
-      everyPageArticleNum: 10,
-      allPageNum: 0,
+      curPage: 1, //当前页
+      totalPage: 0, //总共页数
+      pageSize: 20, //每页记录数
+      dataChanged: false,
+      pageList: [],
     };
   },
   components: {
     // BaseHome,
+    Pager,
   },
   methods: {
     search(event) {
@@ -171,10 +193,36 @@ export default {
             },
           })
           .then((res) => {
-            // console.log("success!");
-            this.articleList = res.data;
-            this.allPageNum = this.articleList.length;
-            console.log(this.articleList[0]);
+            console.log("success!");
+
+            // 匹配关键字正则,高亮显示搜索关键字
+            for (let item of res.data) {
+              // 高亮替换v-html值
+
+              for (let keyWord of item.key_word) {
+                let replaceReg = new RegExp(keyWord, "g");
+                let mainTextString =
+                  '<em  style="color: #f73131;">' + keyWord + "</em>"; //可以在style中设置文字颜色
+                let titleString =
+                  '<em style="color: #f73131;">' + keyWord + "</em>";
+                // 开始替换,在item.main_text中将replaceReg匹配到的字符,替换为mainTextSting
+                item.main_text = item.main_text.replace(
+                  replaceReg,
+                  mainTextString
+                );
+
+                item.title = item.title.replace(replaceReg, titleString);
+
+              }
+            }
+
+            this.pageList = res.data;
+            this.totalPage = Math.ceil(this.pageList.length / this.pageSize);
+            this.articleList = this.pageList.slice(
+              (this.curPage - 1) * this.pageSize,
+              this.curPage * this.pageSize
+            );
+            // console.log(this.articleList[0]);
             // console.log(this.articleList[0].main_text);
           })
           .catch((error) => {
@@ -183,14 +231,41 @@ export default {
           });
       }
     },
+
+    refresh() {
+      //用于刷新组件，需手动调用
+      this.dataChanged = true;
+      this.$nextTick(() => {
+        this.dataChanged = false;
+      });
+    },
+    gotoPage(page) {
+      //拿笔算算
+      this.refresh();
+      let temp = this.curPage * this.pageSize; //保存一下
+      this.curPage = page; //更新页码
+      // this = Math.ceil(temp / (this.pageSize*));
+      this.articleList = this.pageList.slice(
+        (page - 1) * this.pageSize,
+        page * this.pageSize
+      );
+    },
+    changeRowNum(pageSize) {
+      //先改变的这个
+      this.refresh();
+      let temp = this.curPage * this.pageSize; //保存一下
+      this.pageSize = pageSize; //更新每页数据长度
+      this.curPage = Math.ceil(temp / this.pageSize); //更新当前页
+      this.totalPage = Math.ceil(this.pageList.length / this.pageSize);
+    },
   },
   created() {
     // console.log(this.inputVal);
 
     this.$bus.$on("bh2", (param) => {
-      this.$parent.isInpSe = true;
+      // this.$parent.isInpSe = true;
       this.inputVal = param;
-      console.log("now this is bh2", this.inputVal);
+      // console.log("now this is bh2", this.inputVal);
 
       this.$nextTick(() => {
         //这里把nextTick放在这个回调函数里才能再次聚焦,
@@ -373,6 +448,11 @@ export default {
   margin-left: 110px;
   width: 620px;
 }
+
+.search-result-list li em.keys-words {
+  color: #f73131;
+}
+
 .search-result-list .t {
   margin-bottom: 4px;
 }
@@ -453,6 +533,7 @@ export default {
   color: #fff;
 }
 
+/*
 .search-footer-foot {
   margin-top: 10px;
   font-size: 12px;
@@ -465,5 +546,5 @@ export default {
 }
 .search-footer-foot .search-foot-help a:hover {
   color: #222;
-}
+} */
 </style>

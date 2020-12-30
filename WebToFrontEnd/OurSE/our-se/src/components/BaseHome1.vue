@@ -34,7 +34,7 @@
             placeholder="[请输入您的搜索信息]"
             maxlength="100"
             v-model="inputVal"
-            @change="onInput"
+            @input="onInput"
             ref="getFocus"
           />
 
@@ -76,10 +76,12 @@ export default {
   },
   methods: {
     onInput() {
-      console.log(this.inputVal);
-      console.log("now this is bh1", this.inputVal);
-      // this.$parent.isInpSe = true;
-      this.$bus.$emit("bh2", this.inputVal); //不行 这会儿BaseHome还不在DOM结构里呢,怎么跟它通信呢,我一开始写的两个组件就...
+      // console.log(this.inputVal);
+      // console.log("now this is bh1", this.inputVal);
+      this.$parent.isInpSe = true;
+      let param = this.inputVal;
+      this.inputVal = "";//避免点浏览器后退前进后,原先那个文本框内容还在
+      this.$bus.$emit("bh2", param); //不行 这会儿BaseHome还不在DOM结构里呢,怎么跟它通信呢,我一开始写的两个组件就...
     },
   },
   created() {
