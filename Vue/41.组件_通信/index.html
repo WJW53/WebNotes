@@ -39,7 +39,7 @@
     Vue.component('my-cmp1', {
       mounted () {
         this.$bus.$on('bus', (val) => {
-          console.log(val);
+          console.log("I'm cmp1,I recieve + " + val);
         })
       },
       template: `

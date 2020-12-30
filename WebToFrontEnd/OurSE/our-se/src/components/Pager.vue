@@ -12,7 +12,7 @@
                 <option value="100">100</option>
             </select>
         </div>      
-        <span>{{curPage}}/{{total}}</span>
+        <span>{{ curPage }}&nbsp;/&nbsp;{{ total }}</span>
         <div class="goto">
             <input type="text" v-model="gotoPage" />
             <a href="javascript:void(0);" v-on:click="gotoNextPage" >跳转</a>

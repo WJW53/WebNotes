@@ -138,6 +138,7 @@
 
 // import BaseHome from "./BaseHome"
 export default {
+  name: "BaseHome2",
   data() {
     return {
       isSearchTip: false,
@@ -152,8 +153,10 @@ export default {
   },
   methods: {
     search(event) {
+      // this.$refs.getFocus.focus();
       // console.log(this.inputVal);
       // console.log(event.currentTarget.value);
+      // this.$bus.$emit("bh1",this.inputVal);
     },
     submitText() {
       if (this.inputVal) {
@@ -163,7 +166,6 @@ export default {
           //http://29s13l8324.wicp.vip/search?wd=%E4%B8%AD%E5%9B%BD
           .get("./wordData.json", {
             params: {
-              // "wd": JSON.stringify(this.inputVal),
               // "wd": "英国首相",
               // wd: this.inputVal,
             },
@@ -182,8 +184,25 @@ export default {
       }
     },
   },
+  created() {
+    // console.log(this.inputVal);
+
+    this.$bus.$on("bh2", (param) => {
+      this.$parent.isInpSe = true;
+      this.inputVal = param;
+      console.log("now this is bh2", this.inputVal);
+
+      this.$nextTick(() => {
+        //这里把nextTick放在这个回调函数里才能再次聚焦,
+        this.$refs.getFocus.focus();
+      });
+    });
+  },
   mounted() {
-    this.$refs.getFocus.focus();
+    // this.$refs.getFocus.focus();//这里要写了那basehome1一开始就不能聚焦了
+  },
+  beforeDestroy() {
+    this.$bus.$off("bh2");
   },
 };
 </script>
@@ -194,7 +213,7 @@ export default {
     height: 100%;
 } */
 /* .se-base-home{
-
+  display: none;
 } */
 .home-search-header {
   position: fixed;

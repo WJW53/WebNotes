@@ -31,9 +31,10 @@
           <input
             type="text"
             class="search-text"
+            placeholder="[请输入您的搜索信息]"
             maxlength="100"
             v-model="inputVal"
-            @input.once="onInput"
+            @change="onInput"
             ref="getFocus"
           />
 
@@ -64,10 +65,10 @@
 // import BaseHome from "./BaseHome";
 
 export default {
+  name: "BaseHome1",
   data() {
     return {
       inputVal: "",
-
     };
   },
   components: {
@@ -75,10 +76,14 @@ export default {
   },
   methods: {
     onInput() {
-      console.log();
-      this.$parent.isInpSe = true;
-      // this.inputVal = 
+      console.log(this.inputVal);
+      console.log("now this is bh1", this.inputVal);
+      // this.$parent.isInpSe = true;
+      this.$bus.$emit("bh2", this.inputVal); //不行 这会儿BaseHome还不在DOM结构里呢,怎么跟它通信呢,我一开始写的两个组件就...
     },
+  },
+  created() {
+    // this.$bus.$on("bh1",this.inputVal);
   },
   mounted() {
     // document.getElementById("getFocus").focus

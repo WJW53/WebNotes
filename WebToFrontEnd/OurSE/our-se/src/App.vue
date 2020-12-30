@@ -1,18 +1,27 @@
 <template>
   <div id="app">
-    <base-home1 v-if="!isInpSe"></base-home1>
-    <base-home2 v-else></base-home2>
+    <!-- <base-home1 v-if="!isInpSe"></base-home1>
+    <base-home2 v-else></base-home2> -->
 
-  <Pager
-    v-if="!dataChanged"
-    ref="pager"
-    :pageSize="pageSize"
-    :page="curPage"
-    :total="total"
-    @setPage="gotoPage"
-    @setRowNum="changeRowNum"
-  />
+    <!-- //如果直接在父组件v-if v-else的话,那就无法进行这个$bus通信了,
+    //因为必然有个组件不在DOM里, 连vue实例的生命周期还没开始呢,所以无法使用eventBus事件总线通信,所以我一开始只能设置
+    //组件2的style  display:none 或者 opacity:0
+     -->
 
+
+    <base-home1 :style="style1"></base-home1>
+    <base-home2 :style="style2"></base-home2>
+
+
+    <!-- <Pager
+      v-if="!dataChanged"
+      ref="pager"
+      :pageSize="pageSize"
+      :page="curPage"
+      :total="total"
+      @setPage="gotoPage"
+      @setRowNum="changeRowNum"
+    /> -->
 
     <!-- <transition>
       <router-view>
@@ -35,13 +44,18 @@ export default {
     BaseHome1,
     BaseHome2,
 
-    Pager,
+    // Pager,
   },
   data() {
     return {
-      isInpSe: false,
+      style1:{
+        display: "block",
+      },
+      style2:{
+        opacity: 0,
+      },
       wordsList: [],
-
+      isInpSe: false,
       curPage: 1, //当前页
       total: 0, //总共页数
       pageSize: 20, //每页记录数
@@ -57,17 +71,18 @@ export default {
         this.dataChanged = false;
       });
     },
-    gotoPage(page) {
-
+    styleChange(){
+      this.style1.display = "none";
+      this.style2.opacity = 1;
     },
-    changeRowNum(pageSize) {
-        
-    },
+    gotoPage(page) {},
+    changeRowNum(pageSize) {},
   },
 
-  created() {
-
-  },
+  created() {},
+  watch:{
+    isInpSe: 'styleChange'
+  }
 };
 </script>
 

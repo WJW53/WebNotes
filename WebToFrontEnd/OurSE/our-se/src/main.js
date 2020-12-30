@@ -17,6 +17,8 @@ import "./assets/index.css";
 
 Vue.config.productionTip = false;
 axios.defaults.timeout = 65000;
+
+Vue.prototype.$bus = new Vue();
 Vue.prototype.$axios = axios;
 
 
