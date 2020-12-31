@@ -32,7 +32,7 @@
 </template>
 
 <script>
-// import $ from '../node_modules/jquery';
+
 import BaseHome1 from "./components/BaseHome1";
 import BaseHome2 from "./components/BaseHome2";
 

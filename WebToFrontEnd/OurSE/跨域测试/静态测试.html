@@ -27,7 +27,7 @@
                 <span class="logo-title">闻海</span>
             </div>
             <!-- v-else -->
-            
+
 
 
             <!-- 搜索部分 -->
@@ -127,33 +127,31 @@
                 </div>
             </div>
 
-            
+
         </div>
 
 
 
 
         <!-- 网页底部，分页部分等 -->
-        <div class="se-footer">
+        <!-- <div class="search-footer" v-if="articleList && articleList.length != 0">
             <ul class="search-footer-page">
-                <li class="first-page">&lt;&lt;第一页</li>
-                <li class="prev-page">&lt; 上一页</li>
-                <li class="index-page">1</li>
-                <li class="index-page">2</li>
-                <li class="index-page">3</li>
-                <li class="index-page">4</li>
-                <li class="index-page">5</li>
-                <li class="next-page">下一页 &gt;</li>
-                <li class="end-page">最后一页 &gt;&gt;</li>
+                <li class="first-page other-page"><span>&lt;&lt;第一页</span></li>
+                <li class="prev-page other-page"><span>&lt;上一页</span></li>
+                <li v-for="(article, index) in articleList" :key="article.title" class="index-page">
+                    <span>{{ Math.ceil(index / 10) }}</span>
+                </li>
+                <li class="next-page other-page"><span>下一页&gt;</span></li>
+                <li class="end-page other-page"><span>最后一页&gt;&gt;</span></li>
             </ul>
             <div class="search-footer-foot">
                 <span class="search-foot-help">
-                    <a href="">帮助</a>
-                    <a href="">举报</a>
-                    <a href="">用户反馈</a>
+                    <a href="http://help.baidu.com/question" target="blank">帮助</a>
+                    <a href="http://www.baidu.com/search/jubao.html" target="blank">举报</a>
+                    <a href="javascript:void(0);">用户反馈</a>
                 </span>
             </div>
-        </div>
+        </div> -->
 
 
     </div>
@@ -174,7 +172,8 @@
             </div>
             <div class="question-title">
                 <!-- 记得有那个if判断placeholder -->
-                <textarea id="question-area" class="question-title-area" type="text" value="" placeholder="一句话完整的描述你的问题">
+                <textarea id="question-area" class="question-title-area" type="text" value=""
+                    placeholder="一句话完整的描述你的问题">
                     a 
                 </textarea>
                 <span class="question-title-count">

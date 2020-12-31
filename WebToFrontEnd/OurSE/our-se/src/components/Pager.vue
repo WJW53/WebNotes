@@ -72,16 +72,16 @@ export default {
     gotoNextPage() {
       //跳转页面
       if (this.gotoPage && /[1-9][0-9]*/.test(this.gotoPage)) {
-        var pg = parseInt(this.gotoPage);
-        if (pg > 0 && pg <= this.pageSize) {
+        let pg = parseInt(this.gotoPage);
+        if (pg > 0 && pg <= this.totalPage) {//1-总共的页码
           this.$emit("setPage", pg); //调用父组件方法
         } else {
           this.gotoPage = "";
-          alert("您输入的跳转页面格式不合法！请重新输入数字！");
+          alert("页码不在范围内，请重新输入数字！");
         }
       } else {
-        alert("您输入的跳转页面格式不合法！请重新输入数字！");
         this.gotoPage = "";
+        alert("您输入的跳转页面格式不合法！请重新输入数字！");
       }
     },
     firstPage() {
@@ -90,7 +90,7 @@ export default {
     lastPage() {
       this.$emit("setPage", this.totalPage); //调用父组件方法
     },
-    rowNumChanged() {
+    rowNumChanged() {//更改每页数据长度
       this.$emit("setRowNum", this.rowNum);
     },
     initPager() {

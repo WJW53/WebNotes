@@ -1,13 +1,13 @@
 <template>
   <!-- 网页头部 -->
 
-  <div class="se-base-home">
-    <!-- <slot ></slot> -->
+  <div class="se-base-home" @click="monitorDom">
     <!-- logo v-if 最初的页面，还没输入东西的时候，要显示这个logo1
                 但总之要一直有下面那个search-box组件，但是下面那个组件的样式却又不一样了
                 切换组件的时候 只是样式改变了而已还有位置，位置也能用样式改
             -->
-    <!-- <slot> </slot> -->
+
+    <!-- 搜索导航栏 -->
     <div class="home-search-header">
       <div class="search-logo">
         <!-- <img src="" alt="" class="img-lg"> -->
@@ -31,6 +31,7 @@
             <span class="iconfont file-se">&#xe685;</span>
             <span class="iconfont qa-se">&#xe601;</span>
             <input
+              id="se-search-text"
               type="text"
               class="search-text"
               maxlength="100"
@@ -38,7 +39,10 @@
               ref="getFocus"
               @keyup.enter="submitText"
               @input="search($event)"
+              @focus="() => (inputFocus = true)"
+              @blur="() => (inputFocus = false)"
             />
+            <!-- onkeydown="if(event.keyCode==13){blur();this.submitText();}" -->
 
             <!-- 下面三个span文本一开始是隐藏着的 -->
             <span class="img-hover-tip" style="display: none">按图片搜索</span>
@@ -58,6 +62,15 @@
             />
           </span>
         </div>
+        <!-- 搜索内容的实时预览功能 -->
+        <ul
+          class="search-preview-list"
+          v-show="inputFocus && previewSearchList.length"
+        >
+          <li v-for="res in previewSearchList" :key="res">
+            <span>{{ res }}</span>
+          </li>
+        </ul>
 
         <div v-if="!isSearchTip" class="search-enter-tip">
           请按“回车”键发起检索
@@ -65,6 +78,7 @@
       </div>
     </div>
 
+    <!-- 搜索结果主体内容 -->
     <div
       class="search-news-result"
       v-if="articleList && articleList.length != 0"
@@ -106,32 +120,15 @@
       </ul>
     </div>
 
-    <!-- 网页底部，分页部分等 -->
-    <!-- <div class="search-footer" v-if="articleList && articleList.length != 0">
-      <ul class="search-footer-page">
-        <li class="first-page other-page"><span>&lt;&lt;第一页</span></li>
-        <li class="prev-page other-page"><span>&lt;上一页</span></li>
-        <li
-          v-for="(article, index) in articleList"
-          :key="article.title"
-          class="index-page"
-        >
-          <span>{{ Math.ceil(index / 10) }}</span>
-        </li>
-        <li class="next-page other-page"><span>下一页&gt;</span></li>
-        <li class="end-page other-page"><span>最后一页&gt;&gt;</span></li>
-      </ul>
-      <div class="search-footer-foot">
-        <span class="search-foot-help">
-          <a href="http://help.baidu.com/question" target="blank">帮助</a>
-          <a href="http://www.baidu.com/search/jubao.html" target="blank"
-            >举报</a
-          >
-          <a href="javascript:void(0);">用户反馈</a>
-        </span>
-      </div>
-    </div> -->
+    <!-- ??这个地方好像不需要通知父亲刷新啊 -->
+    <!-- !hotListChanged &&  -->
+    <hot-list
+      v-if="hotNewsList && hotNewsList.length"
+      :hotNewsList="hotNewsList"
+    >
+    </hot-list>
 
+    <!-- 网页底部，分页部分等 -->
     <pager
       v-if="!dataChanged && articleList && articleList.length != 0"
       ref="pager"
@@ -147,33 +144,97 @@
 
 
 <script>
-import Page from "../views/Page.vue";
-// <template>
-
-//     <base-home><slot> </slot></base-home>
-// </template>
+import $ from "jquery";
+import Pager from "./Pager";
+import HotList from "./HotList";
 
 // import BaseHome from "./BaseHome"
-import Pager from "./Pager";
+
 export default {
   name: "BaseHome2",
   data() {
     return {
       isSearchTip: false,
       inputVal: "",
+      pageList: [],
       articleList: [],
       curPage: 1, //当前页
       totalPage: 0, //总共页数
       pageSize: 20, //每页记录数
       dataChanged: false,
-      pageList: [],
+      inputFocus: false,
+      previewSearchList: [],
+      hotBlock: false, //热榜的锁,有了一次之后便不再请求了
+      hotNewsList: [],
+      hotListChanged: false,
     };
   },
   components: {
     // BaseHome,
     Pager,
+    HotList,
+  },
+  watch: {
+    previewSearchList() {
+      if (
+        this.inputFocus &&
+        this.previewSearchList &&
+        this.previewSearchList.length != 0
+      ) {
+        let seInpTxt = document.getElementById("se-search-text");
+        seInpTxt.classList.add("show-dropdown");
+        // this.previewSearchBlock = true;
+      }
+      if (
+        // !this.previewSearchBlock &&
+        !this.inputFocus ||
+        (this.previewSearchList && this.previewSearchList.length == 0)
+      ) {
+        // console.log("失去焦点");
+        let seInpTxt = document.getElementById("se-search-text");
+        seInpTxt.classList.remove("show-dropdown");
+      }
+    },
+    inputVal() {
+      // let _this = this;
+      // console.log(this.inputVal);
+      if (this.inputVal.length >= 1) {
+        this.$http
+          .jsonp("https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su", {
+            // .jsonp("https://www.baidu.com/sugrec", {
+            params: {
+              wd: this.inputVal,
+              // cb: "this.searchPreviewRes",
+            },
+            jsonp: "cb",
+          })
+          .then((res) => {
+            // console.log("success!");
+            // console.log(res);
+            // let _this = this;
+            this.previewSearchList = res.body.s;
+          });
+      }
+    },
   },
   methods: {
+    monitorDom(e) {
+      let seInpTxt = document.getElementById("se-search-text");
+      e = e || window.event;
+      let target = e.target || e.srcElement;
+
+      if (this.inputFocus == false || target != seInpTxt) {
+        // if (!this.previewSearchBlock) {
+        this.previewSearchBlock = true;
+        seInpTxt.classList.remove("show-dropdown");
+        this.previewSearchList.length = 0;
+        // }
+      } else {
+        if (this.inputFocus == false) {
+          this.inputFocus = true;
+        }
+      }
+    },
     search(event) {
       // this.$refs.getFocus.focus();
       // console.log(this.inputVal);
@@ -181,6 +242,12 @@ export default {
       // this.$bus.$emit("bh1",this.inputVal);
     },
     submitText() {
+      let seInpTxt = document.getElementById("se-search-text");
+      seInpTxt.blur(); //要把失去焦点放在这里才行wc了
+      this.inputFocus = false; //标识
+      seInpTxt.classList.remove("show-dropdown"); //再去掉
+
+      //搜索文本的请求
       if (this.inputVal) {
         this.isSearchTip = true;
         this.$axios
@@ -193,42 +260,55 @@ export default {
             },
           })
           .then((res) => {
-            console.log("success!");
+            // console.log("submitText! success!");
+            if (res.data.length != 0) {
+              this.previewSearchList.length = 0;
 
-            // 匹配关键字正则,高亮显示搜索关键字
-            for (let item of res.data) {
-              // 高亮替换v-html值
+              // 匹配关键字正则,高亮显示搜索关键字
+              for (let item of res.data) {
+                // 高亮替换v-html值
 
-              for (let keyWord of item.key_word) {
-                let replaceReg = new RegExp(keyWord, "g");
-                let mainTextString =
-                  '<em  style="color: #f73131;">' + keyWord + "</em>"; //可以在style中设置文字颜色
-                let titleString =
-                  '<em style="color: #f73131;">' + keyWord + "</em>";
-                // 开始替换,在item.main_text中将replaceReg匹配到的字符,替换为mainTextSting
-                item.main_text = item.main_text.replace(
-                  replaceReg,
-                  mainTextString
-                );
+                for (let keyWord of item.key_word) {
+                  let replaceReg = new RegExp(keyWord, "g");
+                  let mainTextString =
+                    '<em  style="color: #f73131;">' + keyWord + "</em>"; //可以在style中设置文字颜色
+                  let titleString =
+                    '<em style="color: #f73131;text-decoration: underline;">' +
+                    keyWord +
+                    "</em>";
+                  // 开始替换,在item.main_text中将replaceReg匹配到的字符,替换为mainTextSting
+                  item.main_text = item.main_text.replace(
+                    replaceReg,
+                    mainTextString
+                  );
 
-                item.title = item.title.replace(replaceReg, titleString);
-
+                  item.title = item.title.replace(replaceReg, titleString);
+                }
               }
-            }
 
-            this.pageList = res.data;
-            this.totalPage = Math.ceil(this.pageList.length / this.pageSize);
-            this.articleList = this.pageList.slice(
-              (this.curPage - 1) * this.pageSize,
-              this.curPage * this.pageSize
-            );
-            // console.log(this.articleList[0]);
-            // console.log(this.articleList[0].main_text);
+              this.pageList = res.data;
+              this.totalPage = Math.ceil(this.pageList.length / this.pageSize);
+              this.articleList = this.pageList.slice(
+                (this.curPage - 1) * this.pageSize,
+                this.curPage * this.pageSize
+              );
+              // console.log(this.articleList[0]);
+              // console.log(this.articleList[0].main_text);
+            }
           })
           .catch((error) => {
             console.log("error!");
             console.log(error);
           });
+      }
+
+      // 热榜的请求
+      if (this.hotBlock == false) {
+        this.hotBlock = true;
+        this.$axios.get("./hotData.json").then((res) => {
+          this.hotNewsList = res.data;
+          // console.log(this.hotNewsList);
+        });
       }
     },
 
@@ -240,24 +320,63 @@ export default {
       });
     },
     gotoPage(page) {
+      this.refresh(); //需要
+
       //拿笔算算
-      this.refresh();
-      let temp = this.curPage * this.pageSize; //保存一下
+      let temp = 0;
+      if (this.curPage == this.totalPage) {
+        //如果是最后一页,要拿到准确的数据长度总共的数量
+        temp = this.pageList.length;
+      } else {
+        temp = this.curPage * this.pageSize;
+      }
       this.curPage = page; //更新页码
-      // this = Math.ceil(temp / (this.pageSize*));
-      this.articleList = this.pageList.slice(
-        (page - 1) * this.pageSize,
-        page * this.pageSize
-      );
+
+      //最后一页的时候要区分一下啊
+      if (page == this.totalPage) {
+        this.articleList = this.pageList.slice(page * this.pageSize);
+      } else {
+        this.articleList = this.pageList.slice(
+          (page - 1) * this.pageSize,
+          page * this.pageSize
+        );
+      }
     },
     changeRowNum(pageSize) {
       //先改变的这个
-      this.refresh();
-      let temp = this.curPage * this.pageSize; //保存一下
+
+      //以下代码顺序,不可改变!!!!
+      //有个坑在于如果我在pageSize==100的时候往pageSize==10的地方跳如果当前在最后一页,那么现在temp相当于多出来了90页
+      let temp = 0;//先保存原先的页码*每页长度
+      if (this.curPage == this.totalPage) {
+        //如果是最后一页,要拿到准确的数据长度总共的数量
+        temp = this.pageList.length;
+      } else {
+        temp = this.curPage * this.pageSize;
+      }
+
+      this.totalPage = Math.ceil(this.pageList.length / pageSize); //新的总共的页数
       this.pageSize = pageSize; //更新每页数据长度
       this.curPage = Math.ceil(temp / this.pageSize); //更新当前页
-      this.totalPage = Math.ceil(this.pageList.length / this.pageSize);
+      //然后就更新文章内容咯!!
+      this.articleList = this.pageList.slice(
+        (this.curPage - 1) * this.pageSize,
+        this.curPage * this.pageSize
+      );
+
+      this.refresh(); //需要
     },
+    curHotListChanged() {
+      this.hotListChanged = true;
+      this.$nextTick(() => {
+        this.hotListChanged = false;
+      });
+    },
+  },
+  beforeCreate() {
+    //监听器 $on 监听到自定义函数后，会马上执行监听器里的函数，然后再执行 $emit 自定义事件里面的动作
+    // this.$on('start',function(arg){//注册自定义事件start
+    // 	alert(arg)})
   },
   created() {
     // console.log(this.inputVal);
@@ -275,9 +394,12 @@ export default {
   },
   mounted() {
     // this.$refs.getFocus.focus();//这里要写了那basehome1一开始就不能聚焦了
+    //监听全局点击事件
+    window.addEventListener("click", this.monitorDom);
   },
   beforeDestroy() {
     this.$bus.$off("bh2");
+    window.removeEventListener("click", this.clickOther);
   },
 };
 </script>
@@ -358,6 +480,7 @@ export default {
   box-shadow: none;
   outline: 0;
 }
+
 .search .search-area .search-text:hover {
   border-color: #a7aab5;
 }
@@ -408,7 +531,7 @@ export default {
   outline: none;
 }
 .search .search-area input.search-text:focus {
-  border-color: #38f;
+  border-color: #4e71f2;
 }
 .search .submit-box .se-btn-sub:hover {
   background-color: #317ef3;
@@ -419,6 +542,40 @@ export default {
   margin-top: 50px;
   font-size: 13px;
   color: #666;
+}
+
+/* search-preview-list */
+.search .search-area .show-dropdown {
+  border-radius: 10px 0 0 0 !important;
+  border-bottom: transparent;
+}
+
+.search-box .search-preview-list {
+  position: relative;
+  background-color: #fff;
+  padding: 10px 0 10px 10px;
+  width: 618px;
+  border: 2px solid #4e71f2;
+  border-top: 2px solid #f5f5f6;
+  /* box-shadow: 2px 2px 3px #ededed; */
+  z-index: 100;
+  border-radius: 0 0 10px 10px;
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  padding-left: 8px;
+  box-sizing: border-box;
+}
+
+.search-box .search-preview-list li {
+  color: #626675;
+  background: 0 0;
+  height: 28px;
+  line-height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-box .search-preview-list li:hover {
+  color: #4e71f2;
 }
 
 /* search-result-articles */
@@ -449,9 +606,9 @@ export default {
   width: 620px;
 }
 
-.search-result-list li em.keys-words {
+/* .search-result-list li em.keys-words {
   color: #f73131;
-}
+} */
 
 .search-result-list .t {
   margin-bottom: 4px;

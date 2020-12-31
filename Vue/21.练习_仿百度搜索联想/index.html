@@ -56,6 +56,7 @@
       },
       methods: {
         searchRes (res) {
+          console.log(res);
           this.searchResList = res.s;
         }
       },
@@ -66,7 +67,7 @@
             url: 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
             data: {
               wd: this.inputVal,//请求这个数据
-              cb: 'vm.searchRes'//成功后执行这个回调函数
+              cb: 'vm.searchRes'//成功后执行这个回调函数,这个是在全局里找的
             }
           })
         }
