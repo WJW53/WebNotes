@@ -27,8 +27,8 @@
         <a :href="news.url" target="blank" class="news-title-content">
           {{ news.title }}
         </a>
-        <span class="news-title-hot" v-if="index == 0">热</span>
-        <span class="news-title-new" v-if="index == 5">新</span>
+        <span class="news-title-hot" v-if="index + pageSize * curPage + 1 == 1">热</span>
+        <span class="news-title-new" v-if="index + pageSize * curPage + 1 == 5">新</span>
         <span class="news-count"
           >{{ Math.floor(news.click_num / 10000) }}万</span
         >

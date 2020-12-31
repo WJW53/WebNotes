@@ -45,11 +45,11 @@
             <!-- onkeydown="if(event.keyCode==13){blur();this.submitText();}" -->
 
             <!-- 下面三个span文本一开始是隐藏着的 -->
-            <span class="img-hover-tip" style="display: none">按图片搜索</span>
+            <span class="img-hover-tip">按图片搜索</span>
             <!-- 点击图片/文件对应的icon之后弹出一个框框，就是选择文件的 -->
-            <span class="file-hover-tip" style="display: none">上传文件</span>
+            <span class="file-hover-tip">上传文件</span>
             <!-- 我要提问的话就用路由转新的页面 -->
-            <span class="qa-hover-tip" style="display: none">我要提问</span>
+            <span class="qa-hover-tip">我要提问</span>
           </span>
           <span class="submit-box">
             <!-- 点击提交之后,就请求拿到数据,然后动态实时渲染页面. 
@@ -167,6 +167,9 @@ export default {
       hotBlock: false, //热榜的锁,有了一次之后便不再请求了
       hotNewsList: [],
       hotListChanged: false,
+      headerShadowBlock: false,
+      oldScrollTop: 0, //记录上一次滚动结束后的滚动距离
+      scrollTop: 0, // 记录当前的滚动距离
     };
   },
   components: {
@@ -216,8 +219,39 @@ export default {
           });
       }
     },
+    scrollTop(newValue, oldValue) {
+      // setTimeout(() => {//这留着做判断是否结束,如果有需求需要这个玩意儿的话,可以玩玩
+      //   if (newValue == window.scrollY) {
+      //     //延时执行后当newValue等于window.scrollY，代表滚动结束
+      //     console.log("滚动结束");
+      //     this.oldScrollTop = newValue; //每次滚动结束后都要给oldScrollTop赋值
+      //   }
+      // }, 30); //必须使用延时器，否则每次newValue和window.scrollY都相等，无法判断，20ms刚好大于watch的侦听周期，故延时20ms
+      // if (this.oldScrollTop == oldValue) {
+      //   //每次滚动开始时oldScrollTop与oldValue相等
+      //   console.log("滚动开始");
+      // }
+      let headerScrollY = document.getElementsByClassName(
+        "home-search-header"
+      )[0];
+      if (this.scrollTop != 0 && this.headerShadowBlock == false) {
+        headerScrollY.classList.add("se-header-scrollY");
+        this.headerShadowBlock = true;
+      }
+      if (this.headerShadowBlock == true && this.scrollTop == 0) {
+        //又回到了上面
+        headerScrollY.classList.remove("se-header-scrollY");
+        this.headerShadowBlock = false;
+      }
+    },
   },
   methods: {
+    //滚动条滚动
+    handleScroll() {
+      window.addEventListener("scroll", () => {
+        this.scrollTop = window.scrollY;
+      });
+    },
     monitorDom(e) {
       let seInpTxt = document.getElementById("se-search-text");
       e = e || window.event;
@@ -312,6 +346,7 @@ export default {
       }
     },
 
+    //对应Pager组件分页(功能齐全)
     refresh() {
       //用于刷新组件，需手动调用
       this.dataChanged = true;
@@ -335,6 +370,8 @@ export default {
       //最后一页的时候要区分一下啊
       if (page == this.totalPage) {
         this.articleList = this.pageList.slice(page * this.pageSize);
+        console.log(this.curPage); //pageSize==10时,410条数据,我直接跳到最后一页,打印21,这也执行了啊,但为啥就没刷直接新页面呢
+        //必须得我在文本框里回车或者点击一下搜索才能显示,唯一bug
       } else {
         this.articleList = this.pageList.slice(
           (page - 1) * this.pageSize,
@@ -347,7 +384,7 @@ export default {
 
       //以下代码顺序,不可改变!!!!
       //有个坑在于如果我在pageSize==100的时候往pageSize==10的地方跳如果当前在最后一页,那么现在temp相当于多出来了90页
-      let temp = 0;//先保存原先的页码*每页长度
+      let temp = 0; //先保存原先的页码*每页长度
       if (this.curPage == this.totalPage) {
         //如果是最后一页,要拿到准确的数据长度总共的数量
         temp = this.pageList.length;
@@ -366,6 +403,7 @@ export default {
 
       this.refresh(); //需要
     },
+
     curHotListChanged() {
       this.hotListChanged = true;
       this.$nextTick(() => {
@@ -396,10 +434,12 @@ export default {
     // this.$refs.getFocus.focus();//这里要写了那basehome1一开始就不能聚焦了
     //监听全局点击事件
     window.addEventListener("click", this.monitorDom);
+    this.handleScroll(); //先执行,然后它会注册滚动事件
   },
   beforeDestroy() {
     this.$bus.$off("bh2");
     window.removeEventListener("click", this.clickOther);
+    window.removeEventListener("handleScroll", this.handleScroll);
   },
 };
 </script>
@@ -415,15 +455,18 @@ export default {
 .home-search-header {
   position: fixed;
   height: 70px;
-  width: 840px;
-  z-index: 100;
+  /* width: 840px; */
+  /* 100%是为了阴影,展示全屏宽度,不需要的话就换成840呗 */
+  width: 100%;
+  z-index: 9999;
   left: 0;
   top: 0;
   background-color: #fff;
   /* background-color: yellow; */
-  /* display: flex; 
-   justify-content: center;
-  align-items: center; */
+}
+
+.se-base-home .se-header-scrollY {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* logo */
@@ -484,6 +527,33 @@ export default {
 .search .search-area .search-text:hover {
   border-color: #a7aab5;
 }
+
+.search .search-area .img-hover-tip,
+.search .search-area .file-hover-tip,
+.search .search-area .qa-hover-tip {
+  display: none;
+}
+
+.search .search-area .img-se:hover ~ span.img-hover-tip,
+.search .search-area .file-se:hover ~ span.file-hover-tip,
+.search .search-area .qa-se:hover ~ span.qa-hover-tip {
+  display: inline;
+  background: #fff;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  height: 32px;
+  width: 94px;
+  text-align: center;
+  line-height: 32px;
+  font-size: 14px;
+  color: #626675;
+  position: absolute;
+  /* 注意这个101,不然看不到,被那个实时预览框给抹白了 */
+  z-index: 101;
+  top: 52px;
+  right: 5px;
+}
+
 .search .search-area .iconfont {
   position: absolute;
   width: 24px;
