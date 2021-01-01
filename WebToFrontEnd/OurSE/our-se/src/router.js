@@ -22,6 +22,10 @@ const routes = [
     component: () => import('./views/Page'),
   },
   {
+    path: '/pagetop',
+    component: () => import('./views/PageTop'),
+  },
+  {
     path: '/question',
     component: () => import('./views/Question'),
   },

@@ -73,15 +73,18 @@ export default {
       //跳转页面
       if (this.gotoPage && /[1-9][0-9]*/.test(this.gotoPage)) {
         let pg = parseInt(this.gotoPage);
-        if (pg > 0 && pg <= this.totalPage) {//1-总共的页码
+        if (pg > 0 && pg <= this.totalPage) {
+          //1-总共的页码
           this.$emit("setPage", pg); //调用父组件方法
         } else {
           this.gotoPage = "";
           alert("页码不在范围内，请重新输入数字！");
         }
       } else {
+        if (this.gotoPage != "") {
+          alert("您输入的跳转页面格式不合法！请重新输入数字！");
+        }
         this.gotoPage = "";
-        alert("您输入的跳转页面格式不合法！请重新输入数字！");
       }
     },
     firstPage() {
@@ -90,7 +93,8 @@ export default {
     lastPage() {
       this.$emit("setPage", this.totalPage); //调用父组件方法
     },
-    rowNumChanged() {//更改每页数据长度
+    rowNumChanged() {
+      //更改每页数据长度
       this.$emit("setRowNum", this.rowNum);
     },
     initPager() {
@@ -124,7 +128,6 @@ export default {
   line-height: 42px;
 }
 
-.pager span,
 .pager a,
 .pager select,
 .pager div {
@@ -137,6 +140,7 @@ export default {
 .pager a {
   background-color: #fff;
 }
+/* 不能给它规定宽度,不然二位数/三位数都撑到下一行去了 */
 .pager .page-num {
   font-weight: 600;
 }

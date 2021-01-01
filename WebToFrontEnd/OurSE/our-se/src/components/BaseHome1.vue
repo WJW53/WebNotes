@@ -102,16 +102,6 @@ export default {
   width: 730px;
   margin: auto;
   margin-top: 225px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-  /* 
-  position: absolute; 
-  z-index: 100;
-  left: 50%;
-  top: 50%;
-  margin-top: -225px;
-  margin-left: -368px; */
 }
 .search-logo {
   /* background-color: blue; */

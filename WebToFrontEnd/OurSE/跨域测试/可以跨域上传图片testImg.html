@@ -11,8 +11,9 @@
   <input name="file" type="file" onclick="uploadpic(event)" id="imgId" />
 
   上传文件 ： <input type="file" name="file" id="fileId" />
-  <button type="submit" name="btn" value="提交" id="btnId" onclick="check()" /> 提交
-
+  <button type="submit" name="btn" value="提交" id="btnId" onclick="check()">
+    提交
+  </button>
   <script src="./vue.js"></script>
   <script src="./axios.js"></script>
   <script src="./jquery-3.4.1.js"></script>
@@ -41,16 +42,17 @@
 
 
       //// 添加请求头,发送请求头
-      const url = "http://29s13l8324.wicp.vip/up_photo";//图片
+      const url = "http://29s13l8324.wicp.vip/up_photo"; //图片
 
       axios.post(url, param, config).then(response => {
 
         //打印请求成功后返回的值
         console.log("success");
-        console.log(response.data.photos);//这个是对象
-        console.log(JSON.stringify(response.data.photos));//这个是JSON字符串
+        console.log(response.data.photos); //这个是对象
+        console.log(JSON.stringify(response.data.photos)); //这个是JSON字符串
       })
     }
+    
 
     function check(e) { //check
 

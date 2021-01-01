@@ -31,7 +31,7 @@
             <span class="iconfont file-se" @click="clkBtn('file')"
               >&#xe685;</span
             >
-            <span class="iconfont qa-se" @click="clkBtn('qa')">&#xe601;</span>
+            <span class="iconfont qa-se" @click="jumpQa">&#xe601;</span>
             <input
               id="se-search-text"
               type="text"
@@ -71,11 +71,12 @@
               type="file"
               name="file"
               id="fileId"
-              value="上传文件"
+              value="上传图片"
             />
             <span
               class="upload-text"
               name="file-btn"
+              id="btnId"
               @click="judgeType($event, fileType)"
             >
               选择文件
@@ -93,25 +94,54 @@
           </li>
         </ul>
 
-        <div v-show="!isSearchTip" class="search-enter-tip">
+        <div v-if="!isSearchTip" class="search-enter-tip">
           请按“回车”键发起检索
         </div>
       </div>
     </div>
 
-    <content-article
-      v-if="!showTextTop"
-      :articleList="articleList"
-      :pageList="pageList"
+    <!-- 搜索结果主体内容 -->
+    <div
+      class="search-news-result"
+      v-if="articleList && articleList.length != 0"
     >
-    </content-article>
-    <content-article
-      v-else
-      :articleList="articleList"
-      :pageList="pageList"
-    ></content-article>
+      <!-- 网页内容最上面的部分 -->
+      <div class="search-head-nums">
+        <span class="head-nums-text"
+          >闻海为您找到相关结果约{{ pageList.length }}个</span
+        >
+        <span class="iconfont search-tool">&#xe677;</span>
+        <span class="search-tool-text">搜索工具</span>
+      </div>
 
-    <!-- 百度热榜部分 -->
+      <!-- 网页文章内容 -->
+      <ul class="search-result-list">
+        <!-- <template v-if"> -->
+        <li
+          class="search-list-article"
+          v-for="article in articleList"
+          :key="article.id"
+        >
+          <!-- <template v-if="index < pageSize"> -->
+          <h3 class="t">
+            <a
+              :href="article.url"
+              class="search-result-article"
+              target="blank"
+              v-html="article.title"
+            >
+              {{ article.title }}
+            </a>
+          </h3>
+          <div class="article-main-text" v-html="article.main_text">
+            {{ article.main_text }}
+          </div>
+          <!-- </template> -->
+        </li>
+        <!-- </template> -->
+      </ul>
+    </div>
+
     <!-- ??这个地方好像不需要通知父亲刷新啊 -->
     <!-- !hotListChanged &&  -->
     <hot-list
@@ -136,11 +166,9 @@
 
 
 <script>
-import $ from "jquery";
+// import $ from "jquery";
 import Pager from "./Pager";
 import HotList from "./HotList";
-import TextTop10 from "./ContentArticle";
-import ContentArticle from "./ContentArticle.vue";
 
 // import BaseHome from "./BaseHome"
 
@@ -166,14 +194,12 @@ export default {
       oldScrollTop: 0, //记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
       fileType: "", //上传文件类型
-      showTextTop: false,
     };
   },
   components: {
     // BaseHome,
     Pager,
     HotList,
-    ContentArticle,
   },
   watch: {
     previewSearchList() {
@@ -184,8 +210,10 @@ export default {
       ) {
         let seInpTxt = document.getElementById("se-search-text");
         seInpTxt.classList.add("show-dropdown");
+        // this.previewSearchBlock = true;
       }
       if (
+        // !this.previewSearchBlock &&
         !this.inputFocus ||
         (this.previewSearchList && this.previewSearchList.length == 0)
       ) {
@@ -249,99 +277,38 @@ export default {
   methods: {
     judgeType(event, type) {
       if (type === "img") {
-        this.imgUpload();
+        this.imgUpload(event.target);
       } else if (type === "file") {
-        this.fileUpload();
+        this.fileUpload(event.target);
+      } else if (type === "qa") {
+        // console.log('');
       }
     },
-    jumpQa() {
-      console.log("qa-qa");
-    },
+    jumpQa() {},
     clkBtn(type) {
       // console.log(type);
       // console.log(event);
       this.searchInputBlur();
-      if (type != "qa") {
-        this.previewSearchBlock = true; //上锁,不让它再可以预览显示了
-        this.isSearchTip = true; //设为true,那里的!true才能是false,也就是不显示
-        // console.log(this.previewSearchBlock);
-        let tempDom = document.getElementById("hiddenFileUpload");
-        // tempDom.classList.add("showUnloadWrap");
-        tempDom.style.display = "block";
-      } else {
-        this.jumpQa();
-      }
-      this.fileType = type; //传类型
+      this.previewSearchBlock = true; //上锁,不让它再可以预览显示了
+      this.isSearchTip = false;
+      // console.log(this.previewSearchBlock);
+      let tempDom = document.getElementById("hiddenFileUpload");
+      // tempDom.classList.add("showUnloadWrap");
+      tempDom.style.display = "block";
+      this.fileType = type;//传类型
     },
     closeUploadBorder() {
       document.getElementById("hiddenFileUpload").style.display = "none";
       this.previewSearchBlock = false; //解锁
+      // this.isSearchTip = true;//这里不能有这一行,不然之后显示不出来tip
+      //我在inputVal监听中已经修改了它为true,反正上面这行不能有!!
       // console.log(this.previewSearchBlock);
     },
-    imgUpload() {
-      console.log("img");
+    imgUpload(et) {
+      console.log(et);
     },
-    fileUpload() {
-      let objFile = document.getElementById("fileId");
-      let _this = this; //注意!!先把this保存起来!!
-      if (objFile.files[0].size == 0) {
-        // 文件字节数,不为零说明就不为空啊
-        alert("请您上传一个有内容的文件");
-      } else {
-        // let files = $("#fileId").prop("files"); //获取到文件列表
-        let files = objFile.files;
-        if (files.length == 0) {
-          alert("请选择文件");
-        } else {
-          let reader = new FileReader(); //新建一个FileReader
-          reader.readAsText(files[0], "UTF-8"); //以文字读取文件
-          reader.onload = function (evt) {
-            //读取完文件之后会回来这里
-            let fileString = evt.target.result; // 读取文件内容
-            // console.log(fileString);
-            _this.$axios
-              .post("up_text", {
-                text: fileString,
-              })
-              .then((res) => {
-                // console.log(res.data); //它没有关键词高亮显示
-                //先关闭选择框
-                if (res.data.length != 0) {
-                  _this.closeUploadBorder();
-                  _this.$router.push({ path: "/pagetop" });
-                  _this.showTextTop = true;
-                  _this.isSearchTip = true; //别搞混了 这里得设为true
-                  _this.pageSize = 10; //因为只有top10
-                  _this.curPage = 1; //归1
-                  _this.configPage(res);
-                }
-              })
-              .catch((error) => {
-                console.log("error!");
-                console.log(error);
-              });
-          };
-        }
-      }
-      // this.$axios
-      //   .get("./txtData.json", {
-      //     params: {},
-      //   })
-      //   .then((res) => {
-      //     // console.log(res.data); //它没有关键词高亮显示
-      //     if (res.data.length != 0) {
-      //       this.$router.push({ path: "/pagetop" });
-      //       this.showTextTop = true;
-      //       this.isSearchTip = true; //别搞混了 这里得设为true
-      //       this.pageSize = 10; //因为只有top10
-      //       this.curPage = 1; //归1
-      //       this.configPage(res);
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log("error!");
-      //     console.log(error);
-      //   });
+    fileUpload(et) {
+      console.log(et);
     },
     handleScroll() {
       //注册滚动条Y滚动事件
@@ -382,37 +349,6 @@ export default {
       // console.log(event.currentTarget.value);
       // this.$bus.$emit("bh1",this.inputVal);
     },
-    highLighted(res) {
-      //关键词高亮显示
-      // 匹配关键字正则,高亮显示搜索关键字
-      for (let item of res.data) {
-        // 高亮替换v-html值
-        // for(let i = 0;i<res.data.length;i++){
-        //   let item = res.data[i];
-        for (let keyWord of item.key_word) {
-          let replaceReg = new RegExp(keyWord, "g");
-          let mainTextString =
-            '<em  style="color: #f73131;">' + keyWord + "</em>"; //可以在style中设置文字颜色
-          let titleString =
-            '<em style="color: #f73131;text-decoration: underline;">' +
-            keyWord +
-            "</em>";
-          // 开始替换,在item.main_text中将replaceReg匹配到的字符,替换为mainTextSting
-          item.main_text = item.main_text.replace(replaceReg, mainTextString);
-
-          item.title = item.title.replace(replaceReg, titleString);
-        }
-      }
-    },
-    configPage(res) {
-      this.refresh();
-      this.pageList = res.data;
-      this.totalPage = Math.ceil(this.pageList.length / this.pageSize);
-      this.articleList = this.pageList.slice(
-        (this.curPage - 1) * this.pageSize,
-        this.curPage * this.pageSize
-      );
-    },
     submitText() {
       //点击搜索或者敲回车后跨域请求数据、处理数据等
       this.searchInputBlur(); //提交过后就得先失焦
@@ -421,34 +357,47 @@ export default {
       if (this.inputVal) {
         this.isSearchTip = true;
         this.$axios
-          .get("search", {
-            // .get("http://29s13l8324.wicp.vip/search", {
-            // .get("./wordData.json", {
+          // .get("search", {
+          //http://29s13l8324.wicp.vip/search?wd=%E4%B8%AD%E5%9B%BD
+          .get("./wordData.json", {
             params: {
               // "wd": "英国首相",
-              wd: this.inputVal,
+              // wd: this.inputVal,
             },
           })
           .then((res) => {
             // console.log("submitText! success!");
-
-            // 热榜的请求,肯定要先有文章过来再有热榜啊,这样才不突兀
-            if (this.hotBlock == false) {
-              this.hotBlock = true;
-              // this.$axios.get("./hotData.json").then((res) => {
-              this.$axios.get("get_hot").then((res) => {
-                this.hotNewsList = res.data;
-                // console.log(this.hotNewsList);
-              });
-            }
-
-            //数据处理
-            this.showTextTop = false;
             if (res.data.length != 0) {
-              this.$router.push({ path: "/page" });
               this.previewSearchList.length = 0;
-              this.highLighted(res); //关键词高亮显示
-              this.configPage(res); //配置分页的相关东西
+
+              // 匹配关键字正则,高亮显示搜索关键字
+              for (let item of res.data) {
+                // 高亮替换v-html值
+
+                for (let keyWord of item.key_word) {
+                  let replaceReg = new RegExp(keyWord, "g");
+                  let mainTextString =
+                    '<em  style="color: #f73131;">' + keyWord + "</em>"; //可以在style中设置文字颜色
+                  let titleString =
+                    '<em style="color: #f73131;text-decoration: underline;">' +
+                    keyWord +
+                    "</em>";
+                  // 开始替换,在item.main_text中将replaceReg匹配到的字符,替换为mainTextSting
+                  item.main_text = item.main_text.replace(
+                    replaceReg,
+                    mainTextString
+                  );
+
+                  item.title = item.title.replace(replaceReg, titleString);
+                }
+              }
+
+              this.pageList = res.data;
+              this.totalPage = Math.ceil(this.pageList.length / this.pageSize);
+              this.articleList = this.pageList.slice(
+                (this.curPage - 1) * this.pageSize,
+                this.curPage * this.pageSize
+              );
               // console.log(this.articleList[0]);
               // console.log(this.articleList[0].main_text);
             }
@@ -457,6 +406,15 @@ export default {
             console.log("error!");
             console.log(error);
           });
+      }
+
+      // 热榜的请求
+      if (this.hotBlock == false) {
+        this.hotBlock = true;
+        this.$axios.get("./hotData.json").then((res) => {
+          this.hotNewsList = res.data;
+          // console.log(this.hotNewsList);
+        });
       }
     },
     refresh() {
@@ -475,7 +433,7 @@ export default {
       //拿笔算算
       let temp = 0;
       if (this.curPage == this.totalPage) {
-        //如果当前就是最后一页,要拿到准确的数据长度总共的数量
+        //如果是最后一页,要拿到准确的数据长度总共的数量
         temp = this.pageList.length;
       } else {
         temp = this.curPage * this.pageSize;
@@ -484,9 +442,9 @@ export default {
 
       //最后一页的时候要区分一下啊
       if (page == this.totalPage) {
-        //仔细看啊 ,害的我找了1天, 这里这个page-1,给忘了,我说怎么没有瞬间跳转呢
-        this.articleList = this.pageList.slice((page - 1) * this.pageSize);
-        // console.log(this.curPage);
+        this.articleList = this.pageList.slice(page * this.pageSize);
+        console.log(this.curPage); //pageSize==10时,410条数据,我直接跳到最后一页,打印21,这也执行了啊,但为啥就没刷直接新页面呢
+        //必须得我在文本框里回车或者点击一下搜索才能显示,唯一bug
       } else {
         this.articleList = this.pageList.slice(
           (page - 1) * this.pageSize,

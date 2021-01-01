@@ -43,8 +43,6 @@ export default {
   components: {
     BaseHome1,
     BaseHome2,
-
-    // Pager,
   },
   data() {
     return {
@@ -54,11 +52,7 @@ export default {
       style2:{
         opacity: 0,
       },
-      wordsList: [],
       isInpSe: false,
-      curPage: 1, //当前页
-      total: 0, //总共页数
-      pageSize: 20, //每页记录数
       dataChanged: false,
     };
   },
@@ -75,8 +69,7 @@ export default {
       this.style1.display = "none";
       this.style2.opacity = 1;
     },
-    gotoPage(page) {},
-    changeRowNum(pageSize) {},
+    
   },
 
   created() {},
