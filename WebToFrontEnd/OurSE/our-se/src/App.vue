@@ -12,6 +12,7 @@
     <base-home1 :style="style1"></base-home1>
     <base-home2 :style="style2"></base-home2>
 
+    <!-- <base-home2></base-home2> -->
 
     <!-- <Pager
       v-if="!dataChanged"
@@ -36,7 +37,6 @@
 import BaseHome1 from "./components/BaseHome1";
 import BaseHome2 from "./components/BaseHome2";
 
-// import Pager from "@/components/Pager";
 
 export default {
   name: "App",

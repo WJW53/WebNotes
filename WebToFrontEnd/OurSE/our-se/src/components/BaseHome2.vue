@@ -78,7 +78,7 @@
               name="file-btn"
               @click="judgeType($event, fileType)"
             >
-              选择文件
+              点击提交
             </span>
           </div>
           <span class="close-wrap" @click="closeUploadBorder">X</span>
@@ -99,14 +99,16 @@
       </div>
     </div>
 
+    <question v-if="showQuestion"> </question>
+
     <content-article
-      v-if="!showTextTop"
+      v-if="!showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
     >
     </content-article>
     <content-article
-      v-else
+      v-else-if="showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
     ></content-article>
@@ -122,7 +124,7 @@
 
     <!-- 网页分页以及底部设计 -->
     <pager
-      v-if="!dataChanged && articleList && articleList.length != 0"
+      v-if="!dataChanged && articleList && articleList.length != 0 && !showQuestion"
       ref="pager"
       :pageSize="pageSize"
       :curPage="curPage"
@@ -141,6 +143,7 @@ import Pager from "./Pager";
 import HotList from "./HotList";
 import TextTop10 from "./ContentArticle";
 import ContentArticle from "./ContentArticle.vue";
+import Question from "./Question";
 
 // import BaseHome from "./BaseHome"
 
@@ -167,6 +170,7 @@ export default {
       scrollTop: 0, // 记录当前的滚动距离
       fileType: "", //上传文件类型
       showTextTop: false,
+      showQuestion: false,
     };
   },
   components: {
@@ -174,6 +178,7 @@ export default {
     Pager,
     HotList,
     ContentArticle,
+    Question,
   },
   watch: {
     previewSearchList() {
@@ -256,6 +261,8 @@ export default {
     },
     jumpQa() {
       console.log("qa-qa");
+      this.showQuestion = true;
+      this.hotNewsList.length = 0;
     },
     clkBtn(type) {
       // console.log(type);
@@ -282,6 +289,7 @@ export default {
       console.log("img");
     },
     fileUpload() {
+      this.showQuestion = false;
       let objFile = document.getElementById("fileId");
       let _this = this; //注意!!先把this保存起来!!
       if (objFile.files[0].size == 0) {
@@ -416,7 +424,7 @@ export default {
     submitText() {
       //点击搜索或者敲回车后跨域请求数据、处理数据等
       this.searchInputBlur(); //提交过后就得先失焦
-
+      this.showQuestion = false;
       //搜索文本的请求
       if (this.inputVal) {
         this.isSearchTip = true;
@@ -947,6 +955,7 @@ export default {
   background: #4e6ef2;
   color: #fff;
 }
+
 
 /*
 .search-footer-foot {
