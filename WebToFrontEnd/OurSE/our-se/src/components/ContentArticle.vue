@@ -21,7 +21,7 @@
           <a
             :href="article.url"
             class="search-result-article"
-            target="blank"
+            target="_blank"
             v-html="article.title"
           >
             {{ article.title }}

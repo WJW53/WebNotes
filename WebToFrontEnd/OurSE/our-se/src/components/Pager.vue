@@ -32,8 +32,8 @@
     </div>
     <div class="search-footer-foot">
       <span class="search-foot-help">
-        <a href="http://help.baidu.com/question" target="blank">帮助</a>
-        <a href="http://www.baidu.com/search/jubao.html" target="blank">举报</a>
+        <a href="http://help.baidu.com/question" target="_blank">帮助</a>
+        <a href="http://www.baidu.com/search/jubao.html" target="_blank">举报</a>
         <a href="javascript:void(0);">用户反馈</a>
       </span>
     </div>

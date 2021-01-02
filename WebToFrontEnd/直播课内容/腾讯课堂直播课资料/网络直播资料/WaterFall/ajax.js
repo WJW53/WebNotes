@@ -20,7 +20,7 @@ function ajax(options) {
     // xhr 用于存储当前网络请求中的所有信息
     var xhr = null;
     // 判断当前浏览器是否含有XMLHTTPRequest对象（IE7+， Chrome, firefox及其他浏览器有的） 有的话 创建该对象  没有则判断是否含有ActiveXOject对象（IE6/5中特有的）
-    if(window.XMLHttpRequest) {
+    if (window.XMLHttpRequest) {
         xhr = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
         xhr = new ActiveXObject('Microsoft.XMLHTTP');
@@ -66,6 +66,6 @@ function ajax(options) {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         xhr.send(dataStr);
     }
-   
-    
+
+
 }

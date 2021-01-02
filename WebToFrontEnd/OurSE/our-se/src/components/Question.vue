@@ -63,16 +63,16 @@
       <div class="qa-footer-help">
         <a
           href="http://help.baidu.com/question?prod_id=9&class=337"
-          target="blank"
+          target="_blank"
           class="qa-footer-text"
           >帮助&nbsp;|&nbsp;</a
         >
-        <a href="javascript:void(0);" target="blank" class="qa-footer-text"
+        <a href="javascript:void(0);" target="_blank" class="qa-footer-text"
           >意见反馈&nbsp;|&nbsp;</a
         >
         <a
           href="http://help.baidu.com/newadd?prod_id=9&category=1"
-          target="blank"
+          target="_blank"
           class="qa-footer-text"
           >投诉举报</a
         >
@@ -83,13 +83,13 @@
         <span class="qa-footer-text">©2021Wenhai&nbsp;</span>
         <a
           href="http://www.baidu.com/duty/"
-          target="blank"
+          target="_blank"
           class="qa-footer-text"
           >使用闻海前必读</a
         >
         <a
           href="http://help.baidu.com/question?prod_id=9&class=325&id=2760"
-          target="blank"
+          target="_blank"
           class="qa-footer-text"
           >知道协议</a
         >

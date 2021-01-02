@@ -24,7 +24,7 @@
         <span v-else class="news-title-index">{{
           index + pageSize * curPage + 1
         }}</span>
-        <a :href="news.url" target="blank" class="news-title-content">
+        <a :href="news.url" target="_blank" class="news-title-content">
           {{ news.title }}
         </a>
         <span class="news-title-hot" v-if="index + pageSize * curPage + 1 == 1">热</span>

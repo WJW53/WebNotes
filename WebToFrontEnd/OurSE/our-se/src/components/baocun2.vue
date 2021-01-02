@@ -78,7 +78,7 @@
               name="file-btn"
               @click="judgeType($event, fileType)"
             >
-              点击提交
+              点击空白选择文件点击此处提交文件
             </span>
           </div>
           <span class="close-wrap" @click="closeUploadBorder">X</span>
@@ -99,21 +99,35 @@
       </div>
     </div>
 
+    <!-- 没搜索到的提示 -->
+    <div class="error-tip" id="search-article-error-tip" v-if="searchErrorTip">
+      很抱歉，没有为您找到搜索结果！
+    </div>
+
+    <!-- 问答区域 -->
     <question v-if="showQuestion"> </question>
 
+    <!-- 图片搜索区域  -->
+    <image-water-full
+      v-if="showImage && imgList && imgList.length != 0"
+      :imgList="imgList"
+    >
+    </image-water-full>
+
+    <!-- 上传文件和文本框搜索的结果区域 -->
     <content-article
-      v-if="!showTextTop && !showQuestion"
+      v-if="showNewsPage && !searchErrorTip && !showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
     >
     </content-article>
     <content-article
-      v-else-if="showTextTop && !showQuestion"
+      v-else-if="!searchErrorTip && showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
     ></content-article>
 
-    <!-- 百度热榜部分 -->
+    <!-- 百度热榜区域 -->
     <!-- ??这个地方好像不需要通知父亲刷新啊 -->
     <!-- !hotListChanged &&  -->
     <hot-list
@@ -124,8 +138,11 @@
 
     <!-- 网页分页以及底部设计 -->
     <pager
-      v-if="!dataChanged && articleList && articleList.length != 0 && !showQuestion"
+      v-if="
+        !dataChanged && articleList && articleList.length != 0 && !showQuestion
+      "
       ref="pager"
+      :class="{ 'pager-bottom': isBottom }"
       :pageSize="pageSize"
       :curPage="curPage"
       :totalPage="totalPage"
@@ -144,6 +161,7 @@ import HotList from "./HotList";
 import TextTop10 from "./ContentArticle";
 import ContentArticle from "./ContentArticle.vue";
 import Question from "./Question";
+import ImageWaterFull from "./ImageWaterFull";
 
 // import BaseHome from "./BaseHome"
 
@@ -155,6 +173,8 @@ export default {
       inputVal: "",
       pageList: [],
       articleList: [],
+      imgList: [],
+      isBottom: false,
       curPage: 1, //当前页
       totalPage: 0, //总共页数
       pageSize: 20, //每页记录数
@@ -166,11 +186,15 @@ export default {
       hotNewsList: [],
       hotListChanged: false,
       headerShadowBlock: false,
+      imgBlock: false,
       oldScrollTop: 0, //记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
       fileType: "", //上传文件类型
       showTextTop: false,
       showQuestion: false,
+      showImage: false,
+      showNewsPage: false,
+      searchErrorTip: false,
     };
   },
   components: {
@@ -179,8 +203,16 @@ export default {
     HotList,
     ContentArticle,
     Question,
+    ImageWaterFull,
   },
   watch: {
+    curPage() {
+      if (this.curPage == this.totalPage && this.articleList.length < 10) {
+        this.isBottom = true;
+      } else {
+        this.isBottom = false;
+      }
+    },
     previewSearchList() {
       if (
         this.inputFocus &&
@@ -203,6 +235,9 @@ export default {
       //实时联想搜索的请求
       // let _this = this;
       // console.log(this.inputVal);
+      // document.getElementById("search-article-error-tip").style.display =
+      //   "none";
+      this.searchErrorTip = false;
       if (this.inputVal.length >= 1 && !this.previewSearchBlock) {
         //没锁时
         // console.log(this.previewSearchBlock);
@@ -260,13 +295,17 @@ export default {
       }
     },
     jumpQa() {
-      console.log("qa-qa");
-      this.showQuestion = true;
-      this.hotNewsList.length = 0;
+      // console.log("qa-qa");
+      this.inputVal = "";
+      this.showQuestion = true; //展示问答区域
+      this.$router.push({ path: "/question" });
+      this.hotNewsList.length = 0; //热榜清空
+      this.closeUploadBorder(); //关闭文件上传框
     },
     clkBtn(type) {
       // console.log(type);
       // console.log(event);
+      this.fileType = type; //传类型
       this.searchInputBlur();
       if (type != "qa") {
         this.previewSearchBlock = true; //上锁,不让它再可以预览显示了
@@ -278,21 +317,77 @@ export default {
       } else {
         this.jumpQa();
       }
-      this.fileType = type; //传类型
     },
     closeUploadBorder() {
       document.getElementById("hiddenFileUpload").style.display = "none";
       this.previewSearchBlock = false; //解锁
       // console.log(this.previewSearchBlock);
     },
+    searchNoResTips() {
+      // document.getElementById("search-article-error-tip").style.display =
+      //   "block";
+      this.articleList.length = 0;
+      this.searchErrorTip = true;
+    },
+    afterImgUpload() {
+      // document.getElementById("search-article-error-tip").style.display =
+      //   "none";
+      console.log("afterImgUpload");
+      this.searchErrorTip = false;
+      this.imgBlock = false; //不论成功失败都要解锁啊
+      this.showTextTop = false;
+      this.showQuestion = false;
+      this.showNewsPage = false;
+      this.hotNewsList.length = 0;
+      this.articleList.length = 0;
+      this.pageList.length = 0;
+      this.closeUploadBorder();
+    },
     imgUpload() {
       console.log("img");
+      //1. 获取到上传的文件
+      this.showImage = true;
+      let objFile = document.getElementById("fileId");
+      let file = objFile.files[0];
+      console.log(file);
+      let name = file.name.replace(".jpg", "");
+      name = name.replace(".png", "");
+      name = name.replace(".jpeg", "");
+      // //2. 创建form对象,将文件内容添加到form对象中
+      let param = new FormData(); // 创建form对象
+      param.append("file", file, file.name); // 通过append向form对象添加数据
+      // console.log(param.get("file")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+
+      if (!this.imgBlock) {
+        //没上锁的时候
+        this.imgBlock = true; //加锁 哥在请求呢
+        this.$axios
+          .post("up_photo", param)
+          .then((response) => {
+            this.$router.push({path:"/image"})
+            this.imgList = response.data.photos;
+            for (let i = 0; i < this.imgList.length; i++) {
+              this.imgList[i].title = name + i + 1;
+            }
+            console.log(this.imgList); //这个才是要用的数据对象
+
+            this.afterImgUpload();
+          })
+          .catch((error) => {
+            console.log(error);
+            this.afterImgUpload();
+          });
+      }
     },
     fileUpload() {
       this.showQuestion = false;
+      this.showImage = false;
+      this.showNewsPage = false;
       let objFile = document.getElementById("fileId");
       let _this = this; //注意!!先把this保存起来!!
-      if (objFile.files[0].size == 0) {
+      if (!objFile.files[0]) {
+        alert("请您先选择文件");
+      } else if (objFile.files[0].size == 0) {
         // 文件字节数,不为零说明就不为空啊
         alert("请您上传一个有内容的文件");
       } else {
@@ -301,6 +396,7 @@ export default {
         if (files.length == 0) {
           alert("请选择文件");
         } else {
+          //选完文件之后可以none掉
           let reader = new FileReader(); //新建一个FileReader
           reader.readAsText(files[0], "UTF-8"); //以文字读取文件
           reader.onload = function (evt) {
@@ -315,6 +411,10 @@ export default {
                 // console.log(res.data); //它没有关键词高亮显示
                 //先关闭选择框
                 if (res.data.length != 0) {
+                  // document.getElementById("search-article-error-tip").style.display =
+                  //   "none";
+                  _this.searchErrorTip = false; //必要的
+                  _this.inputVal = "";
                   _this.closeUploadBorder();
                   _this.$router.push({ path: "/pagetop" });
                   _this.showTextTop = true;
@@ -325,8 +425,14 @@ export default {
                 }
               })
               .catch((error) => {
-                console.log("error!");
-                console.log(error);
+                // document.getElementById("search-article-error-tip").style.display =
+                //   "none";
+                // this.searchErrorTip = true;
+                // _this.articleList.length = 0; //必要的
+                _this.searchNoResTips();
+                _this.closeUploadBorder();
+                // console.log("error!");
+                // console.log(error);
               });
           };
         }
@@ -423,11 +529,15 @@ export default {
     },
     submitText() {
       //点击搜索或者敲回车后跨域请求数据、处理数据等
+      this.showNewsPage = true;
+      this.showImage = false;
       this.searchInputBlur(); //提交过后就得先失焦
-      this.showQuestion = false;
+      this.showQuestion = false; //关掉这些东西
+      this.closeUploadBorder();
       //搜索文本的请求
       if (this.inputVal) {
         this.isSearchTip = true;
+
         this.$axios
           .get("search", {
             // .get("http://29s13l8324.wicp.vip/search", {
@@ -439,8 +549,8 @@ export default {
           })
           .then((res) => {
             // console.log("submitText! success!");
-
             // 热榜的请求,肯定要先有文章过来再有热榜啊,这样才不突兀
+            this.searchErrorTip = false; //消失
             if (this.hotBlock == false) {
               this.hotBlock = true;
               // this.$axios.get("./hotData.json").then((res) => {
@@ -462,8 +572,17 @@ export default {
             }
           })
           .catch((error) => {
-            console.log("error!");
-            console.log(error);
+            //没找到的话 我做提示
+            this.searchNoResTips();
+            if (error.response) {
+              console.log("The status is not the range of 2xx");
+            } else if (error.request) {
+              //错误情况二：请求没有收到响应, 再浏览器环境下`error.request`是XMLHttpRequest实例
+              console.log(error.request);
+            } else {
+              //Something happened in setting up the request and triggered an Error
+              console.log("Error", error.message);
+            }
           });
       }
     },
@@ -575,9 +694,10 @@ export default {
 
 
 <style scoped>
-/* html,body{
-    height: 100%;
-} */
+:root,
+body {
+  height: 100%;
+}
 /* .se-base-home{
   display: none;
 } */
@@ -633,7 +753,14 @@ export default {
   top: 50%;
   margin-top: -24px;
 }
-
+.se-base-home .error-tip {
+  width: 730px;
+  margin-top: 150px;
+  margin-left: 100px;
+  font-size: 16px;
+  color: #666;
+  /* display: none; */
+}
 .search {
   position: relative;
   font-size: 16px;
@@ -683,13 +810,16 @@ export default {
   font-size: 16px;
   background: #4e71f2;
   border-radius: 6px;
-  height: 32px;
-  line-height: 32px;
-  width: 100px;
+  /* height: 64px */
+  height: 48px;
+  line-height: 24px;
+  width: 140px;
   cursor: pointer;
-  top: 50%;
-  margin-top: -16px;
-  margin-left: -50px;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
 .search-box .hide-upload-border .close-wrap {
@@ -915,6 +1045,11 @@ export default {
 }
 
 /* 页脚 */
+.pager-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 
 .search-footer {
   height: 100px;
@@ -955,7 +1090,6 @@ export default {
   background: #4e6ef2;
   color: #fff;
 }
-
 
 /*
 .search-footer-foot {

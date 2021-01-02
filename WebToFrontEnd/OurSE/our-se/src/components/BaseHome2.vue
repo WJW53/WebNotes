@@ -98,14 +98,25 @@
         </div>
       </div>
     </div>
-    <div class="error-tip" id="search-article-error-tip">
+
+    <!-- 没搜索到的提示 -->
+    <div class="error-tip" id="search-article-error-tip" v-if="searchErrorTip">
       很抱歉，没有为您找到搜索结果！
     </div>
 
+    <!-- 问答区域 -->
     <question v-if="showQuestion"> </question>
 
+    <!-- 图片搜索区域  -->
+    <image-water-full
+      v-if="showImage && imgList && imgList.length != 0"
+      :imgList="imgList"
+    >
+    </image-water-full>
+
+    <!-- 上传文件和文本框搜索的结果区域 -->
     <content-article
-      v-if="!searchErrorTip && !showTextTop && !showQuestion"
+      v-if="showNewsPage && !searchErrorTip && !showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
     >
@@ -116,7 +127,7 @@
       :pageList="pageList"
     ></content-article>
 
-    <!-- 百度热榜部分 -->
+    <!-- 百度热榜区域 -->
     <!-- ??这个地方好像不需要通知父亲刷新啊 -->
     <!-- !hotListChanged &&  -->
     <hot-list
@@ -150,6 +161,7 @@ import HotList from "./HotList";
 import TextTop10 from "./ContentArticle";
 import ContentArticle from "./ContentArticle.vue";
 import Question from "./Question";
+import ImageWaterFull from "./ImageWaterFull";
 
 // import BaseHome from "./BaseHome"
 
@@ -161,10 +173,12 @@ export default {
       inputVal: "",
       pageList: [],
       articleList: [],
+      imgList: [],
       isBottom: false,
       curPage: 1, //当前页
       totalPage: 0, //总共页数
       pageSize: 20, //每页记录数
+      searchArticleBlock: false,
       dataChanged: false, //Pager组件是否需要刷新
       inputFocus: false,
       previewSearchList: [], //实时预览
@@ -173,11 +187,14 @@ export default {
       hotNewsList: [],
       hotListChanged: false,
       headerShadowBlock: false,
+      imgBlock: false,
       oldScrollTop: 0, //记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
       fileType: "", //上传文件类型
       showTextTop: false,
       showQuestion: false,
+      showImage: false,
+      showNewsPage: false,
       searchErrorTip: false,
     };
   },
@@ -187,10 +204,11 @@ export default {
     HotList,
     ContentArticle,
     Question,
+    ImageWaterFull,
   },
   watch: {
     curPage() {
-      if (this.curPage == this.totalPage && this.articleList.length < 10) {
+      if (this.curPage == this.totalPage && this.articleList.length < 9) {
         this.isBottom = true;
       } else {
         this.isBottom = false;
@@ -218,8 +236,9 @@ export default {
       //实时联想搜索的请求
       // let _this = this;
       // console.log(this.inputVal);
-      document.getElementById("search-article-error-tip").style.display =
-        "none";
+      // document.getElementById("search-article-error-tip").style.display =
+      //   "none";
+      this.searchErrorTip = false;
       if (this.inputVal.length >= 1 && !this.previewSearchBlock) {
         //没锁时
         // console.log(this.previewSearchBlock);
@@ -306,16 +325,67 @@ export default {
       // console.log(this.previewSearchBlock);
     },
     searchNoResTips() {
-      document.getElementById("search-article-error-tip").style.display =
-        "block";
+      // document.getElementById("search-article-error-tip").style.display =
+      //   "block";
       this.articleList.length = 0;
       this.searchErrorTip = true;
     },
-    imgUpload() {
-      console.log("img");
+    afterImgUpload() {
+      // document.getElementById("search-article-error-tip").style.display =
+      //   "none";
+      console.log("afterImgUpload");
+      this.searchErrorTip = false;
+      this.imgBlock = false; //不论成功失败都要解锁啊
+      this.showTextTop = false;
+      this.showQuestion = false;
+      this.showNewsPage = false;
+      this.hotNewsList.length = 0;
+      this.articleList.length = 0;
+      this.pageList.length = 0;
+      this.closeUploadBorder();
     },
+    imgUpload() {
+      // console.log("img");
+      //1. 获取到上传的文件
+      this.showImage = true;
+      this.closeUploadBorder();
+      let objFile = document.getElementById("fileId");
+      let file = objFile.files[0];
+      // console.log(file);
+      let name = file.name.replace(".jpg", "");
+      name = name.replace(".png", "");
+      name = name.replace(".jpeg", "");
+      // //2. 创建form对象,将文件内容添加到form对象中
+      let param = new FormData(); // 创建form对象
+      param.append("file", file, file.name); // 通过append向form对象添加数据
+      // console.log(param.get("file")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+
+      if (!this.imgBlock) {
+        //没上锁的时候
+        this.imgBlock = true; //加锁 哥在请求呢
+        this.$axios
+          .post("up_photo", param)
+          .then((response) => {
+            this.$router.push({ path: "/image" });
+            this.imgList = response.data.photos;
+            for (let i = 0; i < this.imgList.length; i++) {
+              this.imgList[i].title = name + (i + 1);
+            }
+            // console.log(this.imgList); //这个才是要用的数据对象
+
+            this.afterImgUpload();
+          })
+          .catch((error) => {
+            console.log(error);
+            this.afterImgUpload();
+          });
+      }
+    },
+
     fileUpload() {
       this.showQuestion = false;
+      this.showImage = false;
+      this.showNewsPage = false;
       let objFile = document.getElementById("fileId");
       let _this = this; //注意!!先把this保存起来!!
       if (!objFile.files[0]) {
@@ -344,9 +414,8 @@ export default {
                 // console.log(res.data); //它没有关键词高亮显示
                 //先关闭选择框
                 if (res.data.length != 0) {
-                  document.getElementById(
-                    "search-article-error-tip"
-                  ).style.display = "none"; //这也应该写成一个方法的
+                  // document.getElementById("search-article-error-tip").style.display =
+                  //   "none";
                   _this.searchErrorTip = false; //必要的
                   _this.inputVal = "";
                   _this.closeUploadBorder();
@@ -359,9 +428,9 @@ export default {
                 }
               })
               .catch((error) => {
-                // document.getElementById(
-                //   "search-article-error-tip"
-                // ).style.display = "block"; //这也应该写成一个方法的
+                // document.getElementById("search-article-error-tip").style.display =
+                //   "none";
+                // this.searchErrorTip = true;
                 // _this.articleList.length = 0; //必要的
                 _this.searchNoResTips();
                 _this.closeUploadBorder();
@@ -462,60 +531,68 @@ export default {
       );
     },
     submitText() {
-      //点击搜索或者敲回车后跨域请求数据、处理数据等
-      this.searchInputBlur(); //提交过后就得先失焦
-      this.showQuestion = false; //关掉这些东西
-      this.closeUploadBorder();
-      //搜索文本的请求
-      if (this.inputVal) {
-        this.isSearchTip = true;
+      if (!this.searchArticleBlock) {
+        //没锁
+        this.searchArticleBlock = true; //上锁
+        //点击搜索或者敲回车后跨域请求数据、处理数据等
+        this.showNewsPage = true;
+        this.showImage = false;
+        this.searchInputBlur(); //提交过后就得先失焦
+        this.showQuestion = false; //关掉这些东西
+        this.closeUploadBorder();
+        //搜索文本的请求
+        if (this.inputVal) {
+          this.isSearchTip = true;
 
-        this.$axios
-          .get("search", {
-            // .get("http://29s13l8324.wicp.vip/search", {
-            // .get("./wordData.json", {
-            params: {
-              // "wd": "英国首相",
-              wd: this.inputVal,
-            },
-          })
-          .then((res) => {
-            // console.log("submitText! success!");
-            // 热榜的请求,肯定要先有文章过来再有热榜啊,这样才不突兀
-            this.searchErrorTip = false; //消失
-            if (this.hotBlock == false) {
-              this.hotBlock = true;
-              // this.$axios.get("./hotData.json").then((res) => {
-              this.$axios.get("get_hot").then((res) => {
-                this.hotNewsList = res.data;
-                // console.log(this.hotNewsList);
-              });
-            }
+          this.$axios
+            .get("search", {
+              // .get("http://29s13l8324.wicp.vip/search", {
+              // .get("./wordData.json", {
+              params: {
+                // "wd": "英国首相",
+                wd: this.inputVal,
+              },
+            })
+            .then((res) => {
+              this.searchArticleBlock = false;
+              // console.log("submitText! success!");
+              // 热榜的请求,肯定要先有文章过来再有热榜啊,这样才不突兀
+              this.searchErrorTip = false; //消失
+              if (this.hotBlock == false) {
+                this.hotBlock = true;
+                // this.$axios.get("./hotData.json").then((res) => {
+                this.$axios.get("get_hot").then((res) => {
+                  this.hotNewsList = res.data;
+                  // console.log(this.hotNewsList);
+                });
+              }
 
-            //数据处理
-            this.showTextTop = false;
-            if (res.data.length != 0) {
-              this.$router.push({ path: "/page" });
-              this.previewSearchList.length = 0;
-              this.highLighted(res); //关键词高亮显示
-              this.configPage(res); //配置分页的相关东西
-              // console.log(this.articleList[0]);
-              // console.log(this.articleList[0].main_text);
-            }
-          })
-          .catch((error) => {
-            //没找到的话 我做提示
-            this.searchNoResTips();
-            if (error.response) {
-              console.log("The status is not the range of 2xx");
-            } else if (error.request) {
-              //错误情况二：请求没有收到响应, 再浏览器环境下`error.request`是XMLHttpRequest实例
-              console.log(error.request);
-            } else {
-              //Something happened in setting up the request and triggered an Error
-              console.log("Error", error.message);
-            }
-          });
+              //数据处理
+              this.showTextTop = false;
+              if (res.data.length != 0) {
+                this.$router.push({ path: "/page" });
+                this.previewSearchList.length = 0;
+                this.highLighted(res); //关键词高亮显示
+                this.configPage(res); //配置分页的相关东西
+                // console.log(this.articleList[0]);
+                // console.log(this.articleList[0].main_text);
+              }
+            })
+            .catch((error) => {
+              //没找到的话 我做提示
+              this.searchArticleBlock = false;
+              this.searchNoResTips();
+              if (error.response) {
+                console.log("The status is not the range of 2xx");
+              } else if (error.request) {
+                //错误情况二：请求没有收到响应, 再浏览器环境下`error.request`是XMLHttpRequest实例
+                console.log(error.request);
+              } else {
+                //Something happened in setting up the request and triggered an Error
+                console.log("Error", error.message);
+              }
+            });
+        }
       }
     },
     refresh() {
