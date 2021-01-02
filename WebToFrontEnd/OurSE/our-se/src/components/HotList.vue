@@ -93,7 +93,7 @@ export default {
   padding: 10px 5px;
   top: 150px;
   right: 300px;
-  width: 350px;
+  width: 400px;
 }
 .hot-news-wrapper a:link {
   color: #2440b3;

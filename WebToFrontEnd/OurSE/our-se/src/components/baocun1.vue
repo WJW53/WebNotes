@@ -78,7 +78,7 @@
               name="file-btn"
               @click="judgeType($event, fileType)"
             >
-              选择文件
+              点击空白选择文件点击此处提交文件
             </span>
           </div>
           <span class="close-wrap" @click="closeUploadBorder">X</span>
@@ -98,15 +98,20 @@
         </div>
       </div>
     </div>
+    <div class="error-tip" id="search-article-error-tip">
+      很抱歉，没有为您找到搜索结果！
+    </div>
+
+    <question v-if="showQuestion"> </question>
 
     <content-article
-      v-if="!showTextTop"
+      v-if="!searchErrorTip && !showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
     >
     </content-article>
     <content-article
-      v-else
+      v-else-if="!searchErrorTip && showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
     ></content-article>
@@ -122,8 +127,11 @@
 
     <!-- 网页分页以及底部设计 -->
     <pager
-      v-if="!dataChanged && articleList && articleList.length != 0"
+      v-if="
+        !dataChanged && articleList && articleList.length != 0 && !showQuestion
+      "
       ref="pager"
+      :class="{ 'pager-bottom': isBottom }"
       :pageSize="pageSize"
       :curPage="curPage"
       :totalPage="totalPage"
@@ -141,6 +149,7 @@ import Pager from "./Pager";
 import HotList from "./HotList";
 import TextTop10 from "./ContentArticle";
 import ContentArticle from "./ContentArticle.vue";
+import Question from "./Question";
 
 // import BaseHome from "./BaseHome"
 
@@ -152,6 +161,7 @@ export default {
       inputVal: "",
       pageList: [],
       articleList: [],
+      isBottom: false,
       curPage: 1, //当前页
       totalPage: 0, //总共页数
       pageSize: 20, //每页记录数
@@ -167,6 +177,8 @@ export default {
       scrollTop: 0, // 记录当前的滚动距离
       fileType: "", //上传文件类型
       showTextTop: false,
+      showQuestion: false,
+      searchErrorTip: false,
     };
   },
   components: {
@@ -174,8 +186,16 @@ export default {
     Pager,
     HotList,
     ContentArticle,
+    Question,
   },
   watch: {
+    curPage() {
+      if (this.curPage == this.totalPage && this.articleList.length < 10) {
+        this.isBottom = true;
+      } else {
+        this.isBottom = false;
+      }
+    },
     previewSearchList() {
       if (
         this.inputFocus &&
@@ -198,6 +218,8 @@ export default {
       //实时联想搜索的请求
       // let _this = this;
       // console.log(this.inputVal);
+      document.getElementById("search-article-error-tip").style.display =
+        "none";
       if (this.inputVal.length >= 1 && !this.previewSearchBlock) {
         //没锁时
         // console.log(this.previewSearchBlock);
@@ -255,11 +277,17 @@ export default {
       }
     },
     jumpQa() {
-      console.log("qa-qa");
+      // console.log("qa-qa");
+      this.inputVal = "";
+      this.showQuestion = true; //展示问答区域
+      this.$router.push({ path: "/question" });
+      this.hotNewsList.length = 0; //热榜清空
+      this.closeUploadBorder(); //关闭文件上传框
     },
     clkBtn(type) {
       // console.log(type);
       // console.log(event);
+      this.fileType = type; //传类型
       this.searchInputBlur();
       if (type != "qa") {
         this.previewSearchBlock = true; //上锁,不让它再可以预览显示了
@@ -271,20 +299,28 @@ export default {
       } else {
         this.jumpQa();
       }
-      this.fileType = type; //传类型
     },
     closeUploadBorder() {
       document.getElementById("hiddenFileUpload").style.display = "none";
       this.previewSearchBlock = false; //解锁
       // console.log(this.previewSearchBlock);
     },
+    searchNoResTips() {
+      document.getElementById("search-article-error-tip").style.display =
+        "block";
+      this.articleList.length = 0;
+      this.searchErrorTip = true;
+    },
     imgUpload() {
       console.log("img");
     },
     fileUpload() {
+      this.showQuestion = false;
       let objFile = document.getElementById("fileId");
       let _this = this; //注意!!先把this保存起来!!
-      if (objFile.files[0].size == 0) {
+      if (!objFile.files[0]) {
+        alert("请您先选择文件");
+      } else if (objFile.files[0].size == 0) {
         // 文件字节数,不为零说明就不为空啊
         alert("请您上传一个有内容的文件");
       } else {
@@ -293,6 +329,7 @@ export default {
         if (files.length == 0) {
           alert("请选择文件");
         } else {
+          //选完文件之后可以none掉
           let reader = new FileReader(); //新建一个FileReader
           reader.readAsText(files[0], "UTF-8"); //以文字读取文件
           reader.onload = function (evt) {
@@ -307,6 +344,11 @@ export default {
                 // console.log(res.data); //它没有关键词高亮显示
                 //先关闭选择框
                 if (res.data.length != 0) {
+                  document.getElementById(
+                    "search-article-error-tip"
+                  ).style.display = "none"; //这也应该写成一个方法的
+                  _this.searchErrorTip = false; //必要的
+                  _this.inputVal = "";
                   _this.closeUploadBorder();
                   _this.$router.push({ path: "/pagetop" });
                   _this.showTextTop = true;
@@ -317,8 +359,14 @@ export default {
                 }
               })
               .catch((error) => {
-                console.log("error!");
-                console.log(error);
+                // document.getElementById(
+                //   "search-article-error-tip"
+                // ).style.display = "block"; //这也应该写成一个方法的
+                // _this.articleList.length = 0; //必要的
+                _this.searchNoResTips();
+                _this.closeUploadBorder();
+                // console.log("error!");
+                // console.log(error);
               });
           };
         }
@@ -416,10 +464,12 @@ export default {
     submitText() {
       //点击搜索或者敲回车后跨域请求数据、处理数据等
       this.searchInputBlur(); //提交过后就得先失焦
-
+      this.showQuestion = false; //关掉这些东西
+      this.closeUploadBorder();
       //搜索文本的请求
       if (this.inputVal) {
         this.isSearchTip = true;
+
         this.$axios
           .get("search", {
             // .get("http://29s13l8324.wicp.vip/search", {
@@ -431,8 +481,8 @@ export default {
           })
           .then((res) => {
             // console.log("submitText! success!");
-
             // 热榜的请求,肯定要先有文章过来再有热榜啊,这样才不突兀
+            this.searchErrorTip = false; //消失
             if (this.hotBlock == false) {
               this.hotBlock = true;
               // this.$axios.get("./hotData.json").then((res) => {
@@ -454,8 +504,17 @@ export default {
             }
           })
           .catch((error) => {
-            console.log("error!");
-            console.log(error);
+            //没找到的话 我做提示
+            this.searchNoResTips();
+            if (error.response) {
+              console.log("The status is not the range of 2xx");
+            } else if (error.request) {
+              //错误情况二：请求没有收到响应, 再浏览器环境下`error.request`是XMLHttpRequest实例
+              console.log(error.request);
+            } else {
+              //Something happened in setting up the request and triggered an Error
+              console.log("Error", error.message);
+            }
           });
       }
     },
@@ -567,9 +626,10 @@ export default {
 
 
 <style scoped>
-/* html,body{
-    height: 100%;
-} */
+:root,
+body {
+  height: 100%;
+}
 /* .se-base-home{
   display: none;
 } */
@@ -625,7 +685,14 @@ export default {
   top: 50%;
   margin-top: -24px;
 }
-
+.se-base-home .error-tip {
+  width: 730px;
+  margin-top: 150px;
+  margin-left: 100px;
+  font-size: 16px;
+  color: #666;
+  /* display: none; */
+}
 .search {
   position: relative;
   font-size: 16px;
@@ -675,13 +742,16 @@ export default {
   font-size: 16px;
   background: #4e71f2;
   border-radius: 6px;
-  height: 32px;
-  line-height: 32px;
-  width: 100px;
+  /* height: 64px */
+  height: 48px;
+  line-height: 24px;
+  width: 140px;
   cursor: pointer;
-  top: 50%;
-  margin-top: -16px;
-  margin-left: -50px;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
 .search-box .hide-upload-border .close-wrap {
@@ -907,6 +977,11 @@ export default {
 }
 
 /* 页脚 */
+.pager-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 
 .search-footer {
   height: 100px;

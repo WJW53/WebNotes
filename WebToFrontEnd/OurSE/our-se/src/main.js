@@ -10,6 +10,7 @@ import "./assets/index.css";
 
 axios.defaults.baseURL = "/api";
 
+
 // //配置token
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // //配置请求头数据格式
@@ -17,7 +18,6 @@ axios.defaults.baseURL = "/api";
 
 Vue.use(VueResource);
 Vue.config.productionTip = false;
-axios.defaults.timeout = 65000;
 
 Vue.prototype.$bus = new Vue();
 Vue.prototype.$axios = axios;

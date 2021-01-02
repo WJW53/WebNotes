@@ -113,6 +113,9 @@ export default {
 
 
 <style scoped>
+:root,body{
+  height: 100%;
+}
 .pager-search-footer {
   background-color: rgba(214, 209, 209, 0.2) !important;
   height: 106px;

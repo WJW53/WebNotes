@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 axios.interceptors.request.use(
     request => {
         //   request.url += '.json';//因为他那边接口没有后缀,只是需要返回json的时候,他给我返回的是json

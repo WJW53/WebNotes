@@ -74,11 +74,9 @@ export default {
   width: 14px;
   height: 14px;
   margin-right: 10px;
-  cursor: pointer;
 }
 .search-news-result .search-head-nums .search-tool-text {
   color: #666;
-  cursor: pointer;
 }
 .search-result-list {
   margin-top: 10px;

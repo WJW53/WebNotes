@@ -115,6 +115,7 @@ export default {
         document.getElementById("error-tip").style.display = "block";
       } else {
         document.getElementById("error-tip").style.display = "none";
+        this.resAreaVal = "";
       }
     },
   },
@@ -128,6 +129,9 @@ export default {
         dom.checked = false;
       }
     },
+    showAnswer() {
+      document.getElementById("answer-area").style.display = "block";
+    },
     submitQuestion() {
       if (this.textAreaVal.length <= 49 && this.textAreaVal != "") {
         this.$axios
@@ -135,17 +139,16 @@ export default {
             params: {
               wd: this.textAreaVal,
             },
+            timeout: 6000,
           })
           .then((res) => {
-            //   console.log(res);
             this.resAreaVal = res.data;
-            document.getElementById("answer-area").style.display = "block";
+            this.showAnswer();
           })
           .catch((error) => {
-            console.log("error!");
-            console.log(error);
-            this.resAreaVal = "很抱歉，没有为您搜索到结果"
-            document.getElementById("answer-area").style.display = "block";
+            // console.log(error);
+            this.resAreaVal = "很抱歉，没有为您搜索到结果";
+            this.showAnswer();
           });
       }
     },
@@ -155,15 +158,17 @@ export default {
 
 
 <style scoped>
+:root,body{
+  height: 100%;
+}
 /* qustion-answer */
 .question-answer {
-  position: fixed;
+  margin-top: 200px;
+  margin-left: 600px;
   width: 600px;
   height: 600px;
-  top: 50%;
-  left: 50%;
-  margin-top: -300px;
-  margin-left: -300px;
+  display: flex;
+  flex-direction: column;
   /* background-color: red; */
 }
 .question .question-header {
@@ -209,6 +214,11 @@ export default {
   height: 110px;
   box-sizing: border-box;
 }
+
+.answer{
+  flex-grow: 1;
+}
+
 .question-title:hover,
 .answer .answer-text:hover {
   border-color: #26bf68;
@@ -307,15 +317,14 @@ export default {
 }
 
 .qa-footer {
-  width: 100%;
+  /* position: absolute; */
   /* background-color: yellow; */
-  position: absolute;
+  width: 100%;
   bottom: 15px;
   line-height: 24px;
   color: #77c;
-
   font: 12px/1.5 arial;
-  /* white-space: nowrap; */
+  white-space: nowrap;
   text-align: center;
 }
 .qa-footer-help {
