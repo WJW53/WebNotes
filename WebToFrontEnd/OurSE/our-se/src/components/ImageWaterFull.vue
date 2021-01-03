@@ -13,8 +13,8 @@
           height: img.height,
         }"
       >
-        <a :href="img.src"
-          ><img :src="img.src" :alt="img.title + '加载错误'" target="_blank"
+        <a :href="img.src" target="_blank"
+          ><img :src="img.src" :alt="img.title + '加载错误'"
         /></a>
 
         <p style="font-size: small; color: #666; margin: 4px">
@@ -78,9 +78,9 @@ export default {
   mounted() {
     this.calculationWidth(); //渲染入口
   },
-  beforeDestroy(){
-      this.newWaterfallList.length = 0;
-      this.waterfallList.length = 0;
+  beforeDestroy() {
+    this.newWaterfallList.length = 0;
+    this.waterfallList.length = 0;
   },
   methods: {
     //计算每个图片的宽度或者是列数
@@ -193,6 +193,5 @@ export default {
 .v-waterfall-item img:hover {
   transform: scale(1.4);
 }
-
 </style>
 

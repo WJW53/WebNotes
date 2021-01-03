@@ -313,6 +313,7 @@ export default {
     changeImgPre(type) {
       if (type === "img") {
         // console.log(e);
+        this.hotBlock == false;
         let file = document.getElementById("fileId").files[0];
         let reader = new FileReader();
         reader.readAsDataURL(file);
@@ -332,6 +333,7 @@ export default {
     },
     jumpQa() {
       // console.log("qa-qa");
+      this.hotBlock == false;
       this.inputVal = "";
       this.showImage = false;
       this.showTextTop = false;
@@ -371,9 +373,8 @@ export default {
     afterImgUpload() {
       // document.getElementById("search-article-error-tip").style.display =
       //   "none";
-      console.log("afterImgUpload");
+      // console.log("afterImgUpload");
       this.searchErrorTip = false;
-      this.showImage = true;
       this.fileString = ""; //因为用了预/懒加载,所以不能等图片加载完再移除这些东西
       this.inputVal = "";
       this.imgBlock = false; //不论成功失败都要解锁啊
@@ -389,41 +390,48 @@ export default {
       // console.log("img");
       //1. 获取到上传的文件
       this.afterImgUpload();
+      this.hotBlock == false;
       let objFile = document.getElementById("fileId");
-      let file = objFile.files[0];
-      // console.log(file);
-      let name = file.name.replace(".jpg", "");
-      name = name.replace(".png", "");
-      name = name.replace(".jpeg", "");
-      // //2. 创建form对象,将文件内容添加到form对象中
-      let param = new FormData(); // 创建form对象
-      param.append("file", file, file.name); // 通过append向form对象添加数据
-      // console.log(param.get("file")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      if (!objFile.files.length) {
+        alert("请您先选择文件");
+      } else {
+        let file = objFile.files[0];
+        // console.log(file);
+        let name = file.name.replace(".jpg", "");
+        name = name.replace(".png", "");
+        name = name.replace(".jpeg", "");
+        // //2. 创建form对象,将文件内容添加到form对象中
+        let param = new FormData(); // 创建form对象
+        param.append("file", file, file.name); // 通过append向form对象添加数据
+        // console.log(param.get("file")); // FormData私有类对象，访问不到，可以通过get判断值是否传进去
 
-      if (!this.imgBlock) {
-        //没上锁的时候
-        this.imgBlock = true; //加锁 哥在请求呢
-        this.$axios
-          .post("up_photo", param)
-          .then((response) => {
-            // this.$router.push({ path: "/image" });
-            this.waterfallList = response.data.photos;
-            for (let i = 0; i < this.waterfallList.length; i++) {
-              this.waterfallList[i].title = name + " Top " + (i + 1);
-            }
-            // console.log(this.waterfallList); //这个才是要用的数据对象
-          })
-          .catch((error) => {
-            console.log(error);
-            this.afterImgUpload();
-            this.showImage = false;
-            this.searchErrorTip = true;
-          });
+        if (!this.imgBlock) {
+          //没上锁的时候
+          this.imgBlock = true; //加锁 哥在请求呢
+          this.$axios
+            .post("up_photo", param)
+            .then((response) => {
+              this.showImage = true;
+              // this.$router.push({ path: "/image" });
+              this.waterfallList = response.data.photos;
+              for (let i = 0; i < this.waterfallList.length; i++) {
+                this.waterfallList[i].title = name + " Top " + (i + 1);
+              }
+              // console.log(this.waterfallList); //这个才是要用的数据对象
+            })
+            .catch((error) => {
+              console.log(error);
+              this.afterImgUpload();
+              this.showImage = false;
+              this.searchErrorTip = true;
+            });
+        }
       }
     },
 
     fileUpload() {
       this.hotNewsList.length = 0; //注意闻海热榜干掉
+      this.hotBlock == false;
       this.showQuestion = false;
       this.showImage = false;
       this.showNewsPage = false;
@@ -467,6 +475,7 @@ export default {
                   _this.pageSize = 10; //因为只有top10
                   _this.curPage = 1; //归1
                   _this.configPage(res);
+                  this.isBottom = false;
                 }
               })
               .catch((error) => {
@@ -601,16 +610,17 @@ export default {
             .then((res) => {
               this.searchArticleBlock = false;
               // console.log("submitText! success!");
+
               // 热榜的请求,肯定要先有文章过来再有热榜啊,这样才不突兀
               this.searchErrorTip = false; //消失
-              if (this.hotBlock == false) {
+              // if (this.hotBlock == false) {//不锁了,因为百度每天都是动态的
                 this.hotBlock = true;
                 // this.$axios.get("./hotData.json").then((res) => {
                 this.$axios.get("get_hot").then((res) => {
                   this.hotNewsList = res.data;
                   // console.log(this.hotNewsList);
                 });
-              }
+              // }
 
               //数据处理
               this.showTextTop = false;
