@@ -50,6 +50,7 @@
     <div class="answer">
       <textarea
         name=""
+        readonly
         id="answer-area"
         cols="30"
         rows="10"

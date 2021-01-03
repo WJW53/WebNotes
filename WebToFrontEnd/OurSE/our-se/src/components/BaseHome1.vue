@@ -25,13 +25,13 @@
       <!-- 第一排 -->
       <div class="search">
         <span class="search-area">
-          <span class="iconfont img-se">&#xe63c;</span>
-          <span class="iconfont file-se">&#xe685;</span>
-          <span class="iconfont qa-se">&#xe601;</span>
+          <span class="iconfont img-se" @click="changeHome">&#xe63c;</span>
+          <span class="iconfont file-se" @click="changeHome">&#xe685;</span>
+          <span class="iconfont qa-se" @click="changeHome">&#xe601;</span>
           <input
             type="text"
             class="search-text"
-            placeholder="[请输入您的搜索信息]"
+            placeholder="[请任意输入，进入闻海搜索]"
             maxlength="100"
             v-model="inputVal"
             @input="onInput"
@@ -39,11 +39,11 @@
           />
 
           <!-- 下面三个span文本一开始是隐藏着的 -->
-          <span class="img-hover-tip" style="display: none">按图片搜索</span>
+          <span class="img-hover-tip" >按图片搜索</span>
           <!-- 点击图片/文件对应的icon之后弹出一个框框，就是选择文件的 -->
-          <span class="file-hover-tip" style="display: none">上传文件</span>
+          <span class="file-hover-tip" >上传文件</span>
           <!-- 我要提问的话就用路由转新的页面 -->
-          <span class="qa-hover-tip" style="display: none">我要提问</span>
+          <span class="qa-hover-tip" >我要提问</span>
         </span>
         <span class="submit-box">
           <!-- 点击提交之后,就请求拿到数据,然后动态实时渲染页面. 
@@ -82,6 +82,10 @@ export default {
       let param = this.inputVal;
       this.inputVal = "";//避免点浏览器后退前进后,原先那个文本框内容还在
       this.$bus.$emit("bh2", param); //不行 这会儿BaseHome还不在DOM结构里呢,怎么跟它通信呢,我一开始写的两个组件就...
+    },
+    changeHome(){
+      this.isInpSe = true;
+      this.$emit("changeHome");
     },
   },
   created() {
@@ -128,6 +132,31 @@ export default {
 }
 .search .search-area {
   position: relative;
+}
+.search .search-area .img-hover-tip,
+.search .search-area .file-hover-tip,
+.search .search-area .qa-hover-tip {
+  display: none;
+}
+
+.search .search-area .img-se:hover ~ span.img-hover-tip,
+.search .search-area .file-se:hover ~ span.file-hover-tip,
+.search .search-area .qa-se:hover ~ span.qa-hover-tip {
+  display: inline;
+  background: #fff;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  width: 94px;
+  text-align: center;
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  color: #626675;
+  position: absolute;
+  /* 注意这个101,不然看不到,被那个实时预览框给抹白了 */
+  z-index: 101;
+  top: 52px;
+  right: 5px;
 }
 .search .search-area .search-text {
   height: 36px;

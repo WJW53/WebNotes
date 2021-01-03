@@ -1,172 +1,198 @@
 <template>
-  <div class="img-waterfall-wrapper">
-    <ul class="img-waterfall">
-      <!-- <li class="col" v-for="imgItem in myImgList" :key="imgItem.id">
-        <img :src="imgItem.url" :alt="imgItem.title" target="_blank" />
-        <p>{{ imgItem.title }}</p>
-      </li> -->
-      <li class="col"></li>
-      <li class="col"></li>
-      <li class="col"></li>
-      <li class="col"></li>
-      <li class="col"></li>
-    </ul>
+  <div class="waterfull">
+    <h3>瀑布流布局为您展示图片相似度Top50</h3>
+    <div class="v-waterfall-content" id="v-waterfall">
+      <div
+        v-for="img in newWaterfallList"
+        :key="img.id"
+        class="v-waterfall-item"
+        :style="{
+          top: img.top + 'px',
+          left: img.left + 'px',
+          width: waterfallImgWidth + 'px',
+          height: img.height,
+        }"
+      >
+        <a :href="img.src"
+          ><img :src="img.src" :alt="img.title + '加载错误'" target="_blank"
+        /></a>
+
+        <p style="font-size: small; color: #666; margin: 4px">
+          {{ img.title }}
+        </p>
+        <!-- <p
+          style="
+            font-size: x-small;
+            color: #9e9e9e;
+            margin: 4px;
+            padding-bottom: 6px;
+          "
+        >
+          {{ img.info }}
+        </p> -->
+      </div>
+    </div>
   </div>
 </template>
 
-
 <script>
-// 这回写一波原生JS的。尼玛的，写着写着发现，后端数据不给好我是又当前端又当后端
-// 因为后端没传宽高,还要用多张图片的预/懒加载,就是浏览器性能耗费增加了
 export default {
-  name: "water-fall",
-  props: ["imgList"],
+  name: "v-waterfall",
+  props: ["waterfallList"],
   data() {
     return {
-      sources: {},
-      images: {},
-      imgNum: 0,
-      count: 0,
-      myImgList: [],
+      //   imgArr: [], //图片url
+      // waterfallImgWidth: 100,
+      waterfallImgWidth: 200, // 每个盒子的宽度
+      waterfallImgCol: 5, // 瀑布流的列数
+      //   waterfallImgCol: 3, // 瀑布流的列数
+      waterfallImgRight: 10, // 每个盒子的右padding
+      waterfallImgBottom: 10, // 每个盒子的下padding
+      waterfallDeviationHeight: [],
+      imgList: [], //保存图片的每个url
+      newWaterfallList: [],
     };
   },
-
-  methods: {
-    loadImages() {
-      //   let count = 0;//预加载没写完
-      //   for (src in this.sources) {
-      //     this.images[src] = new Image();
-      //     this.images[src].onload = function () {//都加载完毕了
-      //       if (++count >= this.imgNum) {
-      //         // 开始执行关键代码
-      //       }
-      //     };
-      //     this.images[src].src = this.sources[src];
-      //   }
-      let _this = this; //草拟大爷
-      for (let i = 0; i < this.myImgList.length; i++) {
-        let item = this.myImgList[i];
-        let img = new Image();
-        img.src = item.url;
-        // if (img.complete) {//不知道咋写
-        // }
-        img.onload = function () {
-          //   console.log(_this.count);
-          _this.count++;
-          item["height"] = img.height;
-          item["width"] = img.width;
-          if (_this.count >= _this.imgNum) {
-            // console.log("YES!");
-            // console.log(_this.myImgList);
-            _this.renderDom();
-          }
-        };
+  watch: {
+    waterfallList(n, o) {
+      //相当于刷新组件,可以写在父级,用一个属性控制,配合$nextTick()
+      this.newWaterfallList.length = 0;
+      this.waterfallDeviationHeight.length = 0;
+      this.waterfallList = n;
+      this.imgList.length = 0;
+      for (let i = 0; i < this.waterfallList.length; i++) {
+        // this.imgList.push(this.imgArr[Math.round(Math.random() * 8)]);// 图片随机显示
+        this.imgList.push(this.waterfallList[i].url);
       }
-    },
-    renderDom() {
-      let oLi = document.getElementsByClassName("col");
-      let imgDomWidth = oLi[0].offsetWidth - 20 - 20;
-      //   console.log(imgDomWidth);
-      let _this = this;
-      this.myImgList.forEach(function (item, index) {
-        let itemDom = document.createElement("div");
-        itemDom.className = "item";
-        /**
-         *  item.width           imgDomWidth
-         * -------------    =  ----------------
-         *  item.height           image.height
-         */
-        let oImg = new Image();
-        oImg.height = (imgDomWidth * item.height) / item.width;
-        oImg.src = item.url;
-        // console.log(oImg.height, oImg.width);
-        let oP = document.createElement("p");
-        oP.innerText = item.title;
-        itemDom.appendChild(oImg);
-        itemDom.appendChild(oP);
-        // 按顺序一行一行插入图片
-        let minIndex = _this.getMinLi().minIndex;
-        // console.log(itemDom);
-        oLi[minIndex].appendChild(itemDom);
-      });
-    },
-    getMinLi() {
-      let oLi = document.getElementsByClassName("col");
-      let minIndex = 0;
-      let minHeight = oLi[0].offsetHeight; //li的高度,包括padding、border、水平滚动条
-      for (let i = 0; i < oLi.length; i++) {
-        if (oLi[i].offsetHeight < minHeight) {
-          //找到并记录
-          minHeight = oLi[i].offsetHeight;
-          minIndex = i;
-        }
-      }
-      return {
-        minIndex: minIndex,
-        minHeight: minHeight,
-      };
+      this.calculationWidth();
     },
   },
   created() {
-      this.myImgList = this.imgList;
-    this.imgNum = this.myImgList.length;
-    // for (let item of this.myImgList) {
-    //   this.sources[item.title] = item.url;
-    // }
+    // 触发入口
+    for (let i = 0; i < this.waterfallList.length; i++) {
+      // this.imgList.push(this.imgArr[Math.round(Math.random() * 8)]);// 图片随机显示
+      this.imgList.push(this.waterfallList[i].url);
+    }
+    // console.log(this.imgList);
   },
   mounted() {
-    //这尼玛少打个n,怎么也不给我报错啊？？！！
-    this.myImgList = this.imgList;
-    this.loadImages();
-    let _this = this;
-    window.onscroll = function (e) {
-      if (_this.count >= _this.imgNum) {
-        console.log("=====", document.documentElement.scrollTop);
-        // 获取滚动条滚动的距离
-        let scrollTop = document.documentElement.scrollTop; //滚动的高度是document身上的
-        let clientHeight = window.innerHeight;
-        let minHeight = _this.getMinLi().minHeight;
-        // console.log(minHeight, scrollTop, clientHeight);
-        // console.log(window.innerHeight, this.document.documentElement.clientHeight)
-        // console.log(window.pageYOffset, document.documentElement.scrollTop)
-        if (minHeight+120 < scrollTop + clientHeight) {//我这里加120是因为我那里有marginTop
-          //   console.log(_this.myImgList.length);
-          _this.renderDom(); //直接再次添加渲染
-        }
+    this.calculationWidth(); //渲染入口
+  },
+  beforeDestroy(){
+      this.newWaterfallList.length = 0;
+      this.waterfallList.length = 0;
+  },
+  methods: {
+    //计算每个图片的宽度或者是列数
+    calculationWidth() {
+      let domWidth = document.getElementById("v-waterfall").offsetWidth;
+      if (!this.waterfallImgWidth && this.waterfallImgCol) {
+        this.waterfallImgWidth =
+          (domWidth - this.waterfallImgRight * this.waterfallImgCol) /
+          this.waterfallImgCol;
+      } else if (this.waterfallImgWidth && !this.waterfallImgCol) {
+        this.waterfallImgCol = Math.floor(
+          domWidth / (this.waterfallImgWidth + this.waterfallImgRight)
+        );
       }
-    };
+      //初始化偏移高度数组
+      this.waterfallDeviationHeight = new Array(this.waterfallImgCol);
+      for (let i = 0; i < this.waterfallDeviationHeight.length; i++) {
+        this.waterfallDeviationHeight[i] = 0;
+      }
+      this.imgPreloading();
+    },
+    //图片预加载
+    imgPreloading() {
+      for (let i = 0; i < this.imgList.length; i++) {
+        let aImg = new Image();
+        aImg.src = this.imgList[i];
+        aImg.title = this.waterfallList[i].title;
+        aImg.onload = aImg.onerror = (e) => {
+          let imgData = {};
+          imgData.height = (this.waterfallImgWidth / aImg.width) * aImg.height;
+          imgData.src = this.imgList[i];
+          imgData.title = aImg.title; // 说明文字（也可以自己写数组，或者封装json数据，都可以，但是前提是你会相关操作，这里不赘述）
+          //   imgData.info = "详情说明：啦啦啦啦啦"; // 说明文字
+          this.newWaterfallList.push(imgData);
+          this.rankImg(imgData);
+        };
+      }
+    },
+    //瀑布流布局
+    rankImg(imgData) {
+      let {
+        waterfallImgWidth,
+        waterfallImgRight,
+        waterfallImgBottom,
+        waterfallDeviationHeight,
+        waterfallImgCol,
+      } = this;
+      let minIndex = this.filterMin();
+      imgData.top = waterfallDeviationHeight[minIndex];
+      imgData.left = minIndex * (waterfallImgRight + waterfallImgWidth);
+      // waterfallDeviationHeight[minIndex] += imgData.height + waterfallImgBottom;// 不加文字的盒子高度
+      waterfallDeviationHeight[minIndex] += imgData.height + waterfallImgBottom; // + 56; // 加了文字的盒子高度，留出文字的地方（这里设置56px）
+      //   console.log(imgData);
+    },
+    /**
+     * 找到最短的列并返回下标
+     * @returns {number} 下标
+     */
+    filterMin() {
+      const min = Math.min.apply(null, this.waterfallDeviationHeight);
+      return this.waterfallDeviationHeight.indexOf(min);
+    },
   },
 };
 </script>
 
-
 <style scoped>
-body {
-  background-color: #eee!;
-}
-.img-waterfall-wrapper {
-  /* width: 1225px; */
-  margin-top: 120px;
-}
-.img-waterfall {
+.waterfull {
+  padding-left: 100px;
+  margin-top: 140px;
   width: 1225px;
-  margin: 0 auto;
 }
-.img-waterfall::after {
-  content: "";
-  display: block;
-  clear: both;
+.waterfull h3 {
+  width: 90%;
+  color: #26bf68;
+  font-size: 20px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  margin-bottom: 10px;
 }
-.img-waterfall li {
+.v-waterfall-content {
+  /* 主要 */
+  width: 90%;
+  height: 600px;
+  position: relative;
+  /* 次要：设置滚动条，要求固定高度 */
+  overflow-y: auto;
+}
+
+.v-waterfall-item {
+  /* 主要 */
   float: left;
+  position: absolute;
+  overflow: hidden;
+  border-radius: 12px;
   width: 20%;
 }
-.img-waterfall li .item {
-  padding: 10px;
-  margin: 10px;
-  background-color: #fff;
+
+.v-waterfall-item img {
+  /* 主要 */
+  /* width: auto;height: auto; */
+  width: 90%;
+  height: auto;
+  /* 次要 */
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 1 ease;
 }
-.img-waterfall li .item img {
-  width: 100%;
+.v-waterfall-item img:hover {
+  transform: scale(1.4);
 }
+
 </style>
+

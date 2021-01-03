@@ -125,7 +125,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 618px;
-  margin: 20px 0 0 110px;
+  margin: 20px 0 0 100px;
   padding-top: 10px;
   height: 42px;
   line-height: 42px;
@@ -175,7 +175,7 @@ export default {
 }
 
 .pager-search-footer .search-footer-foot {
-  margin: 20px 0px 0 110px;
+  margin: 20px 0px 0 100px;
   font-size: 12px;
 }
 .pager-search-footer .search-footer-foot .search-foot-help a {

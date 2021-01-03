@@ -36,6 +36,7 @@
               id="se-search-text"
               type="text"
               class="search-text"
+              autocomplete="off"
               maxlength="100"
               v-model="inputVal"
               ref="getFocus"
@@ -72,6 +73,7 @@
               name="file"
               id="fileId"
               value="上传文件"
+              @change="changeImgPre(fileType)"
             />
             <span
               class="upload-text"
@@ -109,22 +111,31 @@
 
     <!-- 图片搜索区域  -->
     <image-water-full
-      v-if="showImage && imgList && imgList.length != 0"
-      :imgList="imgList"
+      v-if="showImage && waterfallList && waterfallList.length != 0"
+      :waterfallList="waterfallList"
     >
     </image-water-full>
 
-    <!-- 上传文件和文本框搜索的结果区域 -->
+    <div v-if="showImage" class="previewImg">
+      <span>下述照片是您上传的图片：</span>
+      <img :src="previewImgUrl" />
+    </div>
+
+    <!-- 上传文件(返回文档相似度top10)和文本框搜索的结果区域 -->
     <content-article
       v-if="showNewsPage && !searchErrorTip && !showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
+      :type="fileType"
+      :fileString="fileString"
     >
     </content-article>
     <content-article
       v-else-if="!searchErrorTip && showTextTop && !showQuestion"
       :articleList="articleList"
       :pageList="pageList"
+      :type="fileType"
+      :fileString="fileString"
     ></content-article>
 
     <!-- 百度热榜区域 -->
@@ -135,6 +146,8 @@
       :hotNewsList="hotNewsList"
     >
     </hot-list>
+
+    <go-top></go-top>
 
     <!-- 网页分页以及底部设计 -->
     <pager
@@ -162,6 +175,7 @@ import TextTop10 from "./ContentArticle";
 import ContentArticle from "./ContentArticle.vue";
 import Question from "./Question";
 import ImageWaterFull from "./ImageWaterFull";
+import GoTop from "./GoTop";
 
 // import BaseHome from "./BaseHome"
 
@@ -173,7 +187,8 @@ export default {
       inputVal: "",
       pageList: [],
       articleList: [],
-      imgList: [],
+      waterfallList: [],
+      col: 5,
       isBottom: false,
       curPage: 1, //当前页
       totalPage: 0, //总共页数
@@ -188,9 +203,11 @@ export default {
       hotListChanged: false,
       headerShadowBlock: false,
       imgBlock: false,
+      previewImgUrl: "",
       oldScrollTop: 0, //记录上一次滚动结束后的滚动距离
       scrollTop: 0, // 记录当前的滚动距离
       fileType: "", //上传文件类型
+      fileString: "",
       showTextTop: false,
       showQuestion: false,
       showImage: false,
@@ -198,6 +215,7 @@ export default {
       searchErrorTip: false,
     };
   },
+
   components: {
     // BaseHome,
     Pager,
@@ -205,10 +223,14 @@ export default {
     ContentArticle,
     Question,
     ImageWaterFull,
+    GoTop,
   },
   watch: {
     curPage() {
-      if (this.curPage == this.totalPage && this.articleList.length < 9) {
+      if (
+        this.pageList.length < 9 ||
+        (this.curPage == this.totalPage && this.articleList.length < 9)
+      ) {
         this.isBottom = true;
       } else {
         this.isBottom = false;
@@ -288,6 +310,19 @@ export default {
     },
   },
   methods: {
+    changeImgPre(type) {
+      if (type === "img") {
+        // console.log(e);
+        let file = document.getElementById("fileId").files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        let _this = this;
+        reader.onload = () => {
+          _this.previewImgUrl = reader.result;
+          console.log(this._previewImgUrl);
+        };
+      }
+    },
     judgeType(event, type) {
       if (type === "img") {
         this.imgUpload();
@@ -298,8 +333,11 @@ export default {
     jumpQa() {
       // console.log("qa-qa");
       this.inputVal = "";
+      this.showImage = false;
+      this.showTextTop = false;
+      this.showNewsPage = false;
       this.showQuestion = true; //展示问答区域
-      this.$router.push({ path: "/question" });
+      // this.$router.push({ path: "/question" });
       this.hotNewsList.length = 0; //热榜清空
       this.closeUploadBorder(); //关闭文件上传框
     },
@@ -335,9 +373,12 @@ export default {
       //   "none";
       console.log("afterImgUpload");
       this.searchErrorTip = false;
+      this.showImage = true;
+      this.fileString = ""; //因为用了预/懒加载,所以不能等图片加载完再移除这些东西
+      this.inputVal = "";
       this.imgBlock = false; //不论成功失败都要解锁啊
       this.showTextTop = false;
-      this.showQuestion = false;
+      this.showQuestion = false; //true时才能显示
       this.showNewsPage = false;
       this.hotNewsList.length = 0;
       this.articleList.length = 0;
@@ -347,8 +388,7 @@ export default {
     imgUpload() {
       // console.log("img");
       //1. 获取到上传的文件
-      this.showImage = true;
-      this.closeUploadBorder();
+      this.afterImgUpload();
       let objFile = document.getElementById("fileId");
       let file = objFile.files[0];
       // console.log(file);
@@ -366,23 +406,24 @@ export default {
         this.$axios
           .post("up_photo", param)
           .then((response) => {
-            this.$router.push({ path: "/image" });
-            this.imgList = response.data.photos;
-            for (let i = 0; i < this.imgList.length; i++) {
-              this.imgList[i].title = name + (i + 1);
+            // this.$router.push({ path: "/image" });
+            this.waterfallList = response.data.photos;
+            for (let i = 0; i < this.waterfallList.length; i++) {
+              this.waterfallList[i].title = name + " Top " + (i + 1);
             }
-            // console.log(this.imgList); //这个才是要用的数据对象
-
-            this.afterImgUpload();
+            // console.log(this.waterfallList); //这个才是要用的数据对象
           })
           .catch((error) => {
             console.log(error);
             this.afterImgUpload();
+            this.showImage = false;
+            this.searchErrorTip = true;
           });
       }
     },
 
     fileUpload() {
+      this.hotNewsList.length = 0; //注意闻海热榜干掉
       this.showQuestion = false;
       this.showImage = false;
       this.showNewsPage = false;
@@ -406,6 +447,7 @@ export default {
             //读取完文件之后会回来这里
             let fileString = evt.target.result; // 读取文件内容
             // console.log(fileString);
+            _this.fileString = fileString;
             _this.$axios
               .post("up_text", {
                 text: fileString,
@@ -434,6 +476,7 @@ export default {
                 // _this.articleList.length = 0; //必要的
                 _this.searchNoResTips();
                 _this.closeUploadBorder();
+                _this.searchErrorTip = true;
                 // console.log("error!");
                 // console.log(error);
               });
@@ -531,6 +574,8 @@ export default {
       );
     },
     submitText() {
+      this.fileString = "";
+      this.fileType = "";
       if (!this.searchArticleBlock) {
         //没锁
         this.searchArticleBlock = true; //上锁
@@ -570,12 +615,16 @@ export default {
               //数据处理
               this.showTextTop = false;
               if (res.data.length != 0) {
-                this.$router.push({ path: "/page" });
+                // this.$router.push({ path: "/page" });
                 this.previewSearchList.length = 0;
                 this.highLighted(res); //关键词高亮显示
                 this.configPage(res); //配置分页的相关东西
                 // console.log(this.articleList[0]);
                 // console.log(this.articleList[0].main_text);
+                if (res.data.length < 9) {
+                  //草了,就该在这里也加一个的
+                  this.isBottom = true;
+                }
               }
             })
             .catch((error) => {
@@ -602,6 +651,7 @@ export default {
       this.dataChanged = true;
       this.$nextTick(() => {
         this.dataChanged = false;
+        document.body.scrollTop = document.documentElement.scrollTop = 0; //每次换页就回归顶部
       });
     },
     gotoPage(page) {
@@ -681,7 +731,7 @@ export default {
     });
   },
   mounted() {
-    // this.$refs.getFocus.focus();//这里要写了那basehome1一开始就不能聚焦了
+    this.$refs.getFocus.focus(); //这里要写了那basehome1一开始就不能聚焦了
     //监听全局点击事件
     window.addEventListener("click", this.monitorDom);
     this.handleScroll(); //先执行,然后它会注册滚动事件
@@ -1099,6 +1149,31 @@ body {
   background: #4e6ef2;
   color: #fff;
 }
+
+.previewImg {
+  position: fixed;
+  top: 50%;
+  margin-top: -150px;
+  right: 200px;
+  width: 300px;
+  height: 300px;
+  text-align: center;
+}
+.previewImg span {
+  color: #26bf68;
+  display: block;
+  font-size: 20px;
+  height: 40px;
+  line-height: 40px;
+  margin-bottom: 10px;
+}
+.previewImg img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 回到顶部 */
 
 /*
 .search-footer-foot {

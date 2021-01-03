@@ -4,6 +4,7 @@ import router from "./router";
 import axios from "./http";
 
 import VueResource from 'vue-resource';
+// import waterfall from 'vue-waterfall2';
 import "./assets/reset.css";
 import "./assets/index.css";
 // import qs from "qs";
@@ -17,6 +18,7 @@ axios.defaults.baseURL = "/api";
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 Vue.use(VueResource);
+// Vue.use(waterfall);
 Vue.config.productionTip = false;
 
 Vue.prototype.$bus = new Vue();
