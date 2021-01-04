@@ -475,7 +475,7 @@ export default {
                   _this.pageSize = 10; //因为只有top10
                   _this.curPage = 1; //归1
                   _this.configPage(res);
-                  _this.isBottom = false;
+                  this.isBottom = false;
                 }
               })
               .catch((error) => {
@@ -1164,9 +1164,9 @@ body {
   position: fixed;
   top: 50%;
   margin-top: -150px;
-  right: 200px;
-  width: 300px;
-  height: 300px;
+  right: 0px;
+  width: 290px;
+  height: 290px;
   text-align: center;
 }
 .previewImg span {
