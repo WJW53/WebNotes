@@ -8,6 +8,17 @@ cookie的问题: 每次请求的时候都有可能传送许多无用的信息到
 
 **localStorage只能存储字符串(JSON)**
 
+## cookie，sessionStorage，localStorage的区别：
+
+1. 都是保存在浏览器端，都是同源的
+
+2. sessionStorage(将数据保存在session对象中)随当前窗口而关闭，localStorage和cookie 在所有同源窗口中都是共享的；
+
+3. cookie用来存储sessionid作为唯一标识用户最合适
+
+4. cookie数据不能超过4k，因为每次http请求都会携带
+
+
 ## localStorage与sessionStorage的区别
 
 1. `长期存放在浏览器的,写入localStorage(无论窗口是否关闭都需要存储)`

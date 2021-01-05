@@ -224,10 +224,10 @@ function deepClone(parent,child){
 	     }
 }
 
-数组的
-先string  然后再parse 返回一个新数组
+// 数组的
+// 先string  然后再parse 返回一个新数组
 
-牛逼的方法  json.parse(json.stringify[arr]);
+// 牛逼的方法  json.parse(json.stringify[arr]);
 
 
 
