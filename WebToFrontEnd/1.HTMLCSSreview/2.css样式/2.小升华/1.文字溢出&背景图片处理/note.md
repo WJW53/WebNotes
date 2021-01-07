@@ -16,6 +16,17 @@
 1. 不容易处理,而且老版本浏览器不支持方便的技术来处理,所以很多时候呢,就直接在最后手动打三个点...
 2. 一般做截断处理:
 - 先计算:行数 = height / line-height,然后直接overflow:hidden;
+```css
+div{
+    width:100px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-line-clamp:3;//行数
+    -webkit-box-orient:vertical;
+}
+```
+
 
 
 ## background-position属性

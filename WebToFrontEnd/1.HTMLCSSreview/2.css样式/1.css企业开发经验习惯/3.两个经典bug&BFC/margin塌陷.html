@@ -14,7 +14,9 @@
             height: 100px;
             margin-left: 100px;
             margin-top: 100px;
+            /* margin-bottom: 30px; */
             background-color: black;
+            color: #fff;
             /* 一般不用这个 */
             /* border-top: 1px solid red; */
             /* 1. 超出我的部分就隐藏不显示*/
@@ -24,22 +26,24 @@
             /* 3. 浮动*/
             /* float: left; */
             /* 4. 绝对/固定定位 */
-            position: absolute;
+            /* position: absolute; */
         }
         .content{
             width: 50px;
             height: 50px;
             background-color: green;
-            margin-left: 50px;
+            margin-left: 30px;
             /* 父子嵌套关系的元素,垂直方向上的margin是结合在一起的,取最大值*/
-            margin-top: 70px;        
+            margin-top: -70px;      
+            padding: 5px;  
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
+        <!-- b -->
         <div class="content">
-
+a
         </div>
     </div>
 

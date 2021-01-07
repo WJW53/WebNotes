@@ -2,9 +2,9 @@
 
 如何嵌入flash？下述两个元素任选其一。它俩都是可替换元素！
 
-object: 
+`object: `
 
-embed: 
+`embed: `
 
 MIME:Multipurpose Internet Mail Extensions，多用途互联网邮件扩展类型
 

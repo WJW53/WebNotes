@@ -11,7 +11,7 @@
 
 2. 设置textarea(多行文本框)是否允许调整尺寸
 
-- resize: horizontal;水平方向可以设置           
+- `resize`: horizontal;水平方向可以设置           
 - resize: vertical;垂直方向可以设置          
 - resize: none;两个方向都不能设置           
 - resize: both; 两个方向都可以设置
@@ -20,7 +20,7 @@
 
 3. 文本框边缘到内容的距离
 
-- padding:
+- `padding:`
 - text-indent:
 
 4. 控制单选和多选的样
