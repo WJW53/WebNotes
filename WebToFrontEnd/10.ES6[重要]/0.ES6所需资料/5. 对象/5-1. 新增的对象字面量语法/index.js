@@ -3,6 +3,7 @@ const prop2 = "age2";
 const prop3 = "sayHello2";
 
 const user = {
+    ["prop0"]:0,
     [prop1]: "姬成",
     [prop2]: 100,
     [prop3](){

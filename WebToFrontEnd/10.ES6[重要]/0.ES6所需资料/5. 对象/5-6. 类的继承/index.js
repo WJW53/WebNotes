@@ -24,21 +24,17 @@ class Animal {
 class Dog extends Animal {
     constructor(name, age, sex) {
         super("犬类", name, age, sex);
-        // 子类特有的属性
-        this.loves = "吃骨头";
-    }
-
+        this.loves = "吃骨头";//子类特有的属性
+    };
     print() {
         //调用父类的print
         super.print();
         //自己特有的代码
         console.log(`【爱好】：${this.loves}`);
-    }
 
-
-    //同名方法，会覆盖父类
+    };
     jiao() {
-        console.log("旺旺！");
+        console.log('旺旺!!');//同名方法覆盖父类
     }
 }
 

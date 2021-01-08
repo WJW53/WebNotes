@@ -3,5 +3,5 @@ const A = class { //匿名类，类表达式
     b = 2;
 }
 
-const a = new A();
-console.log(a);
+const c = new A();
+console.log(c);

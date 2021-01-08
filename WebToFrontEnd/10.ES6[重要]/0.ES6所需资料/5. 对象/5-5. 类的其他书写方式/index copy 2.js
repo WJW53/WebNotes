@@ -5,12 +5,13 @@ class Animal {
         this.type = type;
         this.name = name;
         this.age = age;//这里就会运行set age(){} 相当于运行setAge函数,改个名字而已
+        this.sex = sex;
         // this.setAge(age);
         // this.getAge();
-        this.sex = sex;
+        // this.sex = sex;
     }
 
-    // 法1. java与写法一致,但这样写的不像是一个属性
+    // // 法1. java与写法一致,但这样写的不像是一个属性
     // getAge(){//取值是不需要传参的
     //     return this._age + "岁";
     // }
@@ -57,3 +58,7 @@ class Animal {
 }
 
 var a = new Animal("狗", "旺财", 3, "男");
+// console.log(a);
+// a.print();
+a[printName]();
+// console.log(a.getAge());

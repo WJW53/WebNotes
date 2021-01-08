@@ -13,4 +13,4 @@ const obj2 = {
 
 Object.setPrototypeOf(obj1, obj2);
 
-console.log(obj1.__proto__ === obj2, obj1);
+console.log(obj1.__proto__ === obj2, obj1, obj1.c === obj2.c);//true { a: 1 } true

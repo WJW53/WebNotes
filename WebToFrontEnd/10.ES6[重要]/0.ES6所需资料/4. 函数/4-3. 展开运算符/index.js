@@ -19,6 +19,6 @@ const obj2 = {
     loves: [...obj1.loves, "成嫂3"]
 };
 
-console.log(obj2)
+console.log(obj2);
 
-console.log(obj1.loves === obj2.loves)
+console.log(obj1.loves === obj2.loves);

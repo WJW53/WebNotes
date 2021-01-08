@@ -16,7 +16,7 @@
 
         //curry:柯里化,用户固定某个函数的前面的参数,得到一个新的函数,新的函数调用时,接收剩余的参数
         function curry(func, ...args) {
-            return function(...subArgs) {//这是返回的新的函数,几个参数?也不知道
+            return function (...subArgs) {//这是返回的新的函数,几个参数?也不知道
                 const allArgs = [...args, ...subArgs];
                 if (allArgs.length >= func.length) {//func.length?我都忘了这种操作了
                     //参数够了
