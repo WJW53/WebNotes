@@ -22,7 +22,7 @@
 
 //立即执行函数 + return 匿名类？  还能这么玩？
 const Hero = (() => {
-    const getRandom = Symbol();
+    const getRandom = Symbol();//然后就得到一个符号属性
 
     return class {
         constructor(attack, hp, defence) {
@@ -34,9 +34,9 @@ const Hero = (() => {
         gongji() {
             //伤害：攻击力*随机数（0.8~1.1)
             const dmg = this.attack * this[getRandom](0.8, 1.1);
-            console.log(dmg);
+            return dmg;
         }
-
+//再把这个符号属性赋值为一个新函数
         [getRandom](min, max) { //根据最小值和最大值产生一个随机数
             return Math.random() * (max - min) + min;
         }
@@ -45,3 +45,4 @@ const Hero = (() => {
 
 const h = new Hero(3, 6, 3);
 console.log(h);
+console.log(h.gongji());

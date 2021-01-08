@@ -315,4 +315,26 @@ b. 将构造函数内部的this指向该对象
 c. 执行构造函数内部的代码
 d. 返回新创建的对象
 
-## 
+## Symbol.for原理实现
+```js
+const SymbolFor = (() => {
+    const global = {};
+    return function(name){
+        console.log(global);
+        if(!global[name]){
+            global[name] = Symbol(name);
+        }
+        console.log(global);
+        return global[name];
+    }
+})();
+const syb1 = SymbolFor("abc");
+const syb2 = SymbolFor("abc");
+console.log(syb1 === syb2);
+```
+
+
+## ES6之前的模块引入方式和区别：
+ES6之前模块引入主要是CommonJS(服务器)和AMD(浏览器)
+
+1. CommonJS导出值是浅拷贝!而ES6导出则是实时绑定,也就是将其内存地址导出,导入是动态的加载模块取值

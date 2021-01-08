@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            
+            width: 300px;
+            height: 300px;
+            padding: 10px;
+            background-color: skyblue;
+        }
+/* flex: 1;代表flex:1 1 0%; */
+        .wrapper {
+            display:
+                flex;
+            flex:
+                1;
+            flex-direction:
+                row;
+            flex-wrap:
+                nowrap;
+        }
+
+        .item {
+            background-color: pink;
+            border: 1px solid green;
+            flex:
+                1;
+        }
+    </style>
+</head>
+
+<body>
+    <!--HTML-->
+    <div class="container">
+        <div class="wrapper">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="wrapper">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="wrapper">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
