@@ -95,7 +95,7 @@
   ``` html
     <div id="app">
       <!-- 这样可是不行滴 -->
-      {{{name: '邓旭明', age: 80, height: '140cm', weight: '100kg'}}} 
+      <!-- {{{name: '邓旭明', age: 80, height: '140cm', weight: '100kg'}}}  -->
     </div>
   ```
 - 还可在插值表达式中写表达式，如：
