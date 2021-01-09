@@ -232,8 +232,9 @@ let money = formatNumber("1234567890");
 console.log(money);
 //2. RegExp.
 // 数字格式化 1,123,000
-"1234.567890".replace(/\B(?=(?:\d{3})+(?!\d))/g,",") // 结果：1,234,567,890，匹配的是后面是3*n个数字的非单词边界(\B)
+"1234.567890".replace(/\B(?=(?:\d{3})+(?!\d))/g,",") // 结果：1,234,567,890，匹配的是后面是3*n个数字(而它的后面不是数字)的非单词边界(\B)
 //"1,234.567,890",这个比较牛逼
+"4451 2378.3500".replace(/\B(?=(?:\d{3})+(?!\d))/g,",");//
 ```
 
 ## 函数柯里化
@@ -409,4 +410,54 @@ if(a.toString){}
 
 用Object.create(null)吧！其他时候，请用{}。
 
+## 数组push内部原理
+```js
+Array.prototype.push = function(target){
+    this[this.length] = target;
+    this.length++;
+}
+```
+所以length的初始值非常重要!!
 
+## transform会引起重排吗
+
+`不会，因为 GPU 进程会为其开启一个新的复合图层，不会影响默认复合图层（就是普通文档流），所以并不会影响周边的 DOM 结构，而属性的改变也会交给 GPU 处理，不会进行重排。`
+
+> 使 GPU 进程开启一个新的复合图层的方式还有 3D 动画，过渡动画，以及 opacity 属性，还有一些标签，这些都可以创建新的复合图层。这些方式叫做硬件加速方式。你可以想象成新的复合图层和默认复合图层是两幅画，相互独立，不会彼此影响。降低重排的方式：要么减少次数，要么降低影响范围，创建新的复合图层就是第二种优化方式。`绝对布局虽然脱离了文档流，但不会创建新的复合图层，因此当绝对布局改变时，不会影响普通文档流的 render tree，但是依然会绘制整个默认复合图层`，对普通文档流是有影响的。普通文档流就是默认复合图层，不要介意我交换使用它们如果你要使用硬件加速方式降低重排的影响，请不要过度使用，创建新的复合图层是有额外消耗的，比如更多的内存消耗，并且在使用硬件加速方式时，配合 z-index 一起使用，尽可能使新的复合图层的元素层级等级最高。
+
+## 实现function(func, times, wait ){}，传入func每隔wait时间，执行一次，执行times次
+```js
+function repeat(func, times, wait){
+    return function(content){
+        let count = 0;
+        let timer = setInterval(function(){
+            count++;
+            func(content);
+            if(count == times){
+                clearInterval(timer);
+            }
+        },wait);
+    }
+}
+const repeatFunc = repeat(alert, 4, 3000);
+repeatFunc("Hello World!");
+```
+
+## 不能使用全局变量实现调用a()三次得到1，2，1......重复，使用了闭包存一个boolean值
+```js
+const a = (function(){
+    var flag = 1;
+    return function(){
+        flag = flag == 3 ? 1 : flag;
+        console.log(flag++);
+    }
+}());
+a();
+a();
+a();
+a();
+a();
+a();
+```
+
+## 
