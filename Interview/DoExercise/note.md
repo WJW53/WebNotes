@@ -233,7 +233,7 @@ console.log(money);
 //2. RegExp.
 // 数字格式化 1,123,000
 "1234.567890".replace(/\B(?=(?:\d{3})+(?!\d))/g,",") // 结果：1,234,567,890，匹配的是后面是3*n个数字的非单词边界(\B)
-//"1,234.567,890"
+//"1,234.567,890",这个比较牛逼
 ```
 
 ## 函数柯里化
@@ -310,10 +310,25 @@ console.log(newCal2(9)); // 1+2*8-9=8
 
 ## new关键字的执行过程
 
-a. 开辟空间创建新的对象
-b. 将构造函数内部的this指向该对象
-c. 执行构造函数内部的代码
-d. 返回新创建的对象
+a. 开辟空间创建新的对象(会向内存申请一个空间存放对象)
+b. 将构造函数内部的this指向该对象(`实际是指向内存中存放该匿名对象的空间`)
+c. 执行构造函数内部的代码(`通过this关键字向对象中添加属性和方法`)
+d. 返回新创建的对象(`就是这个this`)
+
+
+## 构造函数内部原理
+
+- 三步隐式变化
+
+`1. 在函数体最前面隐式的加上var this={}`
+
+暂时这么理解,并非最终形式: var this = {}; 所以AO{this:{name:'wjw',}}
+
+2. 执行this.xxx = xxxxx;`并将这个匿名对象也就是这个this的__proto__指向构造函数自身原型对象上`
+3. 在函数体最后面隐式的返回this
+4. 但是若有显式的return {};则隐式的return this会失效
+`注意这里返回的一定是 对象值 才会使返回隐式的this对象失效.`
+比如:return 123;因为123属于原始值,有new了就不会返回原始值。而是仍然返回隐式的this
 
 ## Symbol.for原理实现
 ```js
@@ -337,4 +352,61 @@ console.log(syb1 === syb2);
 ## ES6之前的模块引入方式和区别：
 ES6之前模块引入主要是CommonJS(服务器)和AMD(浏览器)
 
-1. CommonJS导出值是浅拷贝!而ES6导出则是实时绑定,也就是将其内存地址导出,导入是动态的加载模块取值
+- 没写完，待整理
+
+## 圣杯模式--yaho
+```js
+var inherit = (function(){
+    var F = function(){};
+    return function(Target,Origin){
+        F.prototype = Origin.prototype;
+        Target.prototype = new F();
+        Target.prototype.constuctor = Target;
+        Target.prototype.uber = Origin.prototype;
+    }
+}());
+```
+
+## Object.create(null)
+
+更干净,没有原型链上的属性。而`{}`的__proto__里面一堆原型链上的属性
+```js
+var o = Object.create(null,{
+    a:{
+           writable:true,
+        configurable:true,
+        value:'1'
+    }
+})
+console.log(o);//很干净,
+```
+所以这个o.toString()会报Uncaught TypeError
+
+- Object.create(Object.prototype) 和 {} 创建的对象在 打印台 上就一模一样了.
+
+```js
+//Demo1:
+var a= {...省略很多属性和方法...};
+//如果想要检查a是否存在一个名为toString的属性，你必须像下面这样进行检查：
+if(Object.prototype.hasOwnProperty.call(a,'toString')){
+    ...
+}
+//为什么不能直接用a.hasOwnProperty('toString')?因为你可能给a添加了一个自定义的hasOwnProperty
+//你无法使用下面这种方式来进行判断,因为原型上的toString方法是存在的：
+if(a.toString){}
+
+//Demo2:
+var a=Object.create(null)
+//你可以直接使用下面这种方式判断，因为存在的属性，都将定义在a上面，除非手动指定原型：
+if(a.toString){}
+
+```
+
+
+### 总结：
+1. 你需要一个非常干净且高度可定制的对象当作数据字典的时候；
+2. 想节省hasOwnProperty带来的一丢丢性能损失并且可以偷懒少些一点代码的时候
+
+用Object.create(null)吧！其他时候，请用{}。
+
+

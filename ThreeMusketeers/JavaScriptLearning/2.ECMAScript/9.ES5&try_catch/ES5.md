@@ -15,7 +15,7 @@
 5. 一般来说,公司推荐使用严格模式,虽然阉割代码灵活度,但是减小了犯错的概率
 
 ## with -- 强大
-```
+```js
 with(obj){
     console.log(name);
 }
@@ -33,7 +33,7 @@ with(obj){
 1. caller 返回一个 调用当前函数的东西的引用 如果是由顶层调用的话 则返回null
 
 （举个栗子哈 caller给你打电话的人  谁给你打电话了 谁调用了你 很显然是下面a函数的执行 只有在打电话的时候你才能知道打电话的人是谁 所以对于函数来说 只有caller在函数执行的时候才存在）
-```
+```js
       var callerTest = function() {
            console.log(callerTest.caller) ;  
      } ;
@@ -46,8 +46,8 @@ with(obj){
  
 
 2. callee 返回一个正在被执行函数的引用  （这里常用来递归匿名函数本身 但是在严格模式下不可行）
-     callee是arguments对象的一个成员 表示对函数对象本身的引用 它有个length属性（代表形参的长度）
-```
+     callee是arguments对象的一个成员 表示对函数对象本身的引用 ,callee有个length属性（代表形参的长度）
+```js
      var c = function(x,y) {
              console.log(arguments.length,arguments.callee.length,arguments.callee)
       } ;
