@@ -460,4 +460,27 @@ a();
 a();
 ```
 
-## 
+## 给函数传参的时候,实际上传的是拷贝值
+
+`就是,开辟新的地址空间(栈那里)存储这个拷贝值,原始值的话就存这个值,引用值的话,就在这个新地址空间里拷贝那个引用值的地址(在堆里面)`
+
+## html页面如何真正彻底的禁止缓存呢？
+在开发中经常有需求需要禁止HTML的缓存，如网上所说在head标签里加入如下代码：
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="0">
+
+<meta http-equiv="Cache-Control" content="no-cache"/>这个标签什么意思
+　　Meta中的Cache-Control属性用来清除缓存（再访问这个网站要重新下载！）。Cache-Control指定请求和响应遵循的缓存机制。在请求消息或响应消息中设置Cache-Control并不会修改另一个消息处理过程中的缓存处理过程。
+　　请求时的缓存指令包括no-cache、no-store、max-age、max-stale、min-fresh、only-if- cached，响应消息中的指令包括public、private、no-cache、no-store、no-transform、must- revalidate、proxy-revalidate、max-age。
+Meta中的Cache-Control属性各个指令含义如下
+Public：指示响应可被任何缓存区缓存
+Private：指示对于单个用户的整个或部分响应消息，不能被共享缓存处理。这允许服务器仅仅描述当用户的部分响应消息，此响应消息对于其他用户的请求无效
+no-cache：指示请求或响应消息不能缓存
+no-store：用于防止重要的信息被无意的发布。在请求消息中发送将使得请求和响应消息都不使用缓存。
+max-age：指示客户机可以接收生存期不大于指定时间（以秒为单位）的响应
+min-fresh：指示客户机可以接收响应时间小于当前时间加上指定时间的响应
+max-stale：指示客户机可以接收超出超时期间的响应消息。如果指定max-stale消息的值，那么客户机可以接收超出超时期指定值之内的响应消息。
+no-siteapp：设置这个之后通过手机百度搜索打开网页时,百度会为你的网页进行转码
+
+## HTTP的请求头设置Cache-Control
