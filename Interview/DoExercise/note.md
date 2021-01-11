@@ -239,6 +239,32 @@ console.log(money);
 
 ## 函数柯里化
 ```js
+/**
+ * 科里化函数,还是这个比较正宗
+ * 在函数式编程中，科里化最重要的作用是把多参函数变为单参函数
+ */
+this.myPlugin.curry = function (func) {
+    //得到从下标1开始的参数
+    var args = Array.prototype.slice.call(arguments, 1);
+    var that = this;
+    return function () {
+        var curArgs = Array.from(arguments); //当前调用的参数
+        var totalArgs = args.concat(curArgs);
+        if (totalArgs.length >= func.length) {
+            //参数数量够了
+            return func.apply(null, totalArgs);
+        }
+        else {
+            //参数数量仍然不够
+            totalArgs.unshift(func);
+            return that.curry.apply(that, totalArgs);
+        }
+    }
+}
+```
+
+
+```js
 function cal(a,b,c,d){
     return a+b*c-d;
 }
@@ -249,6 +275,7 @@ function curry(func,...args){
         if(allArgs.length>=func.length){
             func(...allArgs);
         }else{
+            // allArgs.unshift(func);//把func加到开头
             return curry(func,...allArgs);
         }
     }
@@ -484,3 +511,179 @@ max-stale：指示客户机可以接收超出超时期间的响应消息。如�
 no-siteapp：设置这个之后通过手机百度搜索打开网页时,百度会为你的网页进行转码
 
 ## HTTP的请求头设置Cache-Control
+
+
+## 将HTML的所有标签替换成<&b>
+```js
+let newDom = document.getElementsByTagName("html")[0].outerHTML.replace(/<[a-zA-Z]+[1-6]*[^>]*>|<\/[a-zA-Z]+[1-6]*[^>]*>/g,"<&b>");
+```
+
+## 百分比时：top是根据包含块的高度，left是根据包含块宽度，而margin和padding是根据包含块的宽度决定的（它俩不论横纵都是根据宽度！！）
+**绝对/固定定位之后包含块就是最近非static祖先元素的填充盒**
+
+**设置为relative定位之后，是更具元素本身起点（左上角）进行移动，top、left等属性单位为%时，其值是基于父容器的高、宽值，也是包含块**
+
+## 管道函数(只能是单参!!  <-->  可以利用柯里化将多参化为单参)
+```js
+const pipe = function(){
+    let args = Array.from(arguments);
+    // return function(val){//利用reduce
+    //     return args.reduce(function(result,func){
+    //         return func(result);//每次都把上一次返回的结果作为下一次的result传进来,然后继续调用func函数
+    //     },val);//val是初始默认值
+    // }
+    // 或者这么写
+    return function(val){
+        for(let i = 0;i<args.length;i++>){
+            let func = args[i];
+            val = func(val);
+        }
+        return val;
+    }
+}
+```
+
+## 函数防抖
+- 应用场景: 文本框输入事件，窗口尺寸发生变化(window.onresize事件)的时候
+
+- 实际就是保证触发某件事而之后,如果你频繁触发,那我就等你没再触发了,再开计时器,时间到了,我就运行回调函数,如果时间没到你又触发,那我就清空计时器,之前的计时就不作数啦!
+```js
+//利用闭包
+const debounce = function(callback,time){//debounce的目的在于开启唯一一个计时器,返回一个函数
+    let timer;//私有化变量,让这个timer始终都只有一个
+    return function(){
+        if(timer){
+            clearTimeout(timer);//清除之前的计时,重新计时
+        }
+        let args = Array.prototype.slice.call(arguments,0);//真的想用this的话,可以在handle的最后一个参数传递想要的this,然后这里拿到数组最后一个参数即可
+        timer = setTimeout(function(){
+            callback.apply(null,args);
+        },time);
+    }
+}
+
+let handle = debounce(function(width){
+    console.log(width);
+},1000);
+window.onresize = function(){
+    handle(document.documentElement.clientWidth);//这里说不准有多少个参数
+}
+```
+
+## 函数节流
+
+- 保证一个时间段内只执行一次,只要时间没到,不管你调用多少次,我就啥都不做,也就是`固定时间频率运行`.时间到了执行完回调后再清空计时器
+- 节流的应用场景对应用户输入的实时查询,这样的话用户隔一段时间就会看到实时关键词搜索的结果或提示
+```js
+//第三种,混合前两种方法,做个综合
+const throttle = function(callback,time,immediately){
+    if(immediately === undefine){//默认用时间戳
+        immediately = true;
+    }
+    if(immediately){
+        var t;
+        return function(){
+            let args = Array.prototype.slice.call(arguments,0);
+            if(!t || (Date.now() - t >= time)){//之前没有计时或固定时间频率到了
+                callback.apply(null,args);
+                t = Date.now();
+            }
+        }
+    }else{
+        var timer;
+        return function(){
+            if(timer){
+                return;
+            }
+            let args = Array.prototype.slice.call(arguments,0);//真的想用this的话,可以在handle的最后一个参数传递想要的this,然后这里拿到数组最后一个参数即可
+            timer = setTimeout(function(){
+                callback.apply(null,args);
+                timer = null;//执行完后再清空
+            },time);
+        }
+    }
+}
+
+// //第二种,时间戳,第一次马上执行,之后按固定频率执行
+// const throttle = function(callback,time){
+//     var t;
+//     return function(){
+//         let args = Array.prototype.slice.call(arguments,0);
+//         if(!t || (Date.now() - t >= time)){//之前没有计时或固定时间频率到了
+//             callback.apply(null,args);
+//             t = Date.now();
+//         }
+//     }
+// }
+
+
+
+// //第一种,类似防抖,但不清空计时器,有计时器那就直接返回,啥也不干
+// const throttle = function(callback,time){
+//     let timer;
+//     return function(){
+//         if(timer){
+//             return;
+//         }
+//         let args = Array.prototype.slice.call(arguments,0);//真的想用this的话,可以在handle的最后一个参数传递想要的this,然后这里拿到数组最后一个参数即可
+//         timer = setTimeout(function(){
+//             callback.apply(null,args);
+//             timer = null;//执行完后再清空
+//         },time);
+//     }
+// }
+```
+
+## 填充字符串
+```js
+let str='apple'; 
+let pasStr='xxx';
+//不改变原字符串,返回新的字符串
+str.padStart(str.length+pasStr.length,pasStr);   // "xxxapple"
+str.padEnd(str.length+pasStr.length,pasStr);   // "xxxapple"
+```
+
+## 深度克隆(仅区分array/object和原始值)
+```js
+const myClone = function(obj, isDeep){
+    if(Array.isArray(obj)){//数组
+        if(isDeep){
+            let newArr = [];
+            for(let i = 0;i<obj.length;i++){
+                newArr.push(myClone(obj[i], isDeep));
+            }
+            return newArr;
+        }else{
+            return obj.slice();
+        }
+    }else if(typeof obj === "object"){//对象
+        let newObj = {};
+        for(let prop in obj){
+            if(isDeep){
+                newObj[prop] = myClone(obj[prop], isDeep);
+            }else{
+                newObj[prop] = obj[prop];
+            }
+        }
+        return newObj;
+    }else{//函数等、原始类型
+        return obj;
+    }
+}
+
+```
+
+
+## 闭包
+闭包是指在 JavaScript 中，内部函数总是可以访问其所在的外部函数中声明的参数和变量，即使在其外部函数被返回（寿命终结）了之后。
+
+或者说：内部函数被保存到外面环境中被使用就是闭包了
+
+应用场景：`提供了许多与面向对象编程相关的好处 ---- 特别是数据隐藏和封装 ---- 有权访问私有变量和私有函数的公有方法`
+
+## 打印出当前网页使用了多少种HTML元素
+```js
+const countEleType = () => {
+    return [...new Set([...document.querySelectorAll("*")].map(el => el.tagName))].length;//取名字默认返回的都是大写,但我们这里不用管
+}
+```

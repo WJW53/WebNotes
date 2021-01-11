@@ -146,68 +146,68 @@
             
            
 
-//             wrapper.addEventListener('click',function(){
-//                 console.log('wrapperBubble');
-//             },false);
-//             content.addEventListener('click',function(){
-//                 console.log('contentBubble');
-//             },false);
-//             box.addEventListener('click',function(){
-//                 console.log('boxBubble');
-//             },false);
-// //把冒泡写上面,在点蓝色区域的话,
-//             wrapper.addEventListener('click',function(){
-//                 console.log('wrapper');
-//             },true);
-//             content.addEventListener('click',function(){
-//                 console.log('content');
-//             },true);
-//             box.addEventListener('click',function(){
-//                 console.log('box');
-//             },true);
+            wrapper.addEventListener('click',function(){
+                console.log('wrapperBubble');
+            },false);
+            content.addEventListener('click',function(){
+                console.log('contentBubble');
+            },false);
+            box.addEventListener('click',function(){
+                console.log('boxBubble');
+            },false);
+//把冒泡写上面,在点蓝色区域的话,
+            wrapper.addEventListener('click',function(){
+                console.log('wrapper');
+            },true);
+            content.addEventListener('click',function(){
+                console.log('content');
+            },true);
+            box.addEventListener('click',function(){
+                console.log('box');
+            },true);
 
 
-            document.onclick = function(e){            
-                console.log(e);
-                console.log('你闲得啊!');
-            }
+//             document.onclick = function(e){            
+//                 console.log(e);
+//                 console.log('你闲得啊!');
+//             }
 
-            var div = document.getElementsByTagName('div')[0];
-            var a = document.getElementsByTagName('a')[0];
+//             var div = document.getElementsByTagName('div')[0];
+//             var a = document.getElementsByTagName('a')[0];
 
-            div.onclick = function(e){
-                // e.stopPropagation();//取消冒泡
-                // e.cancelBubble = true;//后来谷歌也实现了
-                stopBubble(e);
-                this.style.backgroundColor = 'yellow';
-            }
-//封装取消冒泡的函数
-            function stopBubble(event){
-                if(event.stopPropagation){
-                    event.stopPropagation();
-                }else{
-                    event.cancelBubble = true;
-                }
-            }
+//             div.onclick = function(e){
+//                 // e.stopPropagation();//取消冒泡
+//                 // e.cancelBubble = true;//后来谷歌也实现了
+//                 stopBubble(e);
+//                 this.style.backgroundColor = 'yellow';
+//             }
+// //封装取消冒泡的函数
+//             function stopBubble(event){
+//                 if(event.stopPropagation){
+//                     event.stopPropagation();
+//                 }else{
+//                     event.cancelBubble = true;
+//                 }
+//             }
 
-            document.oncontextmenu = function(e){
-                // return false;
-                console.log('a');
-                // e.preventDefault();
-                e.returnValue = false;
-            }
-//封装阻止默认事件的函数
-            function cancelHandler(event){
-                if(event.preventDefault){
-                    event.preventDefault();
-                }else{
-                    event.returnValue = false;
-                }
-            }
+//             document.oncontextmenu = function(e){
+//                 // return false;
+//                 console.log('a');
+//                 // e.preventDefault();
+//                 e.returnValue = false;
+//             }
+// //封装阻止默认事件的函数
+//             function cancelHandler(event){
+//                 if(event.preventDefault){
+//                     event.preventDefault();
+//                 }else{
+//                     event.returnValue = false;
+//                 }
+//             }
 
-            a.onclick = function(){
-                return false;
-            }
+//             a.onclick = function(){
+//                 return false;
+//             }
            
             
 
