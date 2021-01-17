@@ -11,17 +11,20 @@
         socket: 服务端处理这个请求的一种方式 套接字
         HTTP协议：
             超文本传输协议
-            数据传输过程的一个数据报文的结构/格式
+            是一种规范：数据传输过程的一个数据报文的结构/格式
             请求报文
             响应报文
             状态码：
+                1xx  
+                    100 （继续） 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。
+                    101 （切换协议） 请求者已要求服务器切换协议，服务器已确认并准备切换。
                 2xx  成功
                 3xx  重定向
                 4xx  都代表客户端没有按照要求进行传递请求信息
                 5xx  都代表服务端处理出现问题
             duing公众号  邓哥奇遇记系列
         Content-Type: 传递过程中 真正的数据信息的编码类型（数据格式）
-                     application/x-www-form-urlencode  :  key=value&key1=value1
+                     application/x-www-form-urlencoded  :  key=value&key1=value1
                      application/json:   json结构的 {"name": "xxx", "age": 18}
                      text/plain:  纯文本格式的
                      multipart/form-data:  
@@ -43,14 +46,14 @@
             2. CORS跨域： Cross origin resource sharing  统一资源共享
                 请求分类： 
                     1）  简单请求
-                        a. 请求方式只能是 get / post / head
-                        b. 请求头字段
+                        a. 请求方式只能是 get / post / head(只发送请求头,不发送请求体)
+                        b. 请求头字段只能设置以下三个：
                             Access-Language
                             Content-Type: 值只能为
                                                  application/x-www-form-urlencoded
                                                  mutipart/form-data
                                                  text/plain
-                         "Access-Control-Allow-Origin": "http://localhost:5500",
+                            "Access-Control-Allow-Origin": "http://localhost:5500",
                     2）  非简单请求
                         "Access-Control-Allow-Origin": "*",
                         "Access-Control-Allow-Methods": "GET,PUT",
@@ -64,18 +67,20 @@
 
             客户端和客户端的跨域
             window.postMessage(要传递的数据, 允许拿到这个数据的源)
+
             h5之前的解决方案：
             父窗口请求子窗口数据  iframe + window.name
             子窗口请求父窗口的数据   iframe + location
+
     三次握手：  建立连接的   （交互双发需要知道双方均有接收和发送的能力）
         1. 客户端发出建立连接的请求 告诉服务端 我要给你发送信息了，你能接收到吗   ( 服务端知道了客户端有发送信息的能力了)
         2. 服务端发出对客户端第一个问题的响应 告诉客户端  我能收到你发来新信息， 你能收到我发的信息吗？ (客户端知道了服务端有发送信息和接收信息的能力了)
         3. 客户端响应服务器端   说  我能收到你的信息  我开始发了   （服务端可以确认客户端有接收数据的能力）
-    四次挥手：   断开连接的
+    四次挥手：  断开连接的
         1. 客户端发出断开连接的请求  告诉服务端  我的信息传完了 我可以断开连接了， 你可以断开了吗？
         2. 服务端响应客户端  说  我知道你要断开了，但是我还不行你等会，
         3. 服务端数据接收完成 并且服务端对客户端的全部的数据请求给予了响应之后  发给客户端  告诉客户端 我这边的数据也都发完了，我这边可以断开
-        4. 客户端接收到服务器端的合并分手的响应之后  客户端告诉服务器端  我知道你已经发完了  我走了（我断开了）
+        4. 客户端接收到服务器端的和平分手的响应之后  客户端告诉服务器端  我知道你已经发完了  我走了（我断开了）
 
      -->
     <script src="./ajax.js"></script>

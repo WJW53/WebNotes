@@ -687,3 +687,27 @@ const countEleType = () => {
     return [...new Set([...document.querySelectorAll("*")].map(el => el.tagName))].length;//取名字默认返回的都是大写,但我们这里不用管
 }
 ```
+
+
+## ie7body默认的margin上下margin15左右margin为10
+
+## W3C规定垂直方向上的margin为auto时解析为0,水平方向时是自动吸收剩余空间(必须是块盒)
+
+### 宽度为auto的绝对定位元素,通过left与right可以调整它的宽度
+### 高度为auto的绝对定位元素,通过top与bottom可以调整它的高度
+
+## "aaabbbcccdddeefggaa",转换成连续不重复的字符串例如:abcdefga
+```js
+let str = "aaabbbcccdddeefggaa";
+let reg = /(\w)\1*/g;//\1是反向引用,表示匹配第一个分组匹配到的内容
+str.replace(reg,"$1");
+```
+
+## 弱类型语言
+
+弱类型语言是一种弱类型定义的语言，某一个变量被定义类型，该变量可以根据环境变化自动进行转换，不需要经过显性强制转换。弱类型语言包括vb 、PHP、javascript等语言。
+
+- 强类型语言和弱类型语言区别
+    - 无论是强类型语言还是弱类型语言，`判别的根本是是否会隐性的进行语言类型转变`。强类型语言在速度上略逊于弱类型语言，但是强类型定义语言带来的严谨性又能避免不必要的错误。
+
+## 

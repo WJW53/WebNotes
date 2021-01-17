@@ -16,7 +16,7 @@
             age: 10
         }
         oIfr.onload = function () {
-            console.log(oIfr.contentWindow.data)
+            console.log(oIfr.contentWindow.data);//contentWindow是子窗口的window对象
             oIfr.contentWindow.postMessage(data, 'http://127.0.0.1:5501')
         }
         // // 接收信息的事件  结合着postMessage用

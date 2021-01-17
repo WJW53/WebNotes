@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 200px;
+            height: 200px;
+            background-color: green;
+
+/* 第一种方案必须定宽高 */
+            /* position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -100px;
+            margin-top: -100px; */
+
+/* 这种方案就不需要固定元素本身的尺寸了,元素尺寸可动态变化 */
+/* 原理：
+            绝对定位后，通过后面四行将元素大小变为可视区大小，即便原本是行盒也会这样            然后
+ */
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        你说啥
+    </div>
+</body>
+</html>
