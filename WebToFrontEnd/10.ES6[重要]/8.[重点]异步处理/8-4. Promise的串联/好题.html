@@ -12,7 +12,7 @@
     <script>
         const pro1 = new Promise((resolve, reject) => {
             throw 1;
-        })
+        });
         const pro2 = pro1.then(result => {//pro2的状态只跟这里的then有关系
             return result * 2
         }, err => {//虽然pro1先来rejected了

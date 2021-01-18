@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./2.后续处理.js"></script>
+    <script>
+        const pro = new MyPromise((resolve, reject) => {
+            setTimeout(() => {//这里首先就异步了啊
+                resolve(1);
+                // reject(1);
+            }, 1000);
+        })
+        pro.then(data => {
+            console.log(1, data);
+        });
+        pro.then(data => {
+            console.log(2, data);
+        });
+        pro.catch(err => {
+            console.log("catch1 ", err);
+        });
+        pro.catch(err => {
+            console.log("catch2 ", err);
+        });
+        console.log(pro);
+    </script>
+</body>
+
+</html>

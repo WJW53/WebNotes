@@ -487,10 +487,6 @@ a();
 a();
 ```
 
-## 给函数传参的时候,实际上传的是拷贝值
-
-`就是,开辟新的地址空间(栈那里)存储这个拷贝值,原始值的话就存这个值,引用值的话,就在这个新地址空间里拷贝那个引用值的地址(在堆里面)`
-
 ## html页面如何真正彻底的禁止缓存呢？
 在开发中经常有需求需要禁止HTML的缓存，如网上所说在head标签里加入如下代码：
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
@@ -634,7 +630,7 @@ const throttle = function(callback,time,immediately){
 // }
 ```
 
-## 填充字符串
+## 填充字符串(ES8)
 ```js
 let str='apple'; 
 let pasStr='xxx';
@@ -710,4 +706,8 @@ str.replace(reg,"$1");
 - 强类型语言和弱类型语言区别
     - 无论是强类型语言还是弱类型语言，`判别的根本是是否会隐性的进行语言类型转变`。强类型语言在速度上略逊于弱类型语言，但是强类型定义语言带来的严谨性又能避免不必要的错误。
 
-## 
+## Promise的fulfilled和resolved
+- fulfilled是Promise规范
+
+
+##

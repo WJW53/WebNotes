@@ -11,11 +11,19 @@
 <body>
     <script>
         const pro = new Promise((resolve, reject) => {
-            reject(1);
+            // reject(1);
+            resolve(1);
+        });
+        console.log(pro);
+        const p3 = pro.then(resp => {
+            console.log(pro);
+            console.log('test');
+            return 3;
         })
-        pro.finally(() => console.log("finally1"))
-        pro.finally(() => console.log("finally2"))
-        pro.then(resp => console.log("then1", resp * 1));
+        console.log(p3);
+        pro.finally(() => console.log("finally1"));
+        pro.finally(() => console.log("finally2"));
+        pro.then(resp => console.log("then1", resp * 1), err => console.log("error: " + err));
         pro.then(resp => console.log("then2", resp * 2));
         pro.catch(resp => {console.log("catch1", resp * 1)});
         pro.catch(resp => {console.log("catch2", resp * 2)});

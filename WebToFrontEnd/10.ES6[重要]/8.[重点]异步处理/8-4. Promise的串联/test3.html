@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const pro1 = new Promise((resolve, reject) => {
+            resolve(1);
+        });
+        const pro2 = new Promise((resolve, reject) => {
+            resolve(2);
+        });
+        const pro3 = pro1.then(data => {
+            return pro2;
+        });
+        console.log(pro3);//pending,始终记住then/catch都是异步函数,不管它代码内部是推向怎样的状态
+        //所以刚运行到这里时,pro3仍为pending状态
+        pro3.then(result => {
+            console.log(result);
+        });
+    </script>
+</body>
+
+</html>

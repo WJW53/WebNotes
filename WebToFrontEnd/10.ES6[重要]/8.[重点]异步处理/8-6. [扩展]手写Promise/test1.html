@@ -9,27 +9,29 @@
 </head>
 
 <body>
-    <script src="./MyPromise.js"></script>
+    <!-- <script src="./0.MyPromise.js"></script> -->
+    <script src="./3.串联Promise.js"></script>
     <script>
         const pro = new MyPromise((resolve, reject) => {
             setTimeout(() => {
                 resolve(1)
-            }, 3000);
+            }, 1000);
         })
 
         pro.then(data => {
-            console.log(1, data)
+            console.log(1, data);
             return 123;
         }).then(data => {
-            console.log(2, data)
+            console.log(2, data);
             return new MyPromise(resolve => {
                 resolve(456);
             });
+            // return 456;
         }).then(data => {
-            console.log(3, data)
+            console.log(3, data);
         })
 
-        console.log(pro)
+        console.log(pro);
     </script>
 </body>
 

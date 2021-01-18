@@ -52,7 +52,7 @@
 
             if (options.type === 'GET') {
                 //key=value&key1=value1
-                xhr.open(options.type, options.url + '?', options.async);
+                xhr.open(options.type, options.url + '?' + dataStr, options.async);
                 xhr.send();
             } else if (options.type == "POST") {
                 //open是为了建立连接

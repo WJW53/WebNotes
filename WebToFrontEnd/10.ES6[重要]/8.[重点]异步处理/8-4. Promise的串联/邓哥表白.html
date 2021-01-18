@@ -34,9 +34,9 @@
         let pro = null;
         for (let i = 0; i < gods.length; i++) {
             if (i === 0) {
-                pro = biaobai(gods[i]);
+                pro = biaobai(gods[i]);//第一次的时候
             }
-            pro = pro.then(resp => {
+            pro = pro.then(resp => {//更新promise
                 if (resp === undefined) {
                     return;
                 } else if (resp) {
@@ -45,7 +45,7 @@
                 } else {
                     console.log(`${gods[i]}拒绝了`);
                     if (i < gods.length - 1) {
-                        return biaobai(gods[i + 1]);//这里不加1的话就有问题了
+                        return biaobai(gods[i + 1]);//向下一个女神表白
                     }
                 }
             });
@@ -88,6 +88,7 @@
         //         console.log('所有女神都拒绝了!悲伤!');
         //     }
         // })
+
 
 
         //1.

@@ -37,13 +37,13 @@
             //当监听的dom元素发生变化时运行的回调函数
             console.log('ul元素发生了变化');
         });
-
+        
         //监听ul
         observer.observe(ul, {
             attributes: true, //监听属性的变化
             childList: true, //监听子元素的变化
             subtree: true, //监听子树的变化
-        })
+        });
 
         //取消监听
         // observer.disconnect();
