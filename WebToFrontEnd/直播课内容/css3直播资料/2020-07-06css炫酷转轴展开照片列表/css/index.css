@@ -1,0 +1,176 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+ul{
+	list-style: none;
+}
+
+#wrap{
+   background: #000;
+   width: 100vw;
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+#wrap ul{
+	width: 80%;
+	height: 80%;
+	/* background: grey; */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+#wrap li{
+	width: 16%;
+	height: 100%;
+	background: #333;
+	border-radius: 20px;
+	overflow: hidden;
+
+	transition: width .5s linear, height .5s linear .5s;
+}
+#wrap li .inner{
+	height: 100%;
+	width: 100%;
+	position: relative;
+
+	transition: .5s linear;
+}
+#wrap .init .inner{
+	transform: translateY(100%);
+}
+#wrap li:nth-child(1) .inner{
+	transition-delay: .1s;
+}
+#wrap li:nth-child(2) .inner{
+	transition-delay: .2s;
+}
+#wrap li:nth-child(3) .inner{
+	transition-delay: .3s;
+}
+#wrap li:nth-child(4) .inner{
+	transition-delay: .4s;
+}
+#wrap li:nth-child(5) .inner{
+	transition-delay: .5s;
+}
+#wrap li:nth-child(6) .inner{
+	transition-delay: .6s;
+}
+#wrap li .inner .bg{
+	height: 100%;
+	
+	background-size: cover;
+	background-position: center;
+
+	opacity: .5;
+	transition: .2s linear;
+}
+
+#wrap li:hover .inner .bg{
+	opacity: 1;
+}
+#wrap li:nth-child(1) .inner .bg{
+	background-image: url(../images/1.jpg);
+}
+#wrap li:nth-child(2) .inner .bg{
+	background-image: url(../images/2.jpg);
+}
+#wrap li:nth-child(3) .inner .bg{
+	background-image: url(../images/3.jpg);
+}
+#wrap li:nth-child(4) .inner .bg{
+	background-image: url(../images/4.jpg);
+}
+#wrap li:nth-child(5) .inner .bg{
+	background-image: url(../images/5.jpg);
+}
+#wrap li:nth-child(6) .inner .bg{
+	background-image: url(../images/6.jpg);
+}
+
+#wrap li h2{
+	font-size: 16px;
+	color: #fff;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+
+	transition: opacity .2s linear 1s;
+}
+#wrap li:hover h2{
+	font-size: 24px;
+} 
+
+#activeWrap li h2{
+	opacity: 0;
+	transition: .2s linear;
+}
+
+#activeWrap li:not(.active){	/* 点击以外的兄弟节点 */
+	width: 0;
+	height: 0;
+}
+#activeWrap li.active{	/* 点击的 */
+	width: 100%;
+}
+#activeWrap li{
+	transition: height .5s linear, width .5s linear .5s;
+}
+
+#wrap li .direction{
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	box-sizing: border-box;
+	padding: 0 30px;
+
+	position: absolute;
+	top: 50px;
+
+	display: flex;
+	justify-content: space-between;
+
+	opacity: 0;
+}
+#wrap li .direction .header{
+	color: #fff;
+	font-size: 24px;
+}
+
+#wrap li .direction .close{
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	position: relative;
+}
+#wrap li .direction .close::before,#wrap li .direction .close::after{
+	content: '';
+	width: 30px;
+	height: 4px;
+	position: absolute;
+	top: 50%;
+	margin-top: -2px;
+	background: #fff;
+}
+#wrap li .direction .close::before{
+	transform: rotate(45deg);
+}
+#wrap li .direction .close::after{
+	transform: rotate(-45deg);
+}
+
+#activeWrap li .direction{
+	opacity: 1;
+	transition: .5s linear 1s;
+}
+#activeWrap li .direction .close{
+	transform: rotate(360deg);
+	transition: .5s linear 1s;
+}
+
+

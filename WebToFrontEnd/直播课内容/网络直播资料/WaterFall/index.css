@@ -1,0 +1,29 @@
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+body {
+    background-color: #eee;
+}
+.wrapper {
+    width: 980px;
+    margin: 0 auto;
+}
+.wrapper::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.wrapper li {
+    float: left;
+    width: 25%;
+}
+.wrapper li .item {
+    padding: 10px;
+    margin: 10px;
+    background-color: #fff;
+}
+.wrapper li .item img {
+    width: 100%;
+}

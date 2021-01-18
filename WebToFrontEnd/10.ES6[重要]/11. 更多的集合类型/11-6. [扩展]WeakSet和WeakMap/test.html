@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        ////WeakSet
+        // let obj = {
+        //     name: "yj",
+        //     age: 18
+        // };
+        // let obj2 = obj;
+        // const set = new WeakSet();
+        // set.add(obj);
+
+        // //如果不用WeakSet,
+        // obj = null;//到这儿为止,垃圾回收机制不会回收这片空间
+        // //因为还有set那里指着{name:"yj",age:18}这片空间
+
+        // obj2 = null;//只要还有东西指的回收对象,那WeakSet中也有
+        // console.log(set);
+
+
+        ////WeakMap
+        let obj = {
+            name: "yj",
+            age: 18
+        };
+
+        const map = new WeakMap();
+        map.set(obj,234234);//键必须是对象
+        obj = null;
+        console.log(map);
+
+    </script>
+</body>
+
+</html>

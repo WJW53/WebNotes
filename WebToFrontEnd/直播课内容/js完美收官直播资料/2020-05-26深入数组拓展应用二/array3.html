@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+
+<body>
+	<script>
+		//查询子串首次出现的位置，如：原串abccbaxzabc 子串为axz 结果为5
+		var str = 'abccbaxzab';
+		var subStr = 'axz';
+		console.log(str.indexOf(subStr));	//5
+
+		function getIndex(str, sub) {
+			for (var i = 0; i <= str.length - sub.length; i++) {	//这个循环走的是原串
+			//0	1 2
+				for (var j = 0; j < sub.length; j++) {	//这个循环走的是子串
+					//0	1 2
+					//0 1 2
+					//0 1 2
+
+					//i=2	j=0 1 2
+					//0	2
+					//1 3
+					//2 4
+					//[j]	[i+j]
+
+					//j	子串的下标
+					//i	原串的下标
+					//它俩的关系，通过子串的索引找原串对应的索引，找的方法是：j=j+i
+
+					if (sub[j] != str[i + j]) {
+						//如果这个条件成立说明通过一一对应的关系找到的数据不相等
+						break;
+					}
+
+
+					if (j == sub.length - 1) {
+						//这个条件成立，说明现在子串的所有字符都在原串里找到了，返回第一个字符在原串里的索引
+						return i;
+					}
+				}
+			}
+
+
+			return -1;
+		}
+
+		console.log(getIndex(str, subStr));	//5
+
+
+		function getIndex(str, sub) {
+			var start = 0;
+			var end = str.length - sub.length;
+
+			while (start <= end) {
+				if (str.slice(start, sub.length + start)==sub) {
+					return start;
+				}
+				start++;
+			}
+			
+			return -1;
+		}
+		console.log(getIndex(str, subStr));	//5
+	</script>
+</body>
+
+</html>

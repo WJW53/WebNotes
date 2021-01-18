@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        async function test(){
+            const resp = await fetch("./img/liao.jpg")
+            const blob = await resp.blob();//blob表示文件信息
+            //图片数据不是json,是图片数据,二进制格式
+            console.log(blob);
+            const bf = await blob.arrayBuffer();
+            console.log(bf);//5655byte,文件信息是经过合并压缩的
+            const arr = new Int8Array(bf, 3, 2);
+            console.log(arr);
+        }
+
+        test();
+    </script>
+</body>
+
+</html>

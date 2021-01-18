@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+		integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<style>
+		.row div{
+			background: green;
+			color: #fff;
+			height: 100px;
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-3">xl为超大屏幕，屏幕宽度>=1200的时候，容器的宽度固定为1140px,一行可以设置12列（xl的class生效），屏幕宽度<1200的时候，一行只能设置一列（xl的class失效）</div>
+			<div class="col-xl-3">xl为超大屏幕，屏幕宽度>=1200的时候，容器的宽度固定为1140px,一行可以设置12列（xl的class生效），屏幕宽度<1200的时候，一行只能设置一列（xl的class失效）</div>
+			<div class="col-xl-3">xl为超大屏幕，屏幕宽度>=1200的时候，容器的宽度固定为1140px,一行可以设置12列（xl的class生效），屏幕宽度<1200的时候，一行只能设置一列（xl的class失效）</div>
+			<div class="col-xl-3">xl为超大屏幕，屏幕宽度>=1200的时候，容器的宽度固定为1140px,一行可以设置12列（xl的class生效），屏幕宽度<1200的时候，一行只能设置一列（xl的class失效）</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4">lg为大屏幕，屏幕宽度>=992的时候，容器的宽度固定为960px,一行可以设置12列（lg的class生效），屏幕宽度<992的时候，一行只能设置一列（lg的class失效）</div>
+			<div class="col-lg-4">lg为大屏幕，屏幕宽度>=992的时候，容器的宽度固定为960px,一行可以设置12列（lg的class生效），屏幕宽度<992的时候，一行只能设置一列（lg的class失效）</div>
+			<div class="col-lg-4">lg为大屏幕，屏幕宽度>=992的时候，容器的宽度固定为960px,一行可以设置12列（lg的class生效），屏幕宽度<992的时候，一行只能设置一列（lg的class失效）</div>
+		</div>
+
+		<!-- 
+			1、超大屏幕下一行显示6个	一个div占2列
+			2、大屏幕下一行显示4个		一个div占3列
+			3、中等屏幕下一行显示3个	一个div占4列
+			4、小屏幕下一行显示2个		一个div占6列
+			5、超小屏幕下一行显示1个	一个div占12列
+		 -->
+
+		 <div class="row mt-5">
+			<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12"></div>
+			<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12"></div>
+			<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12"></div>
+			<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12"></div>
+			<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12"></div>
+			<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12"></div>
+		 </div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        async function test() {
+            //等的不是promise呢?
+            const result = await 1;
+            console.log(result)
+        }
+
+//等价于:
+        // function test(){
+        //     return new Promise((resolve,reject) => {
+        //         Promise.resolve(1).then(data=>{
+        //             const result = data;
+        //             console.log(result);//到这儿test就完成了
+        //             resolve();//然后这个promise再完成
+        //         })
+        //     })
+        // }
+
+        test();
+
+        console.log(123);
+    </script>
+</body>
+
+</html>

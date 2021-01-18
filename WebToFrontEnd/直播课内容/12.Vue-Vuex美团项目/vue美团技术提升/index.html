@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 1. vue特点
+        1）vue框架是   MVVM 模式
+                VM：  虚拟模型
+                虚拟dom
+        2）数据双向绑定：
+            vue2.0   
+                Object.defineProperty(obj, prop, {get() {}, set() {}}) 
+                Proxy   
+        3） 渐进式
+
+        2. 组件之间数据交互
+            a. 父组件到子组件的数据传递
+                props
+                $attrs
+                this.$parent
+            b. 子组件到父组件的数据传递
+                this.$chidren
+                $emit('自定义事件', 传递的数据)
+                ref
+            c. 子组件与子组件之间的数据传递
+                vuex
+                事件总线
+
+        3. vue-router  
+                mode:  hash history  区别以及应用场景
+                路由守卫
+        4. 自定义指令：  应用场景  用法
+        5. 过滤器
+
+        6. vue生命周期  
+            创建前后   渲染前后  修改前后  销毁前后
+        7. vuex   
+            mutations  
+            actions 
+        
+        this.getReslove 的问题：
+            sass-loader版本太高   将版本降级就可以了  7.3.1
+
+        ref
+    -->
+
+    <input type="text" id="inp">
+    <span id="text"></span>
+    <script>
+       
+        var dataText = 'text';
+        var obj = {
+            text: dataText,
+        };
+        var inp = document.getElementById('inp');
+        var span = document.getElementById('text');
+        inp.value = obj.text;
+        span.innerText = obj.text;
+        inp.onkeyup = function () {
+            // obj.text = this.value;
+            console.log(this.value)
+            p.text = this.value;
+        }
+        // Object.defineProperty(obj, 'text', {
+        //     get() {
+        //         return dataText
+        //     }, 
+        //     set(val) {
+        //         dataText = val;
+        //         span.innerText = obj.text;
+        //     }
+        // })
+        let p = new Proxy(obj, {
+            get(target, prop) {
+                console.log(a, b, c, d)
+                return target[prop]
+            },
+            set(target, prop,val) {
+                target[prop] = val;
+                span.innerText = obj.text;
+            }
+        });
+        p.text = 'test'
+    </script>
+</body>
+</html>

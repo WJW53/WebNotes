@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function* test() {
+            console.log("函数开始")
+
+            let info = yield 1;//info它不是1 !!! info = 1,这才等于1
+            console.log(info);
+            info = yield 2 + info;
+            console.log(info)
+        }
+
+        const generator = test();
+
+        // generator.next(3);//没有意义
+
+        // ,因为后来还是没传参数啊generator.next();//先卡在info第一次赋值前
+        // generator.next(5);//这个5会传递给yield 1这个表达式的返回值,
+        // //所以后来info=5, 而此时value就会为2 + 5 = 7
+        // generator.next();//但是注意,这里不继续传参数,就默认是undefined,
+        //所以最后info和value都是undefined!!!!
+    </script>
+</body>
+
+</html>

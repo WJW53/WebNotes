@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container">
+
+    </div>
+
+    <script>
+        //以前的观察者模式:
+        //缺陷: 1. 只观察到了target一开始的情况,后续没观察到
+        //2. 浪费内存空间,多整个观察者对象
+        //没办法,因为以前没法参与底层实现
+
+        //创建一个观察者,返回值就是观察者
+        function observer(target) {//target是目标对象
+            const div = document.getElementById("container");
+            const ob = {};
+            const props = Object.keys(target);
+            for (const prop of props) {
+                Object.defineProperty(ob, prop, {
+                    get() {
+                        return target[prop];
+                    },
+                    set(val) {
+                        target[prop] = val;
+                        render();
+                    },
+                    enumerable: true//改为可枚举
+                })
+            }
+            render();
+
+            function render() {
+                let html = "";
+                for (const prop of Object.keys(ob)) {
+                    html += `
+                        <p><span>${prop}：</span><span>${ob[prop]}</span></p>
+                    `;
+                }
+                div.innerHTML = html;
+            }
+
+            return ob;
+        }
+        const target = {
+            a: 1,
+            b: 2
+        }
+        const obj = observer(target);
+        obj.a = 10;
+        console.log(obj,target);
+
+    </script>
+</body>
+
+</html>
