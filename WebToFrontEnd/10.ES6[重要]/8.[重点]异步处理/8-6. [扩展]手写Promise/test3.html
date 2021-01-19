@@ -9,7 +9,8 @@
 </head>
 
 <body>
-    <script src="./0.MyPromise.js"></script>
+    <!-- <script src="./0.MyPromise.js"></script> -->
+    <script src="./4.其他API.js"></script>
     <script>
         function getRandom(min, max) {
             return Math.floor(Math.random() * (max - min)) + min;
@@ -20,6 +21,7 @@
                 setTimeout(() => {
                     // console.log(i, "完成");
                     //     resolve(i);
+
                     if (Math.random() < 0.5) {
                         console.log(i, "完成");
                         resolve(i);
@@ -30,14 +32,19 @@
                 }, getRandom(1000, 5000));
             }))
         }
-        //等到所有的promise变成resolved状态后输出: 全部完成
-        // const pro = MyPromise.all(proms);
-        //
-        const pro = MyPromise.race(proms);
+        //等到所有的promise变成fulfilled状态后输出: 全部完成
+        const pro = MyPromise.all(proms);
         pro.then(datas => {
+            console.log('全部完成', datas);
+        }, err => {
+            console.log("有失败的", err);
+        })
+        //
+        const pro1 = MyPromise.race(proms);
+        pro1.then(datas => {
             console.log("有一个完成", datas);
         })
-        pro.catch(err => {
+        pro1.catch(err => {
             console.log("有一个失败", err);
         })
     </script>

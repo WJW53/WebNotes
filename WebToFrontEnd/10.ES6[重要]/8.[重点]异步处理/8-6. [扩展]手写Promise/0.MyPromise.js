@@ -182,7 +182,7 @@ const MyPromise = (() => {
         }
 
         static race(proms) {//只要有一个已决状态,就完事儿了
-            return new myPromise((resolve, reject) => {
+            return new MyPromise((resolve, reject) => {
                 proms.forEach(p => {
                     p.then(data => {
                         resolve(data);

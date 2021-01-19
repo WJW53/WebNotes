@@ -127,6 +127,61 @@ const MyPromise = (() => {
          * all、race、resolve、reject
          * @param {*} proms 
          */
-        
+        static all(proms) {
+            return new MyPromise((resolve, reject) => {
+                //将proms映射为新数组,每个元素是一个对象
+                const results = proms.map(p => {
+                    const obj = {
+                        result: undefined,
+                        isFulFilled: false
+                    };
+
+                    p.then(data => {
+                        obj.result = data;
+                        obj.isFulFilled = true;
+                        //判断是否全部都fulfilled
+                        const unFulFilled = results.filter(r => !r.isFulFilled);
+                        if (unFulFilled.length === 0) {
+                            //即全部fulfilled了
+                            resolve(results.map(r => r.result));//再映射一下
+                        }
+                    }, reason => {//有一个失败,整体都失败
+                        reject(reason);
+                    });
+
+                    return obj;
+                });
+                // console.log(results);
+            });
+        }
+
+        static race(proms) {
+            return new MyPromise((resolve, reject) => {
+                proms.forEach(p => {//只要有一个已决,就结束了
+                    p.then(data => {
+                        resolve(data);
+                    }, err => {
+                        reject(err);
+                    })
+                })
+            })
+        }
+
+        static resolve(data) {
+            if (data instanceof MyPromise) {
+                return data;
+            }
+            else {
+                return new MyPromise(resolve => {
+                    resolve(data);
+                })
+            }
+        }
+
+        static reject(reason) {
+            return new MyPromise(reject => {
+                reject(data);
+            })
+        }
     }
 })();
