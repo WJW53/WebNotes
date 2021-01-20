@@ -301,7 +301,7 @@ console.log(newCal2(9)); // 1+2*8-9=8
 1. this为父级作用域的this
 2. 本身无this、arguments、new.target
 3. 没有原型，所以不能作为构造函数使用
-4. 一般用于：事件处理函数、异步处理函数、其他时性函数、为了绑定父级this、为了代码简洁
+4. 一般用于：事件处理函数、异步处理函数、其他临时性函数、为了绑定父级this、为了代码简洁
 5. 对象的属性绝对不要使用箭头函数，因为小心this指向了window，拿不到该拿的东西
 
 ## 类
@@ -311,7 +311,7 @@ console.log(newCal2(9)); // 1+2*8-9=8
 实例(对象)成员: 跟随对象的成员
 
 1. 类声明不会被提升，存在暂时性死区
-2. 类中的所有代码均在严格模式(对象中函数中的this指向调用该函数的对象实例)下进行
+2. `类中的所有代码均在严格模式(对象中函数中的this指向调用该函数的对象实例)下进行`
 3. 类的所有方法都是不可枚举的，会自动把所有方法放到原型上
 4. 类的所有方法都不能当做构造函数使用，就是不让你new
 5. 类的构造器必须使用new来调用
@@ -573,7 +573,7 @@ window.onresize = function(){
 ```js
 //第三种,混合前两种方法,做个综合
 const throttle = function(callback,time,immediately){
-    if(immediately === undefine){//默认用时间戳
+    if(immediately === undefined){//默认用时间戳
         immediately = true;
     }
     if(immediately){
@@ -652,7 +652,7 @@ const myClone = function(obj, isDeep){
         }else{
             return obj.slice();
         }
-    }else if(typeof obj === "object"){//对象
+    }else if(typeof obj === "object" && obj !== null){//对象
         let newObj = {};
         for(let prop in obj){
             if(isDeep){
@@ -769,3 +769,91 @@ void sort(int arr[],int len)
 
 }
 ```
+
+
+## 滚动条宽度默认是17px(不管是浏览器自带的,还是元素的滚动条都是17px)
+- offsetWidth(边框盒)包含滚动条宽度,而clientWidth(填充盒)不包含滚动条宽度
+
+- 元素自己设置的overflow:scroll;就会出现滚动条,这个滚动条的宽度在填充盒的宽度里
+
+
+## 实现一个函数，给定一个非负数整数 num，反复将各个位上的数字相加，直到结果为一位数。
+```js
+function addDigits(num){
+	if(!num){
+		return null;
+	}
+	const str = num.toString();
+	let res = 0;
+	for (let i = 0; i < str.length; i++) {
+		res += +str.substring(i, i + 1);
+	}
+	if(res.toString().length === 1){
+		return res;
+	}else{
+		return addDigits(res);
+	}
+	
+}
+console.log( addDigits(546) );	// 6		因为 5 + 4 + 6 = 15 => 1 + 5 = 6
+```
+
+## 描述一下script标签的async和defer的区别
+defer会等到页面全部加载完成之后在进行脚本执行
+
+async下载完毕会立即执行
+
+此处可以说一下时间线的问题
+
+## 写出下面程序的打印顺序，并简要说明原因
+```js
+    setTimeout(function () {
+        console.log("set1");
+        new Promise(function(resolve) {
+            resolve();
+        }).then(function () {
+            new Promise(function (resolve) {
+                resolve();
+            }).then(function () {
+                console.log("then4");
+            })
+            console.log('then2');
+        })
+    });
+    new Promise(function (resolve) {
+        console.log('pr1');
+        resolve();
+    }).then(function () {
+        console.log('then1');
+    });
+
+    setTimeout(function() {
+        console.log("set2");
+    });
+    console.log(2);
+
+    new Promise(function (resolve) {
+        resolve();
+    }).then(function () {
+        console.log('then3');
+    })
+```
+答案：pr1 2 then1 then3 set1 then2 then4 set2 解析： promise 对象里面的函数会立即执行，而定时器的function会插入到任务队列的最后执行
+
+## 链表的逆置
+
+
+## 链表删除某个节点
+
+
+## 字符串压缩
+给你个字符串，利用反复出的字符串的 例如 aaabbbdddddfff 转化为a3b3d4f3 假设只包含大小写字母
+```js
+function zipStr(str) {
+    var reg = /(\w)(\1*)/g
+    console.log(str.replace(reg, function ($, $1, $2) {
+        console.log($1, $2);
+        return $1 + ($2.length + 1);
+    }))
+}
+``` 
