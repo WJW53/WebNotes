@@ -9,5 +9,7 @@ module.exports = {
       chunks: "all"
     }
   },
-  plugins: [new CleanWebpackPlugin(), new WebpackBundleAnalyzer()]
+  plugins: [new CleanWebpackPlugin(), new WebpackBundleAnalyzer({
+    // analyzerMode: "static"
+  })]
 };

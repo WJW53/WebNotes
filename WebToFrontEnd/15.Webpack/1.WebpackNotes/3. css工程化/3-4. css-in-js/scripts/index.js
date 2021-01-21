@@ -9,5 +9,5 @@ const styles = {
     margin: "0 auto"
 }
 
-applyStyles(div1, styles, border(), redBg)
-applyStyles(div2, styles, border(5, "green"))
+applyStyles(div1, styles, border(), redBg);
+applyStyles(div2, styles, border(5, "green"));
