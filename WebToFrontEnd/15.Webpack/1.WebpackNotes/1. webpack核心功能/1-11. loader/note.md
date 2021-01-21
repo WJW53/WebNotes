@@ -1,9 +1,9 @@
 # loader
 
-> webpack做的事情，仅仅是分析出各种模块的依赖关系，然后形成资源列表，最终打包生成到指定的文件中。
-> 更多的功能需要借助 webpack loaders 和 webpack plugins 完成。
+> `webpack做的事情，仅仅是分析出各种模块的依赖关系，然后形成资源列表，最终打包生成到指定的文件中。`
+> `更多的功能需要借助 webpack loaders 和 webpack plugins 完成。`
 
-**webpack loader: loader本质上是一个函数, 它的作用是 将某个源码字符串转换成另一个源码字符串并返回**
+**webpack loader: `loader本质上是一个函数`, 它的作用是 `将某个源码字符串转换成另一个源码字符串并返回`**
 
 ![](assets/2020-01-13-10-39-24.png)
 
