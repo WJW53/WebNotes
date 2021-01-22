@@ -1,6 +1,6 @@
 # css module {ignore}
 
-`前端技术栈庞大，为什么，因为目前没有最佳实践(大家用的都是同一套方案解决问题)`
+`前端技术栈庞大，为什么，因为目前没有最佳实践(最佳实践: 大家用的都是同一套方案解决问题)`
 
 > 通过命名规范来限制类名太过死板，而css in js虽然足够灵活，但是书写不便。
 > css module 开辟一种全新的思路来解决类名冲突的问题
@@ -13,13 +13,29 @@ css module 遵循以下思路解决类名冲突问题：
 2. 大型项目往往会使用构建工具（webpack等）搭建工程
 3. 构建工具允许将css样式切分为更加精细的模块
 4. 同JS的变量一样，每个css模块文件中难以出现冲突的类名，冲突的类名往往发生在不同的css模块文件中
-5. 只需要保证构建工具在合并样式代码后不会出现类名冲突即可
+5. `只需要保证构建工具在合并样式代码后不会出现类名冲突即可`
 
 ![](assets/2020-01-31-13-54-37.png)
 
 ## 实现原理
 
-在webpack中，作为处理css的css-loader，它实现了css module的思想，要启用css module，需要将css-loader的配置```modules```设置为```true```。
+在webpack中，`作为处理css的css-loader，它实现了css module的思想`，要启用css module，需要将css-loader的配置```modules```设置为```true```。
+
+```js
+module:{
+    rules:[
+        {
+            //test: /\.css$/, use:["style-loader","css-loader?module=true"]
+            test: /\.css$/, use:["style-loader",{
+                loader:"css-loader",
+                options:{
+                    modules:true
+                }
+            }]
+        }
+    ]
+}
+```
 
 css-loader的实现方式如下：
 
@@ -41,7 +57,7 @@ css module带来了一个新的问题：源代码的类名和最终生成的类�
 
 这样一来，我们就可以在js代码中获取到css模块导出的结果，从而应用类名了
 
-style-loader为了我们更加方便的应用类名，会去除掉其他信息，仅暴露对应关系
+`style-loader`为了我们更加方便的应用类名，会去除掉其他信息，`仅暴露对应关系(就是css-loader处理过后的style.locals对象)`
 
 ## 其他操作
 
@@ -50,12 +66,13 @@ style-loader为了我们更加方便的应用类名，会去除掉其他信息�
 某些类名是全局的、静态的，不需要进行转换，仅需要在类名位置使用一个特殊的语法即可：
 
 ```css
+//css文件里直接这么写就行
 :global(.main){
     ...
 }
 ```
 
-使用了global的类名不会进行转换，相反的，没有使用global的类名，表示默认使用了local
+使用了global的类名不会进行转换，相反的，`没有使用global的类名，表示默认使用了local`
 
 ```css
 :local(.main){
@@ -69,12 +86,20 @@ style-loader为了我们更加方便的应用类名，会去除掉其他信息�
 
 绝大部分情况下，我们都不需要控制最终的类名，因为控制它没有任何意义
 
-如果一定要控制最终的类名，需要配置css-loader的```localIdentName```
+如果一定要控制最终的类名(我们就是看这个hash值不爽)，需要配置css-loader的```localIdentName```属性
+```js
+options:{
+    modules:{
+        //localIdentName:"[local]-[hash:5]"//类名-hash
+        localIdentName:"[name]-[hash:5]"//文件名-hash
+    }
+}
+```
 
 ## 其他注意事项
 
 - css module往往配合构建工具使用
-- css module仅处理顶级类名，尽量不要书写嵌套的类名，也没有这个必要
-- css module仅处理类名，不处理其他选择器
+- `css module仅处理顶级类名，尽量不要书写嵌套的类名，也没有这个必要(因为以前这样就是为了避免类名冲突，而css module已经解决了，所以没必要写嵌套)`
+- css module`仅处理类名`，不处理其他选择器
 - css module还会处理id选择器，不过任何时候都没有使用id选择器的理由
-- 使用了css module后，只要能做到让类名望文知意即可，不需要遵守其他任何的命名规范
+- `使用了css module后，只要能做到让类名望文知意即可，不需要遵守其他任何的命名规范`

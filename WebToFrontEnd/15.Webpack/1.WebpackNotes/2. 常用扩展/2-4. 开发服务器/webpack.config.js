@@ -23,6 +23,7 @@ module.exports = {
         }
     },
     stats: {
+        // chunks: false,
         modules: false,
         colors: true
     }

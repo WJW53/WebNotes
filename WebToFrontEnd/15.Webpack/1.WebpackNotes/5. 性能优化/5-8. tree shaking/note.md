@@ -1,7 +1,7 @@
 # tree shaking {ignore}
 
-> 压缩可以移除模块内部的无效代码
-> tree shaking 可以移除模块之间的无效代码
+> `压缩可以移除模块内部的无效代码`
+> `tree shaking 可以移除模块之间的无效代码`
 
 ![](https://user-gold-cdn.xitu.io/2018/1/4/160bfdcf2a31ce4a?imageslim)
 

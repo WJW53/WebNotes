@@ -4,14 +4,16 @@
 
 style-loader使用的方式是用一段js代码，将样式加入到style元素中。
 
-而实际的开发中，我们往往希望依赖的样式最终形成一个css文件
+而实际的开发中，我们往往希望依赖的样式最终形成一个单独的css文件
 
 此时，就需要用到一个库：`mini-css-extract-plugin`
 
+```npm i -D mini-css-extract-plugin```
+
 该库提供了1个plugin和1个loader
 
-- plugin：负责生成css文件
-- loader：负责记录要生成的css文件的内容，同时导出开启css-module后的样式对象
+- plugin：负责`生成`css文件
+- loader：负责`记录`css-loader要生成的css文件的内容，同时`导出`开启css module后的样式对象
 
 使用方式：
 
@@ -22,11 +24,21 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/, use: [MiniCssExtractPlugin.loader, "css-loader?modules"]
+            },
+            {
+                test: /\.jpg$/, use: {
+                    loader: "file-loader",
+                    options: {
+                        name: "img/[hash:5].[ext]"
+                    }
+                }
             }
         ]
     },
     plugins: [
-        new MiniCssExtractPlugin() //负责生成css文件
+        new MiniCssExtractPlugin({
+            filename: "css/[name].[contenthash:5].css"
+        }) //负责生成css文件
     ]
 }
 ```

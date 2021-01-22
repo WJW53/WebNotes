@@ -6,7 +6,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.pcss$/, use: ["style-loader", "css-loader?modules", "postcss-loader"]
+                test: /\.pcss$/, use: ["style-loader", "css-loader?modules=true", "postcss-loader"]
             }
         ]
     },

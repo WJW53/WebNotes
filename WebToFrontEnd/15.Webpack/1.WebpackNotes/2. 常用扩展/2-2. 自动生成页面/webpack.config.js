@@ -16,6 +16,7 @@ module.exports = {
             template: "./public/index.html",
             filename: "home.html",
             chunks: ["home"]
+            //因为一个入口文件就是一个chunk,所以这里可以直接使用
         }),
         new HtmlWebpackPlugin({
             template: "./public/index.html",

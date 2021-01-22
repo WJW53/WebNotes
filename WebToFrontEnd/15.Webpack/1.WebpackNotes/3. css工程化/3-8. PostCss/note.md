@@ -2,23 +2,23 @@
 
 > 本节课的内容和webpack无关！！！
 
-# 什么是PostCss
+## 什么是PostCss
 
 学习到现在，可以看出，CSS工程化面临着诸多问题，而解决这些问题的方案多种多样。
 
 如果把CSS单独拎出来看，光是样式本身，就有很多事情要处理。
 
-既然有这么多事情要处理，何不把这些事情集中到一起统一处理呢？
+`既然有这么多事情要处理，何不把这些事情集中到一起统一处理呢？`
 
 PostCss就是基于这样的理念出现的。
 
-PostCss类似于一个编译器，可以将样式源码编译成最终的CSS代码
+`PostCss类似于一个编译器，可以将样式源码编译成最终的CSS代码`
 
 ![](assets/2020-02-04-14-31-33.png)
 
 看上去是不是和LESS、SASS一样呢？
 
-但PostCss和LESS、SASS的思路不同，它其实只做一些代码分析之类的事情，将分析的结果交给插件，具体的代码转换操作是插件去完成的。
+但PostCss和LESS、SASS的思路不同，它其实`只做一些代码分析之类`的事情，将分析的结果交给插件，`具体的代码转换操作由插件去完成`。
 
 ![](assets/2020-02-04-14-37-51.png)
 
@@ -31,7 +31,7 @@ PostCss类似于一个编译器，可以将样式源码编译成最终的CSS代�
 官网地址：https://postcss.org/
 github地址：https://github.com/postcss/postcss
 
-# 安装
+## 安装
 
 PostCss是基于node编写的，因此可以使用npm安装
 
@@ -39,7 +39,7 @@ PostCss是基于node编写的，因此可以使用npm安装
 npm i -D postcss
 ```
 
-postcss库提供了对应的js api用于转换代码，如果你想使用postcss的一些高级功能，或者想开发postcss插件，就要api使用postcss，api的文档地址是：http://api.postcss.org/
+postcss库提供了对应的js api用于转换代码，如果你想使用postcss的一些高级功能，或者想开发postcss插件，就要使用api，api的文档地址是：http://api.postcss.org/
 
 不过绝大部分时候，我们都是使用者，并不希望使用代码的方式来使用PostCss
 
@@ -57,7 +57,16 @@ postcss-cli提供一个命令，它调用postcss中的api来完成编译
 postcss 源码文件 -o 输出文件
 ```
 
-# 配置文件
+
+使用这三种后缀名都可以,.css/.postcss/.pcss,如果用pcss这种的,最好去vscode里安装插件postcss-sugarss-language,一面有些东西无法高亮显示,没有智能提示
+
+## 配置文件
+```js
+//package.json
+"scripts": {
+    "start": "postcss css/source.pcss -o css/out.css -w"
+},
+```
 
 和webpack类似，postcss有自己的配置文件，该配置文件会影响postcss的某些编译行为。
 
@@ -71,9 +80,9 @@ module.exports = {
 }
 ```
 
-# 插件
+## 插件
 
-光使用postcss是没有多少意义的，要让它真正的发挥作用，需要插件
+光使用postcss是没有多少意义的，要让它真正的发挥作用，`需要插件`
 
 postcss的插件市场：https://www.postcss.parts/
 
@@ -186,7 +195,7 @@ not ie <= 8
 - `> 1% in CN`: 匹配中国大于1%的人使用的浏览器， `in CN`可省略
 - `not ie <= 8`: 排除掉版本号小于等于8的IE浏览器
 
-> 默认情况下，匹配的结果求的是并集
+> `默认情况下，匹配的结果求的是并集`
 
 你可以通过网站：https://browserl.ist/ 对配置结果覆盖的浏览器进行查询，查询时，多行之间使用英文逗号分割
 
@@ -194,7 +203,7 @@ not ie <= 8
 
 ### 未来的CSS语法
 
-CSS的某些前沿语法正在制定过程中，没有形成真正的标准，如果希望使用这部分语法，为了浏览器兼容性，需要进行编译
+CSS的某些前沿语法正在制定过程中，`没有形成真正的标准`，如果希望使用这部分语法，为了浏览器兼容性，需要进行编译
 
 过去，完成该语法编译的是`cssnext`库，不过有了`postcss-preset-env`后，它自动包含了该功能。
 
@@ -234,10 +243,12 @@ a{
 }
 ```
 
-> 编译后，仍然可以看到原语法，因为某些新语法的存在并不会影响浏览器的渲染，尽管浏览器可能不认识
+> `编译后，输出的css文件内仍然可以看到原语法`，因为某些新语法的存在并不会影响浏览器的渲染，尽管浏览器可能不认识
 > 如果不希望在结果中看到新语法，可以配置`postcss-preset-env`的`preserve`为`false`
 
 #### 自定义选择器
+
+`@custom-selector :--name h1,h2,h3,h4`就是给后面这堆选择器命名为:--name了
 
 ```css
 @custom-selector :--heading h1, h2, h3, h4, h5, h6;
@@ -274,7 +285,7 @@ h1.active,h2.active,h3.active,h4.active,h5.active,h6.active{
 
 #### 嵌套
 
-与LESS相同，只不过嵌套的选择器前必须使用符号`&`
+与LESS相同，只不过嵌套的选择器前`必须使用`符号`&`
 
 ```less
 .a {
@@ -315,7 +326,7 @@ h1.active,h2.active,h3.active,h4.active,h5.active,h6.active{
 
 ## postcss-apply
 
-该插件可以支持在css中书写属性集
+- 该插件可以支持在css中书写属性集
 
 类似于LESS中的混入，可以利用CSS的新语法定义一个CSS代码片段，然后在需要的时候应用它
 
@@ -341,12 +352,13 @@ h1.active,h2.active,h3.active,h4.active,h5.active,h6.active{
   position: absolute;
   left: 50%;
   top: 50%;
+  /* 这个是前面的插件做的,厂商处理 */
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 ```
 
-> 实际上，该功能也属于cssnext，不知为何`postcss-preset-env`没有支持
+> 实际上，该功能也属于cssnext(css未来语法)，不知为何`postcss-preset-env没有支持`
 
 ## postcss-color-function
 
@@ -385,7 +397,7 @@ body {
 ```
 ## [扩展]postcss-import
 
-该插件可以让你在`postcss`文件中导入其他样式代码，通过该插件可以将它们合并
+- 该插件可以让你在postcss文件中导入其他样式代码，通过该插件可以将它们合并
 
 > 由于后续的课程中，会将postcss加入到webpack中，而webpack本身具有依赖分析的功能，所以该插件的实际意义不大
 
