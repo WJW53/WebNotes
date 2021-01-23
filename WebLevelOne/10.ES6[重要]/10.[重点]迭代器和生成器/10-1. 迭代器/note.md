@@ -18,7 +18,7 @@
 
 对迭代过程的封装，在不同的语言中有不同的表现形式，最终结果通常为对象
 
-```
+```js
 // 迭代器创建函数  iterator creator
         function createIterator(arr) {
             let i = 0;//当前的数组下标

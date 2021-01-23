@@ -1,0 +1,1 @@
+console.log('/src/test/test.js');

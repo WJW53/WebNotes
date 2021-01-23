@@ -3,6 +3,6 @@ define((require, exports, module) => {
         console.log(a);
     })
     require.async("b", function (b) {
-        console.log(b)
+        console.log(b);
     })
 })

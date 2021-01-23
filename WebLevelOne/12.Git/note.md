@@ -1,26 +1,37 @@
 # Git
 
-怎么说呢 
+**`怎么说呢,总之一句话,干事儿前先备份到别的地方一份,再来探索git`**
+
+my github's token:
+```
+wjwpush
+e9ad67816f5c148b16f308190d6282fd94d03c3c
+```
 
 ## Github 新建仓库 ，并与本地仓库进行连接
+
+`新建的本地文件夹先不要装东西,保证空的最好,否则可能有证书、readme文件资源没对齐的问题`
+
 ```shell
+git init
 git add .
 git commit -m "first_commit"
 git remote add origin https://github.com/WJW53/xxx.git
-git pull origin master
+git pull --rebase origin master
 git remote -v
 #可以省略-u,冲突可以再加个-f
 git push -u origin master
 ```
+`在remote add后不要着急git add，一定要git pull --rebase origin master`
 
-`在remote add后不要着急git add，一定要git pull origin master`
+- 然后第一次验证github账号密码，第二次验证token账号密码
 ### rejected原因
 是因为你在码云创建的仓库有ReadMe文件，而本地没有，造成本地和远程的不同步，
 那么有两种方案可以解决：
 one ：
 本地没有ReadMe文件，那么就在本地生成一个：
 
-git pull --rebase origin master     本地生成ReadMe文件
+`git pull --rebase origin master     本地生成ReadMe文件`
 //如果这里报错,大概率是因为你有的文件没有重新add commit,重新来一次即可
 git push -u origin master
 
