@@ -74,3 +74,30 @@ git pull origin master --allow-unrelated-histories
 
 　　二。登录Github,找到右上角的图标，打开点进里面的Settings，再选中里面的SSH and GPG KEYS，点击右上角的New SSH key，然后Title里面随便填，再把刚才id_rsa.pub里面的内容复制到Title下面的Key内容框里面，最后点击Add SSH key，这样就完成了SSHKey的加密。具体步骤也可看下面：
 
+
+## Git 版本回退的几种操作方法
+1， 结合使用 git reset --hard <commit id> , git reset --hard HEAD^,  git reflog , git log
+
+　　1) 使用 git log 查看你需要回退版本的commit id, 如果git log显示的结果看着不舒服可以多加一个参数 --pretty=oneline (git log --pretty=oneline)
+
+　　2)  使用git reset  --hard <commit id>
+
+　　3)  在第2)的时候需要找到对应的commit id， 
+
+　　　　Scenario 1 : 你已经回退到某个你指定的版本，但是你这时后悔了想再次回到最新的版本，可以通过 git reset --hard HEAD^ 实现。
+
+　　　　Scenario 2 : 你已经回退到你指定的A版本，但是你实际上应该回退到A版本后面的B版本，你这是又无法通过 git log查看commit id；这时你可以执行git reflog找到B版本的commit id。
+
+　　　　　　　　　　这时你可以通过第2）步的命令来实现。
+
+ PS : 这种方法是不会再当前比较粗暴的方式，因为他不会保留你已经回退的版本之后版本的log（有点拗口），下面我们介绍一种回退到你指定的某个版本，并且保留log的方法
+
+ 
+
+2，结合使用git checkout  <commit id> -- <paths>, git reflog, git commit -m 'xxxxxxx'
+
+　　1) 使用git log 或者 git reflog 找到你想要回到的哪个版本的commit id
+
+　　2) 使用 git checkout <commit id> -- <paths> 返回到你想要返回的版本， <paths>参数代表的是你想要指定哪个或者哪几个文件 
+
+　　3) 执行完第2)步之后需要执行git commit -m '' 命令提交你当前的修改
