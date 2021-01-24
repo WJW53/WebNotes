@@ -12,6 +12,24 @@ e9ad67816f5c148b16f308190d6282fd94d03c3c
 
 `新建的本地文件夹先不要装东西,保证空的最好,否则可能有证书、readme文件资源没对齐的问题`
 
+`每次不要用HTTPS的地址,用ssh的!!!因为我配的密钥是ssh的!!!`
+如果用了https的，那就进行以下操作
+
+### git push的时候每次都要输入用户名和密码的问题解决
+换了个ssh key,发现每次git push origin master的时候都要输入用户名和密码
+原因是在添加远程库的时候使用了https的方式。。所以每次都要用https的方式push到远程库
+查看使用的传输协议:
+git remote -v
+**重新设置成ssh的方式:**
+```shell
+git remote rm origin
+git remote add origin git@github.com:username/repository.git
+git push -u origin master
+```
+再看下当前的传输协议:
+git remote -v
+
+### 初始化本地仓库并连接到远程仓库
 ```shell
 git init
 git add .
