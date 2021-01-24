@@ -857,3 +857,43 @@ function zipStr(str) {
     }))
 }
 ``` 
+
+## 如何清除Node模块的缓存
+1. 手动删除
+2. `所有缓存的模块保存在require.cach中`，所以可以在被加载的模块中添加一行代码
+```js
+delete require.cache[module.filename]
+```
+
+## 关于em的小细节
+
+浏览器默认font-size是16px,当font-size设置1em时,默认仍是inherit,也就是继承父元素的字体大小。`但当设置其他css属性的时候，1em就等于当前元素的字体大小`
+```css
+html {
+    /* 2*16px=32px */
+    font-size: 2em;
+}
+div {
+    /* 2*32px=64px */
+    font-size: 2em;
+    /* 2*64px=128px */
+    padding-bottom: 2em;
+    background-color: aquamarine;
+}
+```
+
+## 给出一个二叉树,用一个函数确定是否有一条从根节点到叶子节点的路径，这个路径上所有节点的值加在一起等于给定的sum的值。(思路：DFS + 求差 + 递归) leetcode112
+```js
+var hasPathSum = function(root, sum) {
+  // 根节点为空
+  if (root === null) return false;
+  
+  // 叶节点 同时 sum 参数等于叶节点值
+  if (root.left === null && root.right === null) return root.val === sum;
+  // 总和减去当前值，并递归
+  sum = sum - root.val
+  return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
+};
+```
+
+
