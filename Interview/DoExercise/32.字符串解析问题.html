@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 32.字符串解析问题
+        var a = {
+            b: 123,
+            c: '456',
+            e: '789',
+            t: {
+                d: "kkk"
+            }
+        }
+        // var str=`a{a.b}aa{a.c}aa {a.d}aaaa`;
+        var str = `a{a.b}a{}a{a.c}aa {a.d}a{a.t.d}cc{{aaa{a{`;
+        // => 'a123aa456aa {a.d}aaaa'
+
+        //本题的关键在于将字符串与对象映射关联起来,无法通过``嵌套实现添加$..解决
+        //本题不考虑无效括号
+
+        // 实现函数使得将str字符串中的{}内的变量替换，如果属性不存在保持原样（比如{a.d}）
+
+        // 对象匹配操作
+        const match = (str, obj1) => {
+            if (str === "") {
+                return `{}`
+            };
+            const arr = str.split(".");
+            const obj = obj1 || window[arr[0]]; //如果没传递,我就试着从window对象中找找
+            if (obj === undefined) {
+                throw new Error(`抱歉,没有该对象${obj1}`);
+            }
+            const keys = arr.slice(1); //拿到所有的属性名,存到keys数组中
+            let count = 0;
+            let o = obj;
+            while (count < keys.length) {
+                const key = keys[count];
+                if (!o[key]) { //不存在该属性就返回,不如不存在a.d属性,故返回"{a.d}"
+                    return `{${str}}`;
+                } else {
+                    o = o[key];
+                }
+                count++;
+            }
+            return o;
+        }
+
+
+        //方法二：做了很多处理，但仍然还是有些小地方没处理透彻
+        let newStr = "";
+        let len = str.length;
+        for (let i = 0; i < len; i++) {
+            let tmpStr = ``; //没用,这模板字符串相当于还是普通的,因为里面没写东西,再写的话,就成普通字符串了
+            let flag1 = 0,
+                flag2 = 0,
+                index = i;
+            while (i < len) {
+                if (str[i] === "{") {
+                    flag1 = i;
+                    break;
+                } else {
+                    newStr += str[i];
+                    i++;
+                }
+            }
+            i++; //跳过"{"
+            while (i < len) {
+                if (str[i] === "}") {
+                    flag2 = i;
+                    break;
+                } else {
+                    tmpStr += str[i];
+                    i++;
+                }
+            }
+            i++; //
+            console.log(tmpStr);
+            if (flag1 !== 0 && flag2 !== 0 && flag2 >= flag1 + 4) { //中间最短也是3个字符啊a.b
+                newStr += match(tmpStr, a);
+            } else {
+                console.log(index,i);
+                console.log(str.substring(index, i));
+                newStr += str.substring(index-1, i+1); //利用js的特性,这里索引越界默认就用length了
+            }
+            // console.log(newStr);
+
+        }
+        console.log(newStr);
+
+
+        //方法一：会直接忽略不符合规范的括号对儿，就是不会显示他们了，这种比较暴力
+        const fn1 = (str, obj) => {
+            let res = '';
+            // 标志位，标志前面是否有{
+            let flag = false;
+            let start;
+            for (let i = 0; i < str.length; i++) {
+                if (str[i] === '{') {
+                    flag = true;
+                    start = i + 1;
+                    continue;
+                }
+                if (!flag) res += str[i];
+                else {
+                    if (str[i] === '}') {
+                        flag = false;
+                        res += match(str.slice(start, i), obj);
+                    }
+                }
+            }
+            return res;
+        }
+        console.log(fn1(str, a));
+    </script>
+
+</body>
+
+</html>

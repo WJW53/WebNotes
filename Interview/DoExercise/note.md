@@ -896,4 +896,122 @@ var hasPathSum = function(root, sum) {
 };
 ```
 
+## 通过上面我们对CommonJS规范和ES6规范的比较，我们总结一下两者的区别：
+
+CommonJS模块是运行时加载，ES6模块是编译时输出接口
+CommonJS模块输出的是一个值的复制，ES6模块输出的是值的引用
+CommonJS加载的是整个模块，即将所有的方法全部加载进来，ES6可以单独加载其中的某个方法
+CommonJS中this指向当前模块module.exports，ES6中this指向undefined
+CommonJS默认非严格模式，ES6的模块自动采用严格模式
+
+
+## e.target和e.currentTarget
+- target: 触发事件的对象，谁触发谁命中。
+- currentTarget: 绑定事件的对象，恒等于this，等于addEventListener前面的元素
+
+## async和defer
+https://www.jianshu.com/p/97409670450a/
+
+https://www.cnblogs.com/jiasm/p/7683930.html
+
+### 普通script
+**`文档解析的过程中，如果遇到script脚本，就会停止页面的解析进行下载`（但是Chrome会做一个优化，如果遇到script脚本，会快速的查看后边有没有需要下载其他资源的，如果有的话，会先下载那些资源，然后再进行下载script所对应的资源，这样能够节省一部分下载的时间。**
+资源的下载是在解析过程中进行的，虽说script1脚本会很快的加载完毕，但是他前边的script2并没有加载&执行，所以他只能处于一个挂起的状态，等待script2执行完毕后再执行。
+当这两个脚本都执行完毕后，才会继续解析页面。
+
+### defer
+文档解析时，遇到设置了defer的脚本，就会在后台进行下载，但是并不会阻止文档的渲染，`当页面解析&渲染完毕后，会等到所有的defer脚本加载完毕并按照顺序执行，执行完毕后会触发DOMContentLoaded事件`。
+
+### async
+`async脚本会在加载完毕后执行，async脚本的加载不计入DOMContentLoaded事件统计`
+
+也就是说下图两种情况都是有可能发生的
+
+### 推荐的应用场景
+defer
+如果你的脚本代码依赖于页面中的DOM元素（文档是否解析完毕），或者被其他脚本文件依赖。
+例：评论框、代码语法高亮、polyfill.js
+async
+如果你的脚本并不关心页面中的DOM元素（文档是否解析完毕），并且也不会产生其他脚本需要的数据。
+例：百度统计
+
+如果不太能确定的话，用defer总是会比async稳定。。。
+
+## 不支持事件冒泡的事件
+- UI事件
+load,unload,scroll,resize
+- 焦点事件
+focus,blur
+- 鼠标事件
+mouseleave,mouseenter
+
+原因是在于：**这些事件仅发生于自身上**，而它的任何父节点上的事件都不会产生，所以不会冒泡。
+
+## JS中substr与substring的区别
+
+js中substr和substring都是截取字符串中子串，非常相近，可以有一个或两个参数。
+
+语法：substr(start [，length]) 第一个字符的索引是0，start必选 length可选
+
+　　　substring(start [, end]) 第一个字符的索引是0，start必选 end可选
+
+### 相同点：当有一个参数时，两者的功能是一样的，返回从start指定的位置直到字符串结束的子串
+
+var str = "hello Tony";
+
+str.substr(6);  //Tony
+
+str.substring(6); //Tony
+
+ 
+### 不同点：有两个参数时
+
+（1）substr(start,length) 返回从start位置开始length长度的子串
+
+“goodboy”.substr(1,6);   //oodboy
+
+【注】当length为0或者负数，返回空字符串
+
+（2）substring(start,end) 返回从start位置开始到end位置的子串（不包含end）
+
+“goodboy”.substring(1,6);  //oodbo
+
+【注】:
+
+（1）substring 方法使用 start 和 end 两者中的较小值作为子字符串的起始点
+
+（2）start 或 end 为 NaN 或者负数，那么将其替换为0
+
+
+## 圣杯布局的最小尺寸问题
+
+> 圣杯布局是基于左侧栏（#left）负外边距 margin-left: -100%;设置来实现的，**但是左侧栏上移有个前提条件，就是margin-left的负值(而-100%就是包含块的宽度，也就是center的宽度)与左侧栏（#自身的内容宽度相加后的值不大于上一行剩余空间，才可以实现左侧栏（#left）上移。这里中间栏(#center)完全占据上一行剩余空间，故剩余空间宽度为0，所以`margin-left的负值与左侧栏自身的内容宽度相加后的值不大于0才可以上移`，否则左侧栏（#left）仍然停留在第二行**，就无法实现圣杯布局目的。`所以中间栏（#center）的宽度需要不小于左侧栏（#left）宽度，才能满足圣杯布局的实现`。
+
+圣杯布局的最小尺寸计算：若左侧栏（#left）宽度为X，右侧栏宽度为Y，那么容器（#container）`最小尺寸计算：2X+Y`。
+
+在上述实例中，圣杯布局最小尺寸为2x200+150=550px。所以容器（#container）需要设置最小尺寸min-width:550px;,同时这里550px是容器边框盒的尺寸，为了避免采用默认内容盒尺寸进行转换计算，就采用设置：box-sizing:border-box;。
+
+
+## ==和===区别
+
+==， 两边值类型不同的时候，要先进行类型转换，再比较
+===，不做类型转换，类型不同的一定不等。
+
+### == 类型转换过程：
+
+- 如果类型不同，进行类型转换
+- 判断比较的是否是 null 或者是 undefined, 如果是, 返回 true .
+- 判断两者类型是否为 string 和 number, 如果是, 将字符串转换成 number
+- 判断其中一方是否为 boolean, 如果是, 将 boolean 转为 number 再进行判断
+- 判断其中一方是否为 object 且另一方为 string、number 或者 symbol , 如果是, 将 object 转为原始类型再进行判断
+
+### 经典面试题：[] == ![] 为什么是true
+转化步骤：
+
+- !运算符优先级最高，![]会被转为为false，因此表达式变成了：[] == false
+- 根据上面第(4)条规则，如果有一方是boolean，就把boolean转为number，因此表达式变成了：[] == 0
+- 根据上面第(5)条规则，把数组转为原始类型，调用数组的toString()方法，[]转为空字符串，因此表达式变成了：'' == 0
+- 根据上面第(3)条规则，两边数据类型为string和number，把空字符串转为0，因此表达式变成了：0 == 0
+- 两边数据类型相同，0==0为true
+
 

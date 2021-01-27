@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<!-- 圣杯布局有个问题：当面板的main部分比两边的子面板宽度小的时候，布局就会乱掉，因此有了双飞翼来克服这个问题 -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-width: 400px;
+        }
+
+        #container {
+            width: 100%;
+        }
+
+        .column {
+            float: left;
+        }
+
+        #center {
+            margin-left: 200px;
+            margin-right: 150px;
+            background-color: pink;
+        }
+
+        #left {
+            width: 200px;
+            margin-left: -100%;
+            background-color: red;
+        }
+
+        #right {
+            width: 150px;
+            margin-left: -150px;
+            background-color: blue;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="container" class="column">
+        <div id="center">center</div>
+    </div>
+    <div id="left" class="column">left</div>
+    <div id="right" class="column">right</div>
+
+</body>
+
+</html>

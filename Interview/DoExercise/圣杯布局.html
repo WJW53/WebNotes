@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+
+<body>
+
+    <!-- 圣杯布局的最小尺寸问题
+
+圣杯布局是基于左侧栏（#left）负外边距 margin-left: -100%;设置来实现的，但是左侧栏上移有个前提条件，就是margin-left的负值与左侧栏（#left）自身的内容宽度相加后的值不大于上一行剩余空间，才可以实现左侧栏（#left）上移。这里中间栏（#center）完全占据上一行剩余空间，margin-left的负值与左侧栏（#left）自身的内容宽度相加后的值不大于0才可以上移，否则左侧栏（#left）仍然停留在第二行，就无法实现圣杯布局目的。所以中间栏（#center）的宽度需要不小于左侧栏（#left）宽度，才能满足圣杯布局的实现。
+
+圣杯布局的最小尺寸计算：若左侧栏（#left）的宽度为X，右侧栏的宽度为Y，那么容器（#container）最小尺寸计算：2X+Y。
+
+在上述实例中，圣杯布局最小尺寸为2x200+150=550px。所以容器（#container）需要设置最小尺寸min-width:550px;,同时这里550px是容器边框盒的尺寸，为了避免采用默认内容盒尺寸进行转换计算，就采用设置：box-sizing:border-box;。 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-width: 400px;
+        }
+
+        #container {
+            padding-left: 200px;
+            padding-right: 150px;
+            height: 800px;
+            background-color: #000;
+        }
+
+        #container .column {
+            float: left;
+        }
+
+        #center {
+            width: 100%;
+            background-color: pink;
+        }
+
+        /* 因为浮动后的排列规则,类似inline-block,所以利用margin-left能回到上一行 */
+
+        #left {
+            width: 200px;
+            /* 记住：margin的百分比是相对于包含块的宽度的,在这里就是center的width */
+            /* 利用calc可以直接解决圣杯那个bug了,且不需要relative */
+            /* margin-left: calc(-100% - 200px); */
+            margin-left: -100%;
+            /* margin-left: -1550px; */
+            position: relative;
+            /* right: 200px; */
+            left: -200px;
+            background-color: red;
+        }
+
+        #right {
+            width: 150px;
+            margin-right: -150px;
+            background-color: blue;
+        }
+    </style>
+    <div id="container">
+        <div id="center" class="column">center</div>
+        <div id="left" class="column">left</div>
+        <div id="right" class="column">right</div>
+    </div>
+</body>
+
+</html>

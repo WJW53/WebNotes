@@ -13,6 +13,7 @@
         }
         body,html {
             height: 100%;
+            min-height: 400px;
         }
 
         .flex {
@@ -56,6 +57,8 @@
 </body>
 
 </html>
+
+
 
 <!-- 定位布局 -->
 <!-- <!DOCTYPE html>
@@ -109,4 +112,45 @@
 
 </body>
 
+</html> -->
+
+
+<!-- 普通布局 -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body,html {
+            height: 100%;
+        }
+        .top{
+            background-color: green;
+            height: 100px;
+        }
+        .bottom{
+            height: 100px;
+            background-color: red;
+        }
+        .center{
+            height: calc(100% - 200px);
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top"></div>
+        <div class="center">
+            aaa
+        </div>
+        <div class="bottom"></div>
+    </div>
+</body>
 </html> -->
