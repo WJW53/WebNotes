@@ -999,11 +999,11 @@ str.substring(6); //Tony
 
 ### == 类型转换过程：
 
-- 如果类型不同，进行类型转换
-- 判断比较的是否是 null 或者是 undefined, 如果是, 返回 true .
-- 判断两者类型是否为 string 和 number, 如果是, 将字符串转换成 number
-- 判断其中一方是否为 boolean, 如果是, 将 boolean 转为 number 再进行判断
-- 判断其中一方是否为 object 且另一方为 string、number 或者 symbol , 如果是, 将 object 转为原始类型再进行判断
+1. **如果类型不同，进行类型转换**
+2. 判断比较的是否是 null 或者是 undefined, 如果是, 返回 true .
+3. 判断两者类型是否为 string 和 number, 如果是, 将字符串转换成 number
+4. 判断其中一方是否为 boolean, 如果是, 将 boolean 转为 number 再进行判断
+5. 判断其中一方是否为 object 且另一方为 string、number 或者 symbol , 如果是, 将 object 转为原始类型再进行判断
 
 ### 经典面试题：[] == ![] 为什么是true
 转化步骤：
@@ -1012,6 +1012,7 @@ str.substring(6); //Tony
 - 根据上面第(4)条规则，如果有一方是boolean，就把boolean转为number，因此表达式变成了：[] == 0
 - 根据上面第(5)条规则，把数组转为原始类型，调用数组的toString()方法，[]转为空字符串，因此表达式变成了：'' == 0
 - 根据上面第(3)条规则，两边数据类型为string和number，把空字符串转为0，因此表达式变成了：0 == 0
-- 两边数据类型相同，0==0为true
+- 两边数据类型相同，0 == 0 为 true
 
 
+## 
