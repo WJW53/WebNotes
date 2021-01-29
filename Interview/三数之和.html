@@ -9,6 +9,87 @@
 
 <body>
     <script>
+        // 解题思路：
+// 暴力法搜索为 O(N^3)时间复杂度，可通过双指针动态消去无效解来优化效率。
+// 双指针法铺垫： 先将给定 nums 排序，复杂度为 O(NlogN)。
+// 双指针法思路： 固定 3 个指针中最左（最小）数字的指针 k，双指针 i，j 分设在数组索引 (k, len(nums))两端，通过双指针交替向中间移动，记录对于每个固定指针 k 的所有满足 nums[k] + nums[i] + nums[j] == 0 的 i,j 组合：
+// 当 nums[k] > 0 时直接break跳出：因为 nums[j] >= nums[i] >= nums[k] > 0，即 3 个数字都大于 0 ，在此固定指针 k 之后不可能再找到结果了。
+// 当 k > 0且nums[k] == nums[k - 1]时即跳过此元素nums[k]：因为已经将 nums[k - 1] 的所有组合加入到结果中，本次双指针搜索只会得到重复组合。
+// i，j 分设在数组索引 (k, len(nums)) 两端，当i < j时循环计算sum = nums[k] + nums[i] + nums[j]，并按照以下规则执行双指针移动：
+// 当sum < 0时，i += 1并跳过所有重复的nums[i]；
+// 当sum > 0时，j -= 1并跳过所有重复的nums[j]；
+// 当sum === 0时，记录组合[k, i, j]至res，执行i += 1和j -= 1并跳过所有重复的nums[i]和nums[j]，防止记录到重复组合。
+// 复杂度分析：
+// 时间复杂度 O(N^2)：其中固定指针k循环复杂度 O(N)，双指针 i，j 复杂度 O(N)。
+// 空间复杂度 O(1)：指针使用常数大小的额外空间。
+
+let threeSum = function (nums) {
+    let len = nums.length, res = [];
+    nums.sort((a, b) => a - b);
+    for (let k = 0; k < len - 2; k++) {
+        if (nums[k] > 0) { break; }
+        if (k > 0 && nums[k] == nums[k - 1]) { continue; }
+        let i = k + 1, j = len - 1;
+        while (i < j) {
+            let sum = nums[k] + nums[i] + nums[j];
+            if (sum < 0) {
+                while (i < j && nums[i] === nums[++i]);
+            } else if (sum > 0) {
+                while (i < j && nums[j] === nums[--j]);
+            } else {
+                res.push([nums[k], nums[i], nums[j]]);
+                while (i < j && nums[i] === nums[++i]);
+                while (i < j && nums[j] === nums[--j]);
+            }
+        }
+    }
+    return res;
+}
+
+
+// let threeSum = function (nums) { //但是依然说我内存不够!按照他给的那个3千条数据,我在浏览器控制台是可以运行的
+//     let len = nums.length;//不能直接对nums去重!!
+//     if (len < 3) {
+//         return []
+//     };
+//     nums.sort((a, b) => a - b); //先排序,非常重要,可以去重的
+//     let res = [],
+//         cache = {},
+//         key = "";
+//     for (let i = 0; i < len; i++) {
+//         for (let j = i + 1; j < len; j++) {
+//             let num = nums[i] + nums[j];
+//             if (cache[num] === undefined) {//因为有1+6 == 2+5 == 3+4 == 7
+//                 cache[num] = [
+//                     [i, j]
+//                 ];
+//             } else {
+//                 cache[num].push([i, j]);
+//             }
+//         }
+//     }
+//     for (let i = 0; i < len; i++) { //费尽心思,就是为了降低时间和空间复杂度
+//         let arr = cache[-nums[i]];
+//         if (arr !== undefined) { //命中
+//             for (let item of arr) {
+//                 let [n1, n2] = item;
+//                 if (i !== n1 && i !== n2) { //这里这个也必须有,不然类似-2,1,就会把自己的1当成第三个元素了
+//                     res.push([nums[n1], nums[n2], nums[i]]);
+//                 }
+//             }
+//         }
+//     }
+//     let visited = {};
+//     for (const item of res) { //二维数组去重
+//         item.sort((a, b) => a - b);
+//         visited[item] = item;
+//     }
+//     return Object.values(visited);
+// };
+    </script>
+
+
+    <script>
 
         //由于一开始的想法在最后三个测试(数据量大)用例失败了
         //所以后来优化了很多小地方,我想保留着之前的代码,以便日后知道,噢,最初我有些东西没考虑到啊

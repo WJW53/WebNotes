@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        .trangle{
+        .trangle {
             width: 0;
             height: 0;
             border-bottom: 200px solid #cc7eb1;
@@ -21,6 +21,27 @@
     <div class="trangle">
 
     </div>
+
+    <script>
+        var add = (function () {
+            var x = 0;
+            return function () {
+                return x += 2;
+            }
+        })()
+
+        // var count = 1;
+        // function add() {
+        //     return 2 * count++;
+        // }
+
+        
+        console.log(add());
+        console.log(add());
+        console.log(add());
+        console.log(add());
+        console.log(add());
+    </script>
 </body>
 
 </html>
