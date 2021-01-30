@@ -47,16 +47,13 @@ repaint 重绘: 改字体颜色,背景图片,只要不影响后续的玩意儿,�
 
 3. **最常用,兼容性最好,且是按需加载!创建script，插入到DOM中，加载完毕后callBack**
 
-```
-<script>
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'test.js';//这句一执行完,系统就会开启一个线程异步地去下载这个toos.js,加载script
-        //只到这一步的话,在network中没显示而已,但实际上已经下载加载了
+```js
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = 'test.js';//这句一执行完,系统就会开启一个线程异步地去下载这个test.js,加载script
+//只到这一步的话,在network中没显示而已,但实际上已经下载加载了
 
-        document.head.appendChild(script);//当把这个标签插入到页面里去,才会去执行这个script
-
-    </script>
+document.head.appendChild(script);//当把这个标签插入到页面里去,才会去执行这个script
 ```
 
 - **loadScript('test.js', function(){test();});**要用匿名函数..详情看test.html/js
@@ -82,6 +79,6 @@ readyState 属性存有 XMLHttpRequest 的状态信息。
 3: 请求处理中
 4: 请求已完成，且响应已就绪
 
-3.status
+3. status
 200: "OK"
 404: 未找到页面

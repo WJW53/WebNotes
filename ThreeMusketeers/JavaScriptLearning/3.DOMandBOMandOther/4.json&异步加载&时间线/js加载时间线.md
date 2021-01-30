@@ -16,7 +16,7 @@
 4. 元素在页面中布局，然后绘制
 - render 树就是根据 **可视化节点 和 css 样式表** 结合诞生出来的树；
 
-注意：PS: display: none 的元素会出现在 DOM树 中，但不会出现在 render 树中；
+`注意：PS: display: none 的元素会出现在 DOM树 中，但不会出现在 render 树中；`
 
 
 
@@ -56,7 +56,10 @@ head 内的 JavaScript 需要执行结束才开始渲染 body，所以尽量不�
 3. 遇到script外部js,并且**没有设置async、defer,那么浏览器加载、并阻塞**,等待js加载完成并执行该脚本,然后继续解析文档.
 
 4. 遇到script外部js,并且设置有async、defer,那么浏览器创建新线程异步加载,并继续解析文档,不会阻塞.
-**对于async属性的脚本，脚本加载完成后立即执行. 异步禁止使用document.write();-->消除文档流**
+
+**对于async属性的脚本，脚本加载完成后立即执行(执行时阻塞). 异步禁止使用document.write();-->消除文档流**
+
+**<script type="module">也会异步加载并解析文档不会阻塞,等文档解析完毕才执行所引入的脚本,如果再加上async属性,那仍然是加载完后立即执行(执行期间阻塞文档)**
 
 5. 遇到img等,先正常解析dom结构,然后浏览器异步加载src,并继续解析文档.
 
@@ -67,7 +70,7 @@ head 内的 JavaScript 需要执行结束才开始渲染 body，所以尽量不�
 
 8. document对象触发DOMContentLoaded事件,这也标志着程序执行从同步脚本执行阶段,转化为事件驱动阶段.
 - **只能这么用:document.addEventListener('DOMContentLoaded',function(){},false);才行**
-- 就是可以去监听事件了
+- `就是可以去监听事件了`
 
 9. 当所有async的脚本加载完成并执行后、img等加载完成后,document.readyState = 'complete',window对象触发load事件.
 
@@ -87,11 +90,11 @@ head 内的 JavaScript 需要执行结束才开始渲染 body，所以尽量不�
 ## 阻塞过程：
 ![](2020-04-15-00-47-06.png)
 
->浏览器遇到<script>标签时，会唤醒JavaScript解释器，暂停HTML的解析，等到CSSOM构建完成（如果有的话），开始执行JavaScript脚本，JavaScript执行完毕后继续解析HTML。也就是说，浏览器会等待JavaScript资源下载完毕并执行完毕后才会继续解析HTML。
+> 浏览器遇到<script>标签时，会唤醒JavaScript解释器，暂停HTML的解析，等到CSSOM构建完成(如果有的话)，开始执行JavaScript脚本，JavaScript执行完毕后继续解析HTML。也就是说，`浏览器会等待JavaScript资源下载完毕并执行完毕后才会继续解析HTML`。
 
->这时，我们就会发现一个矛盾。JavaScript是无法操作位于它下方的DOM的，因为此时DOM还没有构建出来。因此最好将<script>放在<body>之后，也就是等到所有的HTML都解析完成之后，再进行JavaScript的相关操作。而CSS会阻塞JavaScript的执行，因此CSS资源应优先于JavaScript资源被引入。
+> 这时，我们就会发现一个矛盾。JavaScript是无法操作位于它下方的DOM的，因为此时DOM还没有构建出来。因此最好将<script>放在<body>之后，也就是等到所有的HTML都解析完成之后，再进行JavaScript的相关操作。而CSS会阻塞JavaScript的执行，因此CSS资源应优先于JavaScript资源被引入。
 
->ps：由于JavaScript在操作DOM时，可能会引起浏览器的回流（reflow）或重绘（repaint），影响页面渲染性能，因此应该尽可能避免用JavaScript操作DOM。
+> ps：由于JavaScript在操作DOM时，可能会引起浏览器的回流（reflow）或重绘（repaint），影响页面渲染性能，因此应该尽可能避免用JavaScript操作DOM。
 
 
 ## JavaScript代码编写建议
