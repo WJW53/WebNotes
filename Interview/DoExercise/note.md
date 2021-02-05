@@ -530,7 +530,7 @@ const pipe = function(){
     // }
     // 或者这么写
     return function(val){
-        for(let i = 0;i<args.length;i++>){
+        for(let i = 0;i<args.length;i++){
             let func = args[i];
             val = func(val);
         }
@@ -1015,5 +1015,62 @@ str.substring(6); //Tony
 - 根据上面第(3)条规则，两边数据类型为string和number，把空字符串转为0，因此表达式变成了：0 == 0
 - 两边数据类型相同，0 == 0 为 true
 
+
+## new的实现原理及模拟代码
+使用New命令时，它后面的函数会依次执行下面的步骤:
+
+1. 创建一个空对象，作为要返回的对象实例；
+2. 将这个空对象的原型指向构造函数的prototype属性；
+3. 将这个空对象赋值给构造函数内部的this关键字；
+4. 开始执行构造函数内部的代码；
+5. 返回原始值需要忽略，返回对象需要正常处理。
+
+也就是说，构造函数内部，this指的是一个新生成的空对象，所有针对this的操作，都会发生在这个空对象上。构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作一个空对象（即this对象），将其“构造”为需要的样子。
+
+如果构造函数内部有return语句，而且return后面跟着一个对象，new命令会返回return语句指定的对象；否则，就会不管return语句，返回this对象.
+
+```js
+function _New(constructor, params) {
+  // 将 arguments 对象转为数组
+  let args = [].slice.call(params);
+  // 创建一个空对象,指向构造函数的原型
+  // 就是把context的__proto__指向构造函数的原型
+  // 这里就执行了New的第一步和第二步,因为他可以
+  //let context = Object.create(constructor.prototype);
+  let context = {};
+  context.__proto__ = constructor.prototype;
+  //Object.setPrototypeOf(context, constructor.prototype);//这跟上句一样
+  // 执行构造函数，并将该构造函数内部的this指向空对象
+  let result = constructor.apply(context, args);
+
+  // 返回值处理
+  return (typeof result === 'object' && result !== null) ? result : context
+}
+
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+let fn1 = _New(Person, '张三', 10)
+console.log(fn1)
+
+```
+
+构造函数作为模板，可以生成实例对象。但是，有时拿不到构造函数，只能拿到一个现有的对象。我们希望`以这个现有的对象作为模板，生成新的实例对象`(就是虽然没有拿到你的构造函数,但是我可以用你的实例作为模板,再造一个新的实例对象)，这时就可以使用Object.create()方法。
+```js
+var person1 = {
+  name: '张三',
+  age: 38,
+  greeting: function() {
+    console.log('Hi! I\'m ' + this.name + '.');
+  }
+};
+
+var person2 = Object.create(person1);
+
+person2.name; // 张三
+person2.greeting() // Hi! I'm 张三.
+```
 
 ## 

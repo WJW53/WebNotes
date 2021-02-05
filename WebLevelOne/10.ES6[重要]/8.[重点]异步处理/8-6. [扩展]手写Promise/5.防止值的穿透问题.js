@@ -4,7 +4,7 @@ const MyPromise = (() => {
         REJECTED = "rejected",
         PromiseState = Symbol("PromiseState"),//状态
         PromiseResult = Symbol("PromiseResult"),//状态数据
-        changeState = Symbol("changeState"),
+        changeState = Symbol("changeState"),//改变状态及数据
         thenables = Symbol("thenables"),//thenable
         catchables = Symbol("catchables"),//catchable
         settleHandle = Symbol("settleHandle"),//后续处理的通用函数
@@ -64,7 +64,7 @@ const MyPromise = (() => {
          * @param {*} queue 作业队列
          */
         [settleHandle](handler, immediatelyState, queue) {
-            if (typeof (handler) !== "function") {
+            if (typeof handler !== "function") {
                 return;
             }
             if (this[PromiseState] === immediatelyState) {//已决状态立即执行
@@ -104,7 +104,7 @@ const MyPromise = (() => {
                 this[settleHandle](data => {
                     //这里是不能直接写thenable的,我们需要封装一下,
                     //也就是当这里的函数运行了,我就知道,噢,需要执行thenable了
-
+                    //防止值的穿透:
                     if (typeof thenable !== "function") {
                         //父级promise没有注册thenable时,那交给我来处理
                         resolve(data);
@@ -169,11 +169,12 @@ const MyPromise = (() => {
         static race(proms) {
             return new MyPromise((resolve, reject) => {
                 proms.forEach(p => {//只要有一个已决,就结束了
-                    p.then(data => {
-                        resolve(data);
-                    }, err => {
-                        reject(err);
-                    })
+                    Promise.resolve(p)//如果不是Promise实例需要转化为Promise实例
+                        .then(data => {
+                            resolve(data);
+                        }, err => {
+                            reject(err);
+                        })
                 })
             })
         }
@@ -183,15 +184,15 @@ const MyPromise = (() => {
                 return data;
             }
             else {
-                return new MyPromise(resolve => {
+                return new MyPromise((resolve, reject) => {
                     resolve(data);
                 })
             }
         }
 
         static reject(reason) {
-            return new MyPromise(reject => {
-                reject(data);
+            return new MyPromise((resolve, reject) => {
+                reject(reason);
             })
         }
     }

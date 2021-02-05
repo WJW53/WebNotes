@@ -24,7 +24,7 @@
 			set: function (name, value, date) {
 				//expires	date：要求用户传入的是一个时间节点（这里函数默认规定传进来的是天数）
 				/* var endDate = new Date();	//过期时间点
-				endDate.setDate(endDate.getDate() + date);
+				endDate.setDate(endDate.getDate() + date);//setDate是用于设置一个月的某一天,1-31,超出范围会自己做规范处理的
 				document.cookie = name + '=' + value + '; expires=' + endDate; */
 
 				document.cookie = name + '=' + value + '; max-age=' + date;	//这里要求用户传入的第三个参数为过期的秒数
@@ -38,7 +38,7 @@
 				var cookies = document.cookie.split('; ');	//'name=kaivon; padding=30; width=40;' => ['name=kaivon', 'padding=30', 'width=40']
 
 				for (var i = 0; i < cookies.length; i++) {
-					//[['name','kaivon'],['padding','30'],['width',40]]
+					//cookies现在是[['name','kaivon'],['padding','30'],['width',40]]一个二维数组
 					var item = cookies[i].split('=');		//['name','kaivon']
 
 					if (item[0] == name) {	//这个条件成立说明用户传进来的那个cookie的名字找到了
@@ -51,7 +51,7 @@
 		/* manageCookie.set('left', 100, 10000);
 		console.log(manageCookie.get('left'));	//100 */
 
-		//拖拽
+		//实现拖拽后刷新后,位置也还是停留在拖拽后的位置:
 		var drag = {
 			init: function (dom) {
 				this.dom = dom;
@@ -60,7 +60,7 @@
 				var l = manageCookie.get('newLeft');
 				var t = manageCookie.get('newTop');
 
-				this.dom.style.left = l ? l + 'px' : '100px';
+				this.dom.style.left = l ? l + 'px' : '100px';//没有就回到原先的位置
 				this.dom.style.top = t ? t + 'px' : '100px';
 			},
 			bindEvent: function () {
@@ -84,13 +84,16 @@
 				document.onmousemove = null;
 				document.onmouseup = null;
 
-				//鼠标抬起的时候需要存储(cookie)一下此刻盒子的位置信息
-				manageCookie.set('newLeft', this.newLeft, 10000);
-				manageCookie.set('newTop', this.newTop, 10000);
+				//鼠标抬起的时候需要存储一下此刻盒子的位置信息,利用cookie
+				manageCookie.set('newLeft', this.newLeft, 10);//10s后过期
+				manageCookie.set('newTop', this.newTop, 10);
 			}
 		}
 
-		drag.init(document.getElementById('box'));
+		// drag.init(document.getElementById('box'));
+		drag.init(box);
+		// manageCookie.remove('newTop');
+		// manageCookie.remove('newLeft');
 	</script>
 </body>
 

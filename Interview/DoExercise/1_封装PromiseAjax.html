@@ -39,6 +39,19 @@
                     // IE浏览器
                     xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 }
+
+                // 接收返回过来的数据
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+                            resolve(JSON.parse(xhr.responseText))
+                        } else {
+                            reject(xhr.status)
+                        }
+                    }
+                }
+
+
                 // 区分get和post,发送HTTP请求
                 if (obj.type === "post") {
                     xhr.open(obj.type, obj.url, obj.async);
@@ -50,16 +63,7 @@
                     xhr.open(obj.type, url, obj.async);
                     xhr.send();
                 }
-                // 接收返回过来的数据
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
-                            resolve(JSON.parse(xhr.responseText))
-                        } else {
-                            reject(xhr.status)
-                        }
-                    }
-                }
+                
             })
         }
     </script>

@@ -20,7 +20,7 @@
             }
             //处理数据
             var dataStr = "";
-            if (typeof options.data == 'object') {
+            if (typeof options.data === 'object') {
                 for (var prop in options.data) {
                     if (options.data.hasOwnProperty(prop)) {
                         dataStr += prop + "=" + options.data[prop] + "&";

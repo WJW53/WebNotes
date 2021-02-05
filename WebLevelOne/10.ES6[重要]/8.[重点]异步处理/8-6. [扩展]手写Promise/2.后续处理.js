@@ -58,9 +58,9 @@ const MyPromise = (() => {
 
         /**
          * 
-         * @param {*} handler 后续处理函数
-         * @param {*} immediatelyState 需要立即执行的状态
-         * @param {*} queue 作业队列
+         * @param {function} handler 后续处理函数
+         * @param {String} immediatelyState 需要立即执行的状态
+         * @param {Array} queue 作业队列
          */
         [settleHandle](handler, immediatelyState, queue) {
             if (typeof (handler) !== "function") {

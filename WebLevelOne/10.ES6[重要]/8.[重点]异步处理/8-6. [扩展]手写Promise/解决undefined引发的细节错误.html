@@ -9,7 +9,8 @@
 
 <body>
     <!-- <script src="./0.MyPromise.js"></script> -->
-    <script src="./5.解决undefined的bug.js"></script>
+    <!-- <script src="./5.防止值的穿透问题.js"></script> -->
+    <script src="./MyPromise.js"></script>
 
     <script>
         var pro1 = new MyPromise((resolve, reject) => {
@@ -25,7 +26,7 @@
                 console.log(err); //2,因为then中没有传入thenable
             })
 
-            //当pro1resolve之后
+        //当pro1resolve之后
         // var pro2 = pro1.catch(err => { //不会运行这个catch函数,因为1s后pro1是resolve
         //     //所以这个pro2应该得到的是pro1的fulfilled
         //     //但是父亲(pro1)并没有传递这个状态给子pro2,所以我们需要在代码中处理好

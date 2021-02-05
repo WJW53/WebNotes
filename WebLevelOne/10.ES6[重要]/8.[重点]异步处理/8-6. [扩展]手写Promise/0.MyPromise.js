@@ -72,7 +72,7 @@ const MyPromise = (() => {
                 //直接运行
                 setTimeout(() => {//没办法,只能用这个宏队列模拟微队列,制造异步
                     handler(this[PromiseValue]);
-                }, 0);
+                }, 4);
             }
             else {
                 queue.push(handler);
@@ -85,7 +85,7 @@ const MyPromise = (() => {
          * @param {*} thenalbe 
          * @param {*} catchable 
          */
-        [linkPromise](thenalbe, catchable) {
+        [linkPromise](thenable, catchable) {
             function exec(data, handler, resolve, reject) {
                 try {
                     const result = handler(data); //得到当前Promise的处理结果
@@ -93,10 +93,10 @@ const MyPromise = (() => {
                     //它拿到的还得是数据结果才行,所以做特殊处理
                     if (result instanceof MyPromise) {
 
-                        result.then(d => {//这个d拿到的前面那个data,
-                            resolve(d);//所以再搞一次,才会传回一样的data而不是promise对象
+                        result.then(d => {//新的状态数据
+                            resolve(d);//再已决fulfilled
                         }, err => {
-                            reject(err);
+                            reject(err);//再rejected
                         })
                     }
                     else {
@@ -115,26 +115,26 @@ const MyPromise = (() => {
 
                 //这里利用封装一个新函数,来知道何时得到当前Promise的处理结果
 
-                //隐藏的高级问题  -- 由那个undefined引起的
-                //这里需要对data作判断,避免bug,很难以发现
                 this[settleHandle](data => {
-                    if(typeof thenable !== 'function'){
+                    //隐藏的高级小bug
+                    //防止值的穿透:
+                    if (typeof thenable !== 'function') {
                         //父级Promise没有注册thenable
                         resolve(data);//那就我来呗
                         return;
                     }
-                    exec(data, thenalbe, resolve, reject);
-                }, RESOLVED, this[thenables])
+                    exec(data, thenable, resolve, reject);
+                }, RESOLVED, this[thenables]);
 
                 this[settleHandle](reason => {
-                    if(typeof catchable !== 'function'){
+                    if (typeof catchable !== 'function') {
                         //父级Promise没有注册catchable
                         reject(reason);//那就我来呗
                         return;
                     }
                     exec(reason, catchable, resolve, reject);//还是resolve,内部正常处理
-                }, REJECTED, this[catchables])
-            })
+                }, REJECTED, this[catchables]);
+            });
         }
 
 

@@ -19,7 +19,7 @@
                 var targetHost = ""; //host是包含域名和端口的
 
                 //如果url不带http,那么访问的一定是相对路径,而相对路径一定是同源的
-                if (url.indexOf("http://") == 0 || url.indexOf("https://") == 0) {
+                if (url.indexOf("http://") === 0 || url.indexOf("https://") === 0) {
                     var targetUrl = new URL(url);
                     targetProtocol = targetUrl.protocol;
                     targetHost = targetUrl.host;
@@ -39,7 +39,9 @@
                         var callback = "cb" + Math.floor(Math.random() * 1000000);
 
                         //给window上添加一个方法
-                        window[callback] = options.success;
+                        window[callback] = options.success||function(){
+                            console.log('JSONP跨域成功!');
+                        };
                         // console.log(window[callback]);
 
                         //生成一个script标签

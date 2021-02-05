@@ -103,7 +103,7 @@ const MyPromise = (() => {
             return new MyPromise((resolve, reject) => {
                 this[settleHandle](data => {
                     //这里是不能直接写thenable的,我们需要封装一下,
-                    //也就是当这里的函数运行了,我就知道,噢,需要执行thenable了
+                    //也就是当这里的函数运行了,我就知道,噢,需要执行thenable了,该resolve/reject啦
                     exec(data, thenable, resolve, reject);
                 }, FULFILLED, this[thenables]);
 

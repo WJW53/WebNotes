@@ -12,10 +12,10 @@
 	<script>
 		/* 
 			cookie	为什么有cookie?
-			http	上下文无关，无状态协议
+			http	上下文无关，无状态协议(登录后，再刷新页面就又得重新登录了)
 			set-cookie	服务器设置
 
-			1、cookie不可跨域
+			1、cookie不可跨域（不过一级域名存储后，可以在子域名下访问）
 			2、cookie存储在浏览器里面
 			3、cookie有数量与大小的限制
 				1、数量在50个左右
@@ -31,19 +31,22 @@
 				2、value	cookie的值
 				3、domain	设置cookie在哪个域下是有效的
 				4、path		cookie的路径
-				5、expires	cookie的过期时间
+				5、expires	cookie的过期时间(http1.0,时间点,到了这个点儿才过期)
 					GMT
-				6、max-age	cookie的有效期
+				6、max-age	cookie的有效期(http1.1,以秒为单位的时间段,过了多久会过期)
 					-1	
 					0	
 					正数
+
+				//下面这三个属性,前端没法操作
 				7、HttpOnly	有这个标记的cookie，前端是无法获取的
-				8、Secure	设置cookie只能有过https协议传输
-				9、SameSite	设置cookie在跨域请求的时候不能被发送
+				8、Secure	设置cookie只能通过https协议传输
+				9、SameSite	设置cookie在跨域请求的时候不能被发送(设置为NONE的时候)
 		 */
 
+		//只有在http协议下才生效
 		document.cookie = 'name=kaivon';
-		document.cookie = 'name=kaivon; age=18';
+		document.cookie = 'name=kaivon; age=18';//这样无效,因为document.cookie每次设置都只能设置一对儿键值对!!
 
 		//cookie属性
 		document.cookie = 'color=red; domain=127.0.0.2; path=/docs';
@@ -52,7 +55,7 @@
 		document.cookie = 'margin=20; expires=' + new Date(2008, 1, 1);
 
 		//document.cookie='padding=30; max-age=1';
-		document.cookie = 'padding=30; max-age=5';
+		document.cookie = 'padding=30; max-age=5';//只是可能控制台显示有问题,切换一下按钮再看看
 
 		/* setTimeout(function () {
 			console.log(document.cookie);

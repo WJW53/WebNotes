@@ -30,7 +30,7 @@ pool
 字符串。表示字符池，将从中选择一个字符返回。
 
 如果传入了 'lower' 或 'upper'、'number'、'symbol'，表示从内置的字符池从选取：
-```
+```js
 {
     lower: "abcdefghijklmnopqrstuvwxyz",
     upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",

@@ -17,7 +17,7 @@ e9ad67816f5c148b16f308190d6282fd94d03c3c
 
 ### git push的时候每次都要输入用户名和密码的问题解决
 换了个ssh key,发现每次git push origin master的时候都要输入用户名和密码
-原因是在添加远程库的时候使用了https的方式。。所以每次都要用https的方式push到远程库
+`原因是在添加远程库的时候使用了https的方式`。。所以每次都要用https的方式push到远程库
 查看使用的传输协议:
 git remote -v
 **重新设置成ssh的方式:**
