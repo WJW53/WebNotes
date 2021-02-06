@@ -924,7 +924,7 @@ https://www.cnblogs.com/jiasm/p/7683930.html
 文档解析时，遇到设置了defer的脚本，就会在后台进行下载，但是并不会阻止文档的渲染，`当页面解析完毕后，会等到所有的defer脚本加载完毕并按照顺序执行，执行完毕后会触发DOMContentLoaded事件`。
 
 ### async
-`async脚本会在加载完毕后执行，async脚本的加载不计入DOMContentLoaded事件统计`
+`async脚本会在加载完毕后立即执行，async脚本的加载不计入DOMContentLoaded事件统计`
 
 也就是说下图两种情况都是有可能发生的
 
@@ -1073,4 +1073,24 @@ person2.name; // 张三
 person2.greeting() // Hi! I'm 张三.
 ```
 
-## 
+## 关于文档对象
+
+https://www.cnblogs.com/linxd/p/4519453.html
+
+```js
+console.log(Object.getPrototypeOf(document));//HTMLDocument
+console.log(Object.getPrototypeOf(Object.getPrototypeOf(document)));//Document
+console.log(Object.getOwnPropertyDescriptor(window, "document"));//configurable属性值为false， set函数没有定义，所以我们根本就不可能改变window.document.
+```
+
+**Node才是一切的起始**
+```Document.__proto__ === Node```
+**```document.__proto__ === HTMLDocument.prototype```**: 即document其实是HTMLDocument.prototype的构造函数(constructor)的一个实例
+```HTMLDocument.__proto__ === Document```
+```HTMLDocument.prototype.__proto__ === Document.prototype```
+```HTMLElement.__proto__ === Element```
+```document === window.document```
+
+## 提前获取图片宽高
+- 原理：浏览器可以在img.onload事件触发之前,就获取到图片的宽高了
+不断的setInterval监测就行了

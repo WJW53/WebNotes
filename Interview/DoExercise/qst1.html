@@ -14,10 +14,17 @@
             border-right: 200px solid #c85179;
             border-top: 50px solid black;
         }
+
+        iframe {
+            /* display: none; */
+            width: 1000px;
+            height: 1000px;
+        }
     </style>
 </head>
 
 <body>
+    
     <div class="trangle">
 
     </div>
@@ -28,19 +35,21 @@
             return function () {
                 return x += 2;
             }
-        })()
+        })();
 
         // var count = 1;
         // function add() {
         //     return 2 * count++;
         // }
 
+
+        console.log(add());
+        console.log(add());
+        console.log(add());
+        console.log(add());
+        console.log(add());
+
         
-        console.log(add());
-        console.log(add());
-        console.log(add());
-        console.log(add());
-        console.log(add());
     </script>
 </body>
 

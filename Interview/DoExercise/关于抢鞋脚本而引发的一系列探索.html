@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <iframe src="https://www.baidu.com" frameborder="0" id="myrame"></iframe>
+    <!-- <iframe src="https://buy.tmall.com/order/confirm_order.htm?spm=a1z0d.6639537.0.0.undefined"
+        frameborder="0" name="myrame" id="myrame"></iframe> -->
+
+    <script>
+        // var iframe = document.getElementById("myrame"); //获取iframe标签
+        // var iwindow = iframe.contentWindow; //获取iframe的window对象
+        // var idoc = iwindow.document; //获取iframe的document对象
+        // console.log(idoc.documentElement); //获取iframe的html
+        // console.log("body", idoc.body);
+        //但是，这里面是获取不到里面的DOM的，可以在URL中获取（也就是引入的html文件）
+        // iwindow.onload = function(){//不行注册不了
+        //     console.log('iwindow加载完毕');
+        // }
+        // idoc.addEventListener("DOMContentLoaded",function(){
+        //     console.log('idowDOMContentLoaded');
+        // })
+            //想与iframe通信,得用postmessage
+
+
+        //淘宝有结账和提交订单两个不同的页面,而页面一刷新或者url改变,之前控制台里的脚本就失效了
+        //而且我在淘宝顶级域名下加入的cookie在子域名下拿不到,说明他们删除了
+        // //准备抢淘宝的,后来发现,..不行,哎,淘宝太nb了
+        // function getTargetTime(t) {
+        //     var arr = t.split(" ");
+        //     var d = arr[0],
+        //         h = arr[1],
+        //         date = new Date();
+
+        //     var arrD = d.split("-"),
+        //         arrH = h.split(":");
+        //     date.setYear(arrD[0]);
+        //     date.setMonth(arrD[1] - 1); //因为月份是从0开始的
+        //     date.setDate(arrD[2]);
+
+        //     date.setHours(arrH[0]);
+        //     date.setMinutes(arrH[1]);
+        //     date.setSeconds(arrH[2]);
+
+        //     return date.getTime(); //自动转为ms级别
+        // }
+        // var targetTime = getTargetTime("2021-02-06 11:34:00"); //输入那天对应的日期,精确到s
+        // var btn1 = document.getElementById("J_Go");
+        // btn1.onclick = function () {
+        //     var btn2 = document.querySelector("#submitOrderPC_1 .go-btn"); //首先querySelector不是实时的,其次,页面url改变后或者刷新后
+        //     //当前脚本就失效了,所以我这个不能这么写
+        //     btn2.click();
+        // }
+        // var timer = setInterval(function () {
+        //     if (Date.now() - targetTime >= 0) {
+        //         clearInterval(timer);
+        //         btn1.click();
+        //     }
+        // }, 4);
+        // window.onload = function () {
+        //     console.log('111');
+        // }
+    </script>
+</body>
+
+</html>

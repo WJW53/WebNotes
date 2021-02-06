@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //因为浏览器可以获取图片头部数据的,就包含了图片的宽高
+        //实际上就是：浏览器可以早于img.onload事件触发之前获得img.width和img.height!!
+
+        // 更新：
+        // 05.27: 1、保证回调执行顺序：error > ready > load；2、回调函数this指向img本身
+        // 04-02: 1、增加图片完全加载后的回调 2、提高性能
+
+        /**
+         * 图片头数据加载就绪事件 - 更快获取图片尺寸
+         * @version 2011.05.27
+         * @author TangBin
+         * @see  http://www.planeart.cn/?p=1121
+         * @param {String} 图片路径
+         * @param {Function} 尺寸就绪
+         * @param {Function} 加载完毕 (可选)
+         * @param {Function} 加载错误 (可选)
+         * @example imgReady('http://www.google.com.hk/intl/zh-CN/images/logo_cn.png', function () {
+          alert('size ready: width=' + this.width + '; height=' + this.height);
+         });
+         */
+        //写法一：那个width和height有点误导人
+        // var imgReady = (function () {
+        //     var list = [],
+        //         intervalId = null,
+
+        //         // 用来执行队列
+        //         tick = function () {
+        //             var i = 0;
+        //             for (; i < list.length; i++) {
+        //                 list[i].end ? list.splice(i--, 1) : list[i]();
+        //             };
+        //             !list.length && stop();
+        //         },
+
+        //         // 停止所有定时器队列
+        //         stop = function () {
+        //             clearInterval(intervalId);
+        //             intervalId = null;
+        //         };
+
+        //     return function (url, ready, load, error) {
+        //         var onready, width, height, newWidth, newHeight,
+        //             img = new Image();
+
+        //         img.src = url;
+        //         console.log('url已经赋值给img对象的src属性了,他开始异步加载了');
+        //         // 如果图片被缓存，则直接返回缓存数据
+        //         if (img.complete) {
+        //             ready.call(img);
+        //             load && load.call(img);
+        //             return;
+        //         };
+
+        //         width = img.width;
+        //         height = img.height;
+        //         console.log('刚初始化后的代码宽高为0',width,height);
+        //         // 加载错误后的事件
+        //         img.onerror = function () {
+        //             error && error.call(img);
+        //             onready.end = true;
+        //             img = img.onload = img.onerror = null;
+        //         };
+
+        //         // 图片尺寸就绪
+        //         onready = function () {
+        //             console.log('ready的代码');
+        //             newWidth = img.width;
+        //             newHeight = img.height;//最初都是0,随着加载逐渐变化
+        //             console.log('此刻加载的newWidth和newHeight为:',newWidth,newHeight);
+        //             console.log('此刻的width和height为：',width,height);
+        //             if (newWidth !== width || newHeight !== height ||
+        //                 // 如果图片已经在其他地方加载可使用面积检测
+        //                 newWidth * newHeight > 1024
+        //             ) {//这里不是else
+        //                 ready.call(img);
+        //                 onready.end = true;//WC我才知道,给函数加属性也能生效
+        //             };
+        //         };
+        //         onready();
+        //         console.log('onload外面的代码:此刻加载的宽高为：',newWidth,newHeight);
+        //         // 完全加载完毕的事件
+        //         img.onload = function () {
+        //             // onload在定时器时间差范围内可能比onready快
+        //             // 这里进行检查并保证onready优先执行
+        //             console.log('onload');
+        //             !onready.end && onready();
+
+        //             load && load.call(img);
+
+        //             // IE gif动画会循环执行onload，置空onload即可
+        //             img = img.onload = img.onerror = null;
+        //         };
+
+        //         // 加入队列中定期执行
+        //         if (!onready.end) {
+        //             list.push(onready);
+        //             // 无论何时只允许出现一个定时器，减少浏览器性能损耗
+        //             if (intervalId === null) intervalId = setInterval(tick, 40);
+        //         };
+        //     };
+        // })();
+
+        // imgReady(
+        //     'http://b.zol-img.com.cn/desk/bizhi/image/2/2560x1600/1365477614755.jpg?',
+        //     function () {
+        //         alert('size ready: width=' + this.width + '; height=' + this.height);
+        //     })
+
+
+        //写法二:总之都是定时监测获取
+        // 记录当前时间戳
+        // var start_time = new Date().getTime();
+        // // 图片地址 后面加时间戳是为了避免缓存
+        // var img_url = 'http://b.zol-img.com.cn/desk/bizhi/image/2/2560x1600/1365477614755.jpg?' + start_time
+        // // 创建对象
+        // var img = new Image()
+        // // 改变图片的src
+        // img.src = img_url
+
+        // // // 加载完成获取宽高
+        // img.onload = function () {
+        //     var diff = new Date().getTime() - start_time;
+        //     document.body.innerHTML += `<br>` + 'from:onload : width:' + img.width + ',height:' + img.height +
+        //         ', time:' +
+        //         diff + 'ms';
+        // };
+
+        //     //这俩最好分开测试
+
+        // // 定时执行获取宽高
+        // var check = function () {
+        //     // 只要任何一方大于0
+        //     // 表示已经服务器已经返回宽高
+        //     if (img.width > 0 || img.height > 0) {
+        //         var diff = new Date().getTime() - start_time;
+        //         document.body.innerHTML += `
+        //         from: check: width: ${img.width}, height: ${img.height}, time: ${diff}
+        //         ms `;
+        //         clearInterval(set);
+        //         set = null;
+        //     }
+        // }
+        // var set = setInterval(check, 4);
+
+        var img = new Image();
+        var date = new Date().getTime();
+        // img.src = "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3617321156,3624131942&fm=26&gp=0.jpg"
+        // img.src = 'http://b.zol-img.com.cn/desk/bizhi/image/2/2560x1600/1365477614755.jpg?'
+        img.src =
+            'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.3h3.com%2Fup%2F2014-6%2F20146614141119032572.jpg&refer=http%3A%2F%2Fpic.3h3.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1615193920&t=7ca418415758ab3c5196ee16f40845ea';
+        // img.onload = function () { //需要关闭浏览器在测试,重新open with live servel测试,因为Chrome会自动从本地缓存中拿
+        //     console.log("imgonload:");
+        //     console.log(new Date().getTime() - date, img.width, img.height);
+        // }
+        var timer = setInterval(function () {
+            if (img.width > 0) {
+            console.log("setInterva:");
+            console.log(new Date().getTime() - date, img.width, img.height);
+                clearInterval(timer);
+            }
+        }, 4);
+        // 
+    </script>
+</body>
+
+</html>
