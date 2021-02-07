@@ -253,8 +253,8 @@ const MyPromise = (() => {
         static race(promiseArr) {
             return new MyPromise((resolve, reject) => {
                 promiseArr.forEach(p => {
-                    MyPromise.resolve(p).then(data => resolve(data), error => reject(error));
-                })
+                    p.then(data => resolve(data), error => reject(error));
+                });
             })
         }
 

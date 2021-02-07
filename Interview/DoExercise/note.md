@@ -1020,7 +1020,7 @@ str.substring(6); //Tony
 使用New命令时，它后面的函数会依次执行下面的步骤:
 
 1. 创建一个空对象，作为要返回的对象实例；
-2. 将这个空对象的原型指向构造函数的prototype属性；
+2. 将这个空对象的隐式原型指向构造函数的prototype属性；
 3. 将这个空对象赋值给构造函数内部的this关键字；
 4. 开始执行构造函数内部的代码；
 5. 返回原始值需要忽略，返回对象需要正常处理。
@@ -1093,4 +1093,50 @@ console.log(Object.getOwnPropertyDescriptor(window, "document"));//configurable�
 
 ## 提前获取图片宽高
 - 原理：浏览器可以在img.onload事件触发之前,就获取到图片的宽高了
+    - **因为浏览器肯定是先获取到图片的头部数据，而头部中就有该图片的宽高信息，所以不用等图片加载完毕**
 不断的setInterval监测就行了
+
+## Function
+`Function是JS引擎启动的时候直接放到内存当中的,其他的所有对象都是通过new 构造函数来创建的`
+
+## console.log与dir
+```js
+console.log(Function.prototype);
+// ƒ () { [native code] }
+console.dir(Function.prototype);
+// ƒ anonymous()
+// apply: ƒ apply()
+// arguments: (...)
+// bind: ƒ bind()
+// call: ƒ call()
+// caller: (...)
+// constructor: ƒ Function()
+// length: 0
+// name: ""
+// toString: ƒ toString()
+// Symbol(Symbol.hasInstance): ƒ [Symbol.hasInstance]()
+// get arguments: ƒ ()
+// set arguments: ƒ ()
+// get caller: ƒ ()
+// set caller: ƒ ()
+// __proto__: Object
+// [[FunctionLocation]]: <unknown>
+// [[Scopes]]: Scopes[0]
+```
+明显看到dir更nb一些,只是说单单论这方面啊,log本身有很多别的特点
+
+
+## ES5和ES6实现继承的区别
+**ES5的继承：实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面(Parent.apply(this));**
+
+**ES6的继承：实质是先创造父类的实例对象this(所以必须先在constructor内调用super()方法),然后再用子类的构造函数修改this**
+
+由此可以看出：
+
+1. 子类的 __proto__ 属性，表示构造函数的继承，总是指向父类。
+2. 子类 prototype 属性的 __proto__ 属性，表示方法的继承，总是指向父类的 prototype 属性。
+
+`另：ES6 可以自定义原生数据结构（比如Array、String等）的子类，这是 ES5 无法做到的。`
+
+
+## 

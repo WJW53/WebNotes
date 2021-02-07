@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Q: 实现一个js中的多维数组初始化方法
+        //第一个是初始化的值,后面的对应第i维的个数
+        function multiArray(initValue, ...args) {
+            // your code here
+            let arg = [...args],
+                len = arg.length,
+                res = [];
+
+            // arr是当前层的数组,n代表当前第n层,argN是每层要填充的数量
+            function _recall(arr, n, argN) {
+                for (let j = 0; j < argN; j++) { //向每层加入
+                    if (n === len - 1) {
+                        arr.push(initValue);
+                    } else {
+                        arr.push([]);
+                        _recall(arr[j], n + 1, arg[n + 1]);
+                    }
+                }
+                return arr;
+            }
+
+            return _recall(res, 0, arg[0]);
+        }
+
+        // 满足任意维的 多维数组 的初始化。
+        // 如
+        console.log(multiArray(null, 1)); // [ null ]
+        console.log(multiArray('x', 2, 2)); // [ [ 'x', 'x' ], [ 'x', 'x' ] ]
+        console.log(multiArray('x', 2, 3, 4)); // 
+    </script>
+</body>
+
+</html>

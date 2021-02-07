@@ -9,14 +9,17 @@
 <body>
     <script>
         /*
-            Web Storage
+            Web Storage     --不是依托于http/https协议
             5Mb 
 
-            localStorage
-            sessionStorage
+            localStorage        --即使浏览器关闭,也还存在,理论上永远存在,没有过期这一说,除非手动清除/清除缓存
+                                --或者你在无痕窗口浏览,也行,哈哈.因为它是创建临时的数据库,页面一关就没了
+                                --里面的属性默认是根据属性名的ascll码排序,也可能不同浏览器不同吧
+            sessionStorage      --只要页面关闭就没了(会话级别,刷新和重载都会保持,新建标签页和窗口都属于新的session)
+                                --不能自己设置过期时间
 
-            1、length   本地存储数据的数量
-            2、key()    通过索引找到存储的数据
+            1、length       本地存储数据的数量
+            2、key()        通过索引(数字)找到存储的数据,这功能太鸡肋了,因为没把索引和数据绑定起来啊
             3、getItem()    通过键名取到本地存储的数据
             4、setItem()    设置一个本地存储数据
             5、removeItem() 删除一个本地存储数据
@@ -34,14 +37,33 @@
         localStorage.setItem('sex', 'male');
         localStorage.setItem('insterest', 'drink');
 
-        var color = ["red", "green"];   //"red", "green"
-        var color = { "c1": "red", "c2": "green" }  //[object Object]
+        // var color = ["red", "green", 3];//"red,green,3"数组调用toString()得到的就是字符串
+        var color = {
+            "c1": "red",
+            "c2": "green"
+        } //对象调用toString会得到[object Object]
         localStorage.setItem('color', JSON.stringify(color));
+        // localStorage.setItem('color', color);
         console.log(JSON.parse(localStorage.getItem('color')));
 
-        localStorage.removeItem('color');
+        // localStorage.removeItem('color');
         //localStorage.clear();
 
+
+
+        //同域下,两个不同页面可以实现通信,利用localStorage的事件监听
+        //只要localStorage一改变就可以触发该事件
+
+        window.addEventListener('storage', function (ev) {
+            console.log('我在04页面修改了购物车，这个log会在05的页面打印出来；或者我在05的页面修改了购物车，这个log会在04的页面打印出来！');
+
+            console.log(ev.key); //修改的是哪一个localstorage（名字key）
+            console.log(ev.newValue); //修改后的数据
+            console.log(ev.oldValue); //修改前的数据
+            console.log(ev.storageArea); //storage对象
+            console.log(ev.url); //返回操作的那个页面的url
+
+        });
     </script>
 </body>
 <html>
