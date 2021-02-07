@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        iframe{
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <button>打开新页面</button>
+    <iframe name="myframe" src="" frameborder="0"></iframe>
+    <script>
+        var w;
+        document.querySelector("button").onclick = function() {
+            // w = window.open("https://www.jd.com", "_self");    //也可以把第二项参数改为"myframe"       
+            w = window.open("test2.html", null, "width=300,height=300,location=no,status=yes");//兼容性问题很大,后面俩都不兼容了         
+            w.resizeTo(500,500);//这个不能跨域,跨域的话我们就没有修改权限,所以这里用了test2.html
+            w.moveTo(100,30);
+        };
+    </script>
+</body>
+
+</html>

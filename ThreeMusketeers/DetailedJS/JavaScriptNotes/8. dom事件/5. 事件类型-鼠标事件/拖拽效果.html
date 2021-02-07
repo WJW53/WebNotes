@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgb(247, 93, 93);
+            cursor: move;
+            position: absolute;
+            left: 100px;
+            top: 100px;
+        }
+
+        p {
+            width: 100px;
+            height: 100px;
+            background: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <!-- <p></p> -->
+    </div>
+
+    <script>
+        var div = document.querySelector("div");
+        div.onmousedown = function(e) {
+            if (e.button !== 0) { //如果不是鼠标左键
+                return;
+            }
+//常见的法一:
+
+            var pageX = e.pageX;
+            var pageY = e.pageY;
+            var style = getComputedStyle(div);
+            var divLeft = parseFloat(style.left);
+            var divTop = parseFloat(style.top);
+            window.onmousemove = function(e) {
+                var disX = e.pageX - pageX;
+                var disY = e.pageY - pageY;
+                div.style.left = divLeft + disX + "px";
+                div.style.top = divTop + disY + "px";
+            }
+            window.onmouseup = window.onmouseleave = function(e) {
+                if (e.button === 0) {
+                    window.onmousemove = null; //移除鼠标移动事件
+                }
+            }
+        }
+
+//更溜的法二:
+        // var div = document.querySelector("div");
+            //先用getComputedStyle(div)拿到视觉上的最终的style
+        // var style = getComputedStyle(div);
+        ////因为window中默认有left和top属性,所以要避免重名
+        // var divLeft = parseFloat(style.left);//转为浮点数
+        // var divTop = parseFloat(style.top);
+        // div.onmousedown = function(e) {
+        //     if (e.button !== 0) { //如果不是鼠标左键,真细啊
+        //         return;
+        //     }
+        //     window.onmousemove = function(e) {
+            //// NBNB,利用movementX/Y, 节省了很多的效率,但是这个鼠标过快就会飚出去,
+            ////所以要给window/document注册即可!!!
+        //         divLeft += e.movementX;
+        //         divTop += e.movementY;
+        //         div.style.left = divLeft + "px";//重新赋值回去,别忘记加上px
+        //         div.style.top = divTop + "px";
+        //     }
+        //     window.onmouseup = window.onmouseleave = function(e) {
+        //         if (e.button === 0) {
+        //             window.onmousemove = null; //移除鼠标移动事件
+        //         }
+        //     }
+        // }
+    </script>
+</body>
+
+</html>

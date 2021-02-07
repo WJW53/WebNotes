@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            background: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button id="btn1">点击1</button>
+
+        <button id="btnremove">移除按钮1的事件</button>
+    </div>
+
+
+    <script>
+        var btn = document.getElementById("btn1");
+        var btnRemove = document.getElementById("btnremove");
+        var div = document.querySelector("div");
+
+        function handler1() {
+            console.log("btn1");
+        }
+
+        function handler2() {
+            console.log("btn2");
+        }
+
+        btn.addEventListener("click", handler1, {
+            once: true,//是否只执行一次
+        });
+
+        btn.addEventListener("click", handler2);
+
+        function divHandler1() {
+            console.log("div 捕获");
+        }
+
+        function divHandler2() {
+            console.log("div 冒泡");
+        }
+        div.addEventListener("click", divHandler1, {
+            capture: true//是否是捕获阶段的事件
+        })
+
+        div.addEventListener("click", divHandler2)
+
+        btnRemove.addEventListener("click", function() {
+            btn.removeEventListener("click", handler2);
+            btn.removeEventListener("click", handler1);
+            div.removeEventListener("click", divHandler1, true);//因为默认移出是冒泡阶段事件
+            //所以第三个参数要改为true,才能移出它的捕获阶段的该事件
+        })
+    </script>
+</body>
+
+</html>

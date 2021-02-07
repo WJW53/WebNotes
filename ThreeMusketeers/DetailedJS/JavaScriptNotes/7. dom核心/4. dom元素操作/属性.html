@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        img {
+            width: 150px;
+            height: 150px;
+            border: 2px solid;
+            /* 保证比例,不失帧 */
+            object-fit: contain;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" value="asdfasfd">
+    <input id="cbgender" type="checkbox" checked="checked">
+    <!-- 这样点击男也会勾选上前面的框 -->
+    <label for="cbgender">男</label>
+    <!-- select提供一个选项菜单 -->
+    <select class="ssss">
+        <!-- option表示项目列表中的菜单项 -->
+        <option value="chengdu">成都</option>
+        <option value="beijing">北京</option>
+        <option value="haerbin">哈尔滨</option>
+    </select>
+    <button id="btnGetTxt">获取文本框内容</button>
+    <button id="btnSetTxt">设置文本框内容</button>
+    <img src="1.jpg" alt="">
+    <p>
+        <!-- 多行文本框 本身没有value属性,但是可以通过dom.value,获取其文本内容 -->
+        <textarea>
+            啊手动阀手动阀三发射发生
+        </textarea>
+    </p>
+    <div data-abc="123" data-bcd="234">
+<!-- dom.dataset.abc -->
+    </div>
+    <script>
+        var opts = document.querySelector("select option"); 
+        var input = document.querySelector("input[type=text]");
+        console.log(opts.nextElementSibling.firstChild.nodeValue);
+        
+        document.getElementById("btnGetTxt").onclick = function() {
+            //获取文本框的值
+            console.log(input.value, typeof input.value);
+        }
+
+        document.getElementById("btnSetTxt").onclick = function() {
+            input.value = "请输入文本";
+        }
+
+        //点击图片切换
+        var i = 1; //第几张图片
+        var img = document.querySelector("img");
+        img.onclick = function() {
+            i++;
+            if (i === 3) {
+                i = 1;
+            }
+            img.src = i + ".jpg";
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 400px;
+            margin: 0 auto;
+        }
+
+        p {
+            color: blue;
+            text-align: center;
+        }
+
+        p.ok{
+            font-weight: bold;
+        }
+        p.error{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p class="ok">不能添加空的文本</p>
+        <div class="input">
+            <input type="text" placeholder="此处不能为空">
+            <button id="btnAdd">添加</button>
+        </div>
+        <ul class="list">
+            <li>项目1</li>
+            <li>项目2</li>
+        </ul>
+    </div>
+    <script>
+        var btnAdd = document.getElementById("btnAdd");
+        var ul = document.querySelector(".list");
+        var inp = document.querySelector("input");
+        var p = document.querySelector("p");
+        btnAdd.onclick = function() {
+            if(!inp.value.trim()){//去掉了首尾空白
+                p.className = "ok error";//给p 添加 error 类选择器,变红色
+                return;
+            }
+            p.className = "";
+            var li = document.createElement('li');
+            li.innerText = inp.value;//赋值
+            inp.value = "";//然后清空这个文本框
+            ul.appendChild(li);//把输入的内容加到列表里
+        }
+    </script>
+</body>
+
+</html>
