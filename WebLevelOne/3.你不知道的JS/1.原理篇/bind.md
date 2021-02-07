@@ -24,7 +24,7 @@ https://www.jianshu.com/p/69b1c600300d
 
 ### 总结bind功能
 
-```
+```js
 //      function A(){
 
         // }
