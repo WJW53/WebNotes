@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //m员工总数,n为月饼总数
+        function divideMoonCake(m, n) {
+            let sum = n - m, //先简化一下,因为每个人至少一个饼
+                num = 0;
+            /*
+                i为第i个人,si为到第i个人为止共分了多少个月饼,
+                ai为第i个人手上目前多少个月饼,sub为间隔,本题为3
+            */
+            function _recall(i, si, ai,sub) {
+
+                for (let j = 0; j <= sub; j++) { //开始给当前这个人分月饼
+                    if (si > sum || i > m) {
+                        return num;
+                    } //月饼不够
+                    else if (si === sum && i === m) { //所有人都分完了所有的月饼,可能性加一
+                        return ++num;
+                    } else {
+                        //下一个人,要在当前这个人的基础上分月饼,
+                        // console.log(i, si + ai + j, ai + j);
+                        _recall(i + 1, si + ai + j, ai + j,sub);
+                    }
+                }
+                return num;
+            }
+            return _recall(0, 0, 0,3);
+        }
+
+        console.log(divideMoonCake(3, 8));//4种
+        //4 2 2,  3 3 2,  4 3 1,  5 2 1
+    </script>
+</body>
+
+</html>
