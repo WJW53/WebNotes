@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./MyPromise_2.js"></script>
+    <script>
+        // let pro = new Promise((resolve, rejejct) => {
+        //     setTimeout(() => {
+        //         // resolve(2);
+        //         rejejct(3)
+        //     });
+        // }).then(data => {
+        //     console.log(data);
+        // }).catch(error => {
+        //     console.log(error);
+        // }).finally(() => {
+        //     console.log("1");
+        // }).then(data => {
+        //     console.log(data + " finally_then");
+        // });
+
+        let pro1 = new MyPromise((resolve, rejejct) => {
+            setTimeout(() => {
+                resolve(2);
+                // rejejct(3);
+            });
+        }).then(data => {
+            console.log("resolve " + data);
+            return data;
+        }).catch(error => {
+            console.log("reject " + error);
+            throw new Error("test");
+        }).finally((data) => { //这个data没用,如果想让他接收上面的状态数据,就在我的源码里小小修改一下就行
+            //在已决处理中传入data/error
+            //不过PromiseA+规范中,没对这个做处理
+            return setTimeout(() => {
+                console.log("finally " + "1", data);
+                return data;
+            }, 1000);
+        }).then(data => {
+            console.log("after_finally_then " + data);
+            return 'okok';
+        }, error => {
+            console.log('after_finally_catch ' + error);
+            return 'haha';
+        }).then(data => {
+            console.log("last then " + data);
+        }).catch(error => {
+            console.log("last catch " + error);
+        })
+    </script>
+</body>
+
+</html>
