@@ -19,7 +19,7 @@
 
             if(target === null){
                 return 'null';
-            }else if(ret == 'object'){//解决引用值
+            }else if(ret === 'object'){//解决引用值
                 //数组,对象,包装类
                 var str = Object.prototype.toString.call(target);
                 return template[str];

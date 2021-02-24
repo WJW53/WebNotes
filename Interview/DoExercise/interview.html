@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        //   有一个数列：[1, 2, 3, 4, ..., N];  实现异步加和运算 
+        // 例如：
+        // function sum(list) {
+        // // TODO
+        // }
+        // sum([1, 2, 3, 4]).then(v => console.log(v)); // 10 
+
+        //圣杯模式
+        var inherit = (function () {
+            var F = function () {};
+            return function (Son, Father) {
+                F.prototype = new Father();
+                Son.__proto__ = F.prototype;
+                Son.prototype.constructor = Son;
+                Son.prototype.uber = Father.prototype;
+            }
+        }());
+
+
+        //
+        function Animal(type) {
+            this.type = type;
+            this.print = function(){
+                console.log(this.type);
+            }
+        }
+
+        function Dog(type,name) {
+            Animal.call(this,type);
+            this.name = name;
+        }
+
+        Dog.prototype.print = function () {
+            console.log(this.name);
+        }
+
+        var dog = new Dog('dog','gougou');
+        dog.print();
+    </script>
+</body>
+
+</html>

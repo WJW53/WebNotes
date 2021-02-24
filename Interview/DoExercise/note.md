@@ -1097,7 +1097,7 @@ console.log(Object.getOwnPropertyDescriptor(window, "document"));//configurable�
 不断的setInterval监测就行了
 
 ## Function
-`Function是JS引擎启动的时候直接放到内存当中的,其他的所有对象都是通过new 构造函数来创建的`
+`Function是JS引擎启动的时候直接放到内存当中的,其他的所有对象都是通过new 函数来创建的`
 
 ## console.log与dir
 ```js
@@ -1127,16 +1127,148 @@ console.dir(Function.prototype);
 
 
 ## ES5和ES6实现继承的区别
-**ES5的继承：实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面(Parent.apply(this));**
+**ES5的继承：实质是先创造子类的实例对象this，然后再将父类的属性/方法添加到this上面(Parent.apply(this));**
 
-**ES6的继承：实质是先创造父类的实例对象this(所以必须先在constructor内调用super()方法),然后再用子类的构造函数修改this**
+**ES6的继承：实质是先创造父类的实例对象this(所以必须先在constructor内调用super()方法,否则使用this会报错),然后再用子类的构造函数修改this**
 
-由此可以看出：
+类的prototype属性和__proto__属性:
+
+大多数浏览器的ES5实现之中，每一个对象都有__proto__属性，指向对应的构造函数的prototype属性。`Class作为构造函数的语法糖，同时有prototype属性和__proto__属性，因此同时存在两条继承链`。即：
 
 1. 子类的 __proto__ 属性，表示构造函数的继承，总是指向父类。
 2. 子类 prototype 属性的 __proto__ 属性，表示方法的继承，总是指向父类的 prototype 属性。
 
-`另：ES6 可以自定义原生数据结构（比如Array、String等）的子类，这是 ES5 无法做到的。`
+`另：ES6 可以继承原生数据结构（比如Array、String等）的构造函数，这是 ES5 无法做到的。`
 
 
-## 
+## 手写reduce
+
+MDN文档（reduce）：
+以下是自我理解：
+- reduce方法接受两个参数
+
+    1. 回调函数callback参数有四个
+
+        - total 累加值，每次执行回调执行返回的值。
+        - item 当前需要处理值
+        - index 当前值索引 （可选）
+        - arr  当前数组 （可选）
+
+
+    2. initialValue 默认值 （可选）
+
+    -   如果传递initialValue第一次从索引0开始 首次返回默认值，如果没有提供初始值，则将使用数组中的第一个元素
+    -   在没有默认值的空数组调用reduce会报错
+
+```js
+Array.prototype.myReduce = function (callback) {
+    const initVal = arguments[1] ? arguments[1] : "";//获取默认值
+    const len = this.length;//数组的长度
+    if (!len && !initVal) {//没有默认值并且空数组就会报错
+        throw new Error("'Rudece of empty array with no initial value'")
+    }
+    if (!len) {
+        return initVal;//空数组不执行回调函数
+    }
+    let total = initVal ? initVal : this[0];//是否有默认值,没有就取第一项
+    let i = initVal ? 0 : 1;
+    while (i < len) {
+        total = callback(total, this[i], i, this);//更新每次累加的值
+        i++;
+    }
+    return total;
+}
+```
+
+## 如何禁用缓存
+
+在coding的过程中，页面请求经常会因为缓存问题造成一些问题，下面记录几种避开缓存的问题。
+- 1. **在请求的url后面拼接随机数或者是时间戳**
+- 2. 对于ajax请求，**将get请求改为post请求，post请求不经过缓存**
+
+## 说说HTTP/3.0
+
+尽管HTTP/2解决了很多1.1的问题，但HTTP/2仍然存在一些缺陷，这些缺陷并不是来自于HTTP/2协议本身，而是来源于底层的TCP协议，我们知道TCP链接是可靠的连接，如果出现了丢包，那么整个连接都要等待重传，`HTTP/1.1可以同时使用6个TCP连接，一个阻塞另外五个还能工作，但HTTP/2只有一个TCP连接，阻塞的问题便被放大了`。
+
+由于TCP协议已经被广泛使用，我们很难直接修改TCP协议，基于此，**HTTP/3选择了一个折衷的方法——UDP协议，`HTTP/2在UDP的基础上`实现多路复用、0-RTT、TLS加密、流量控制、丢包重传等功能**。
+
+## HTTP/2与HTTP/3
+
+https://blog.csdn.net/howgod/article/details/102597450?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.control
+
+## svg和canvas
+`都是脱离文档流，而且他俩层级是最高的，他俩的谁更高？一样高，代码靠后胜出。`
+
+## CSS响应式布局
+不同的设备，比例都一样，正常显示
+
+## 局部作用域和块级作用域
+1.相同点
+都是只可以在局部被访问。
+2.不同点
+a. 局部范围不同
+局部作用域 : 仅限于 ‘函数体’ 内部声明的变量
+块级作用域 : 一切大括号{} 内部使用let/const声明的变量
+b. 优先级不同(执行上下文不同)
+局部作用域优先级 > 块级作用域 (在函数体大括号内部，无论使用什么关键字声明var/let/const都是局部作用域)
+c. 预解析规则不同
+var : 显示变量提升。 （在声明前可以访问变量，获取的是undefined）
+js编译器在预解析阶段,会把变量的声明提升到当前作用域最顶端，赋值语句还是在原地
+let : 隐式变量提升。 （在声明前不可以访问变量，会报错）
+变量的声明也会提前，但是不允许被访问
+暂时性死区(隐式变量提升)。一旦在当前作用域使用let,则js编译器在预解析阶段会将该变量"绑定"这个作用域,不受任何外部影响 
+
+
+## with的两大弊端
+1. 泄露变量到全局作用域
+2. 导致性能下降
+这是为什么呢？
+
+原因是 JavaScript 引擎会在编译阶段进行数项的性能优化。其中有些优化依赖于能够根据代码的词法进行静态分析，并预先确定所有变量和函数的定义位置，才能在执行过程中快速找到标识符。
+
+但如果引擎在代码中发现了 with，它只能简单地假设关于标识符位置的判断都是无效的，因为无法知道传递给 with 用来创建新词法作用域的对象的内容到底是什么。
+
+## JSON.stringify()内部处理
+
+JSON.stringify():将value(Object,Array,String,Number...)序列化为JSON字符串
+JSON.parse():将JSON数据解析为js原生值
+toJSON(), 作为JSON.stringify中第二个参数(函数过滤器)补充 ,理解内部顺序很重要。
+假设把一个对象传入JSON.stringify() 序列化对象的顺序如下：
+- (1) 如果存在toJSON()方法而且能通过它取得有效的值，则调用该方法。否则，按默认顺序执行序列化
+- (2) 如果提供了第二个参数，应用这个函数过滤器，传入的函数过滤器的值是第(1)步返回的值。
+- (3) 对第(2)步 返回的每个值进行相应的序列化。
+- (4) 如果提供了第三个参数，执行相应的格式化操作。
+JSON.toJSONString():对象转JSON字符串。
+ 
+
+
+1. JSON.stringify() 将值转换为相应的JSON格式：
+2. `转换值如果有 toJSON() 方法，该方法定义什么值将被序列化。`
+3. 非数组对象的属性不能保证以特定的顺序出现在序列化后的字符串中。
+4. 布尔值、数字、字符串的包装对象在序列化过程中会自动转换成对应的原始值。
+5. **undefined、任意的函数以及 symbol 值，在序列化过程中会被忽略(出现在非数组对象的属性值中时)**或者被转换成 null（出现在数组中时）。函数、undefined 被单独转换时，会返回 undefined，如JSON.stringify(function(){}) or JSON.stringify(undefined).
+6. `对包含循环引用的对象（对象之间相互引用，形成无限循环）执行此方法，会抛出错误`
+7. 所有以 symbol 为属性键的属性都会被完全忽略掉，即便 replacer 参数中强制指定包含了它们。
+8. Date 日期调用了 toJSON() 将其转换为了 string 字符串（同Date.toISOString()），因此会被当做字符串处理。
+9. NaN 和 Infinity 格式的数值及 null 都会被当做 null。
+10. 其他类型的对象，包括 Map/Set/WeakMap/WeakSet，仅会序列化可枚举的属性。
+
+
+## requestAnimationFrame
+
+requestAnimationFrame是一个单回调，和setTimeout差不多区别是：setTimeout的时间是你指定的requestAnimationFrame你不用写时间，它的重绘时间间隔是根据不同浏览器的刷新频率自行脑补的- -所以有严重兼容问题，记得有封装好的处理兼容的函数。
+
+`W3C 标准，requestAnimationFrame在浏览器每次刷新页面之前执行`(之前是何时？浏览器刷新频率才知道，不归你管)
+
+## 重写valueOf达到判断改变
+```js
+var a = {
+    num:0,
+    valueOf:function(){
+        return ++this.num;
+    }
+}
+if(a==1&&a==2&&a==3){
+    console.log('小样儿');
+}
+```

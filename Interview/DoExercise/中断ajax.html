@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 停止javascript的ajax请求有两种方式
+
+        // 1. 设置超时时间让ajax自动断开
+
+        // 2. 手动去停止ajax请求，
+
+        // 核心是调用XMLHttpRequest对象上的abort方法
+
+        // 我们以jquery举例说明：
+
+        // jquery的ajax对象的abort方法： 调用abort后jquery会执行error的方法， 抛出abort的异常信息， 
+        // 此时即可执行我们中断ajax后的操作。
+
+        var ajax = $.ajax({
+            'error': function (jqXHR, textStatus, errorThrown) {
+                if (errorThrown != 'abort') {//这儿作者是不是写错了,应该是相等吧..
+                    //ajax被调用abort后执行的方法
+                    alert('您的ajax方法被停止了');
+                }
+            }
+        })
+
+        ajax.abort(); //停止ajax
+        // 注意： 不要用abort方法来作为终止对服务器的请求操作， 只能当做在前端页面立刻停止执行ajax成功后的方法， 
+        // 因为你执行abort方法后， ajax很可能已经对服务端发送了请求， 只是还未返回回馈信息而已。
+
+
+
+        //原生JS
+        xmlHttp.open("POST", "Url", true);
+        xmlHttp.onreadystatechange = function () {
+            // ... //得到响应之后的操作
+        }
+        xmlHttp.send();
+        //设置3秒钟后检查xmlHttp对象所发送的数据是否得到响应.
+        setTimeout(CheckRequest, 3000);
+
+        function CheckRequest() {
+            //为4时代表请求完成了
+            if (xmlHttp.readyState != 4) {
+                alert('数据响应超时');
+                //关闭请求
+                xmlHttp.close();
+            }
+        } //根据响应状态的改变关闭
+    </script>
+</body>
+
+</html>

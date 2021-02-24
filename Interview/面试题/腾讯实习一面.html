@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //         笔试题
+        // 1. 生成长度为n的int型随机数组，数组元素范围为0~n-1，每个元素都是唯一的。
+        function suiji(n) {
+            let res = [];
+            for (let i = 0; i < n; i++) {
+                let temp = Math.floor(Math.random() * n);
+                while (res.indexOf(temp) > -1) {
+                    temp = Math.floor(Math.random() * n);
+                }
+                res.push(temp)
+            }
+            console.log(res);
+        }
+        suiji(10);
+
+        // 2. 给两个大整数, 用字符串表示, 比如"2154365543", "4332656442", 都可能超过1万位,
+        // 写一个函数输出他们之和. 需要自己实现加法过程, 不能用某些语言自带的高精度加法函数.
+        function addBigInt(x, y) {
+            let l1 = x.length,
+                l2 = y.length,
+                l = l1 <= l2 ? l2 : l1;
+            if (l1 > l2) {
+                y = y.padStart(l,"0");//因为这是新的字符串
+            }else{
+                x = x.padStart(l,"0");
+            }
+            let add = 0,
+                res = "",
+                temp = 0;
+            for (let i = l - 1; i >= 0; i--) {
+                temp = (+x[i]) + (+y[i]) + add;
+                add = temp >= 10 ? 1 : 0;
+                temp %= 10;
+                res = temp + res;
+            }
+            if (add) {//如果最后还有进位
+                res = 1 + res;
+            }
+            return res;
+        }
+        let result = addBigInt("2154365543",
+            "18332656442");
+        console.log(result);
+
+
+        // 面试题：
+        // display：none和visibility：hidden区别，在渲染效率上的区别
+        //1. display:none它的以及它所有后代元素都会隐藏，隐藏后的元素无法点击(本质是无法响应任何事件)，占据的空间消失，会导致回流
+            //无法获取焦点,不耽误form表单提交数据
+        //2. visibility: hidden仅在视觉上隐藏,但占据的空间依然存在,且visibility具有继承性,但如果子元素重新visible则会重新显示
+            //不会导致回流,不会影响计数器(CSS中的counter),不耽误form表单提交数据
+            //也无法获取焦点,但是可在冒泡阶段响应事件,
+        //3. CSS3的transition属性支持visibility属性但并不支持display,由于transition可以延迟执行,因此可以配合
+            //visibility使用纯css实现hover延时显示效果,提高用户体验
+
+
+        // 盒模型
+        //window.getComputedStyle(dom).width/height获取元素宽高,兼容性较好
+        //dom.currentStyle.width/height获取到的是元素渲染之后的宽高，是准确的，但只限于IE使用
+        //父子嵌套元素在垂直方向上的margin塌陷，也就是结合在一起，如果同符号，则取margin中的绝对值最大值，异号则取相加后的绝对值
+        //通过触发BFC解决，比如：overflow:hidden,display:inline-block,position:absolute/fixed,float:left/right
+        //兄弟结构元素在垂直方向上的margin合并，也就是哥哥弟弟间的距离为同号取绝对值最大值,异号则相加后取绝对值
+        //给弟弟套上一层div并且该div设置overflowhidden即可解决；或者给兄弟均套上一层div，但更改了HTML，不好
+        //所以平常只设置，哥哥的margin-bottom即可
+
+
+        // get和post的区别
+        // 
+
+
+        // 闭包的原理和用处
+        // 浏览器渲染原理
+        // css选择器权重
+    </script>
+</body>
+
+</html>

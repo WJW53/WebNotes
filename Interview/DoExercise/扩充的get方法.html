@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Object.prototype.get = function (path) {
+            if (path === undefined) {
+                return undefined;
+            }
+            let arr = path.split(".");
+            if (arr.length === 0) {
+                return undefined;
+            }else {
+                return arr.reduce((res, cur, idx) => {
+                    return idx !== 0 ? res[cur] : this[res];
+                }, arr[0]);
+            }
+        }
+        // 为 object 扩充一个 get 方法，传入属性名（支持深层属性例如: b.x），返回对应的属性值。
+        const obj = {
+            a: 1,
+            b: {
+                x: 2,
+                y: [3, 4, 5]
+            }
+        };
+        console.log(obj.get()); // return undefined
+        console.log(obj.get('')); // return undefined
+        console.log(obj.get('a')); // return 1
+        console.log(obj.get('c')); // return undefined
+        console.log(obj.get('b.x')); // return 2
+        console.log(obj.get('b.y.1')); // return 4
+        console.log(obj.get('d.a')); // TypeError
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //解决深拷贝中因为循环引用造成的死循环问题（使用数组方法）：
+        //其实就是循环检测，我们设置一个数组或者哈希表存储已拷贝过的对象，
+        //当检测到当前对象已存在于哈希表中时，取出该值并返回即可。
+
+        function find(arr, item) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].source === item) {
+                    return arr[i]
+                }
+            }
+            return null;
+        }
+
+        function isObject(obj) {
+            return typeof obj === 'object' && obj != null;
+        }
+
+        function deepClone(source, uniqueList) {
+            if (!isObject(source)) return source;
+
+            if (!uniqueList) uniqueList = []; //   初始化数据
+
+            var target = Array.isArray(source) ? [] : {};
+
+            var uniqueData = find(uniqueList, source);
+            if (uniqueData) return uniqueData.target;
+
+
+            uniqueList.push({
+                source: source,
+                target: target
+            });
+
+            for (var key in source) {
+                if (Object.prototype.hasOwnProperty.call(source, key)) {
+                    if (isObject(source[key])) {
+                        target[key] = deepClone(source[key], uniqueList) // 传入缓存数组
+                    } else {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        }
+
+
+        //方法二：使用WeakMap
+        const cloneDeep1 = (target, hash = new WeakMap()) => {
+            // 对于传入参数处理
+            if (typeof target !== 'object' || target === null) {
+                return target;
+            }
+            // 哈希表中存在直接返回
+            if (hash.has(target)) return hash.get(target);
+
+            const cloneTarget = Array.isArray(target) ? [] : {};
+            hash.set(target, cloneTarget); //哈希表存储该对象
+
+            // 针对Symbol属性
+            const symKeys = Object.getOwnPropertySymbols(target);
+            if (symKeys.length) {
+                symKeys.forEach(symKey => {
+                    if (typeof target[symKey] === 'object' && target[symKey] !== null) { //只要是对象
+                        cloneTarget[symKey] = cloneDeep1(target[symKey], hash); //就深度克隆
+                    } else {
+                        cloneTarget[symKey] = target[symKey];
+                    }
+                })
+            }
+
+            for (const i in target) {
+                if (Object.prototype.hasOwnProperty.call(target, i)) {
+                    cloneTarget[i] =
+                        typeof target[i] === 'object' && target[i] !== null ?
+                        cloneDeep1(target[i], hash) :
+                        target[i];
+                }
+            }
+            return cloneTarget;
+        }
+
+
+
+        var a = {
+            name: "key1",
+            eat: [
+                "苹果",
+                "香蕉"
+            ]
+        }
+        a.eat[2] = "桃";
+        a.d = a;
+        b = deepClone(a);
+        // b = cloneDeep1(a);//放这里检验是否死循环了,没报错就ok了
+        console.log(a);
+        console.log(b);
+        // a.d = null;
+        // b.d = null;
+        // console.log(a);
+        // console.log(b);
+    </script>
+</body>
+
+</html>

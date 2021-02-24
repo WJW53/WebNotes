@@ -107,7 +107,7 @@ const MyPromise = (function () {
             //     }).then(() => { throw error });
             // });
             return this.then(data => MyPromise.resolve(callback(data)).then(() => data),
-                error => MyPromise.resolve(callback(error)).then(() => { throw error }))
+                error => MyPromise.resolve(callback(error)).then(() => { throw error }));
         }
 
         static resolve(data) {
