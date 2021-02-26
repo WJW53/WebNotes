@@ -32,9 +32,9 @@
                 l2 = y.length,
                 l = l1 <= l2 ? l2 : l1;
             if (l1 > l2) {
-                y = y.padStart(l,"0");//因为这是新的字符串
-            }else{
-                x = x.padStart(l,"0");
+                y = y.padStart(l, "0"); //因为这是新的字符串
+            } else {
+                x = x.padStart(l, "0");
             }
             let add = 0,
                 res = "",
@@ -45,7 +45,7 @@
                 temp %= 10;
                 res = temp + res;
             }
-            if (add) {//如果最后还有进位
+            if (add) { //如果最后还有进位
                 res = 1 + res;
             }
             return res;
@@ -58,12 +58,12 @@
         // 面试题：
         // display：none和visibility：hidden区别，在渲染效率上的区别
         //1. display:none它的以及它所有后代元素都会隐藏，隐藏后的元素无法点击(本质是无法响应任何事件)，占据的空间消失，会导致回流
-            //无法获取焦点,不耽误form表单提交数据
+        //无法获取焦点,不耽误form表单提交数据
         //2. visibility: hidden仅在视觉上隐藏,但占据的空间依然存在,且visibility具有继承性,但如果子元素重新visible则会重新显示
-            //不会导致回流,不会影响计数器(CSS中的counter),不耽误form表单提交数据
-            //也无法获取焦点,但是可在冒泡阶段响应事件,
+        //不会导致回流,不会影响计数器(CSS中的counter),不耽误form表单提交数据
+        //也无法获取焦点,但是可在冒泡阶段响应事件,
         //3. CSS3的transition属性支持visibility属性但并不支持display,由于transition可以延迟执行,因此可以配合
-            //visibility使用纯css实现hover延时显示效果,提高用户体验
+        //visibility使用纯css实现hover延时显示效果,提高用户体验
 
 
         // 盒模型
@@ -77,12 +77,66 @@
 
 
         // get和post的区别
-        // 
+        // 如果没有任何前提，不使用任何规范的话，只考虑语法和理论上的http协议，则几乎没区别，只有名字不同
+        // 如果是基于RFC规范的：
+        //1. 理论上：GET/POST具有相同的语法，不同的语义，get用来获取数据，post用来发送数据。
+        //2. 实践上：各种浏览器就是这种规范的实现者
+        //常见不同：
+        //1. url中是否可见
+        //2. 长度限制
+        //3. get请求的数据可以收藏为书签,而post不可以
+        //4. get后,后退刷新不影响,但post会重新提交数据
+        //5. 编码类型不同
+        //6. get的历史参数会保留在浏览器中,而post不会
+        //7. get只允许ascll码,而post没有编码限制,允许发二进制的
+        //8. get方法相对post更不安全,但实际上都是不安全的.
 
 
         // 闭包的原理和用处
+        // 原理：只要内部函数被保存到外部就一定会生成闭包
+        // 问题：会导致原有作用域链不释放,内存泄漏
+        // 场景：累加器、私有化变量、可以做缓存、可以模块化开发(避免污染全局变量)、配合IIFE为节点绑定事件
+        // 还有设计模式中的构造器模式
+        // 构造器模式
+        function Car(model, year, miles) {
+            this.model = model;
+            this.year = year;
+            this.miles = miles;
+
+            Car.prototype.toString = function () {
+                return this.model + 'has done ' + this.miles + ' miles';
+            }
+        }
+
+        var civic = new Car('honda civic', 2019, 2000);
+        console.log(civic.toString());
+
+
+
+
         // 浏览器渲染原理
+        //1. 处理HTML并构建DOM树
+        //2. 处理CSS并构建CSSOM树
+        //3. 将DOM与CSSOM合并成一个渲染树RenderTree(根据可视化节点和style rules结合出来的树)
+        //4. 根据render tree来布局,计算每个节点的具体位置等
+        //5. 调用GPU绘制,合成图层,显示在屏幕上
+        // 通过以下几个常用属性可以生成新图层:
+        // 3 D 变换： translate3d、 translateZ
+        // will - change
+        // video、 iframe 标签
+        // 通过动画实现的 opacity 动画转换
+        // position: fixed
+
+
+
         // css选择器权重
+        // !important --> infinity
+        // 行间是1000
+        // id是100
+        // 类伪类属性是10
+        // 元素伪元素是1
+        // 通配符是0
+        // 最后,值相同,代码靠后书写胜出
     </script>
 </body>
 

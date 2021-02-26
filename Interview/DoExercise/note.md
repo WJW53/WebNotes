@@ -1030,7 +1030,7 @@ str.substring(6); //Tony
 如果构造函数内部有return语句，而且return后面跟着一个对象，new命令会返回return语句指定的对象；否则，就会不管return语句，返回this对象.
 
 ```js
-function _New(constructor, params) {
+function _New(constructor, ...params) {
   // 将 arguments 对象转为数组
   let args = [].slice.call(params);
   // 创建一个空对象,指向构造函数的原型
@@ -1272,3 +1272,253 @@ if(a==1&&a==2&&a==3){
     console.log('小样儿');
 }
 ```
+
+## Promise和async/await的区别
+1. Promise是ES6，async/await是ES2017/ES8出现的
+2. async/await相对于Promise来讲，写法更加简洁、优雅
+3. reject状态：
+    1）promise错误可以通过catch来捕捉，建议尾部捕获错误，
+    2）async/await既可以用.then又可以用try-catch捕捉
+4. 是一种语法糖,相当强大啊,但它并不能完全取代PromiseAPI,比如在setTimeout中return时,所以需要我们改造计时器函数
+5. 调试
+　async/await能够使得代码调试更简单。2个理由使得调试Promise变得非常痛苦:
+
+　《1》不能在返回表达式的箭头函数中设置断点
+　《2》如果你在.then代码块中设置断点，使用Step Over快捷键，调试器不会跳到下一个.then，因为它只会跳过异步代码。
+
+　　　使用await/async时，你不再需要那么多箭头函数，这样你就可以像调试同步代码一样跳过await语句。
+
+## UTF-8&GBK
+
+为什么url需要encode
+
+## 很多人不知道的是，重绘和回流其实和 Event loop 有关
+
+https://www.jianshu.com/p/76bb929eae01
+
+当 Event loop 执行完Microtasks 后，会判断 document 是否需要更新。因为浏览器是 60Hz 的刷新率，每 16ms 才会更新一次。
+然后判断是否有 resize 或者 scroll ，有的话会去触发事件，所以 resize 和 scroll 事件也是至少 16ms才会触发一次，并且自带节流功能。
+判断是否触发了 media query
+更新动画并且发送事件
+判断是否有全屏操作事件
+执行 requestAnimationFrame 回调
+执行 IntersectionObserver 回调，该方法用于判断元素是否可见，可以用于懒加载上，但是兼容性不好
+更新界面
+以上就是一帧中可能会做的事情。如果在一帧中有空闲时间，就会去执行 requestIdleCallback 回调
+
+常见的引起重绘的属性
+```
+color
+border-style
+visibility
+background
+text-decoration
+background-image
+background-position
+background-repeat
+outline-color
+outline
+outline-style
+border-radius
+outline-width
+box-shadow
+background-size
+```
+
+常见引起回流属性和方法
+`任何会改变元素几何信息(元素的位置和尺寸大小)的操作，都会触发重排`，下面列一些栗子
+
+添加或者删除可见的DOM元素；
+元素尺寸改变——边距、填充、边框、宽度和高度
+内容变化，比如用户在input框中输入文字
+浏览器窗口尺寸改变——resize事件发生时
+计算 offsetWidth 和 offsetHeight 属性
+设置 style 属性的值
+
+
+## 高阶函数
+满足以下两点任意一点即可：
+1. 如果一个函数接收1个或多个函数作为参数
+2. 函数内部 return 一个函数
+
+
+## 如果v-for和v-if非要放在一起使用
+
+应该没有bug，除了会报警告，反正我暂时不知道
+
+## canvas和svg
+
+Canvas 和 SVG 都允许您在浏览器中创建图形，但是它们在根本上是不同的。
+
+Canvas
+描述：
+
+通过Javascript来绘制2D图形。
+是逐像素进行渲染的。
+其位置发生改变，会重新进行绘制。
+SVG
+描述：
+
+一种使用XML描述的2D图形的语言
+SVG基于XML意味着，SVG DOM中的每个元素都是可用的，可以为某个元素附加Javascript事件处理器。
+在 SVG 中，每个被绘制的图形均被视为对象。如果 SVG 对象的属性发生变化，那么浏览器能够自动重现图形。
+比较
+Canvas
+
+依赖分辨率
+不支持事件处理器
+弱的文本渲染能力
+能够以 .png 或 .jpg 格式保存结果图像
+最适合图像密集型的游戏，其中的许多对象会被频繁重绘
+SVG
+
+不依赖分辨率
+支持事件处理器
+最适合带有大型渲染区域的应用程序（比如谷歌地图）
+复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）
+不适合游戏应用
+
+
+## css gpu加速
+ filter属性，
+
+ transform属性，
+
+(尽量使用带Z的3D属性，        浏览器会在页面渲染前为3D属性创建独立复合图层，在运行时为2D属性创建，所以如果是2D会在动画开始和技术依然检测到重绘)
+
+ opacity属性会使用gpu加速，
+
+  好处是不会引起repait（重绘），完全由GPU处理，传统的动画中，比如用left 然后relative来处理，会引起重绘。
+
+
+## 水平和垂直均居中
+
+     1>     方案一 inline-block+text-align+table-cell+vertical-align
+
+              .parent {text-align:center;display:table-cell;vertical-align:middle;}
+
+              .child {display:inline-block;}
+
+     2>     方案二 absolute+transform
+
+              .parent {position:relative;}
+
+              .child { position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);}
+
+     3>     方案三 flex+justify-content+align-items
+
+              .parent {display:flex;justify-content:center;align-items:center;}
+
+
+## for-of与for-in
+
+1. for-in可以遍历数组或对象的可枚举属性
+2. for-of不能遍历对象，因为for-of是用在可迭代对象上，也就是Array,Map,Set,String,arguments,TypedArray,NodeList等，遍历的是值而不是键
+
+## 什么是可迭代对象
+
+凡是部署了`Symbol.iterator`属性(这个属性值得是一个迭代器函数,也就是该函数返回一个迭代器),都称之为部署了迭代器接口,返回一个迭代器对象,对于原生数据结构部署了Iterator接口,`for...of...`会自动去遍历,如果没有的话,比如普通对象,就需要自己在Symbol.iterator属性上面部署
+
+## JS中的迭代器
+
+`**JS规定, 如果一个对象具有next方法, 并且该方法返回一个对象, 该对象的格式如下:**`
+
+```js
+{value: 值, done: 是否迭代完成}
+```
+
+则认为该对象是一个迭代器
+
+含义：
+
+- next方法：用于得到下一个数据
+- 返回的对象
+  - `value：下一个数据的值`
+  - done：boolean(迭代是否完成)
+
+## 迭代器创建函数
+```js
+// 迭代器创建函数  iterator creator
+        function createIterator(arr) {
+            let i = 0;//当前的数组下标
+            return { 
+                next() {
+                    var result = {
+                        value: arr[i],
+                        done: i >= arr.length
+                    }
+                    i++;
+                    return result;
+                }
+            }
+        }
+```
+
+
+## 扩展Function
+```js
+Function.prototype.method=function (name,fn) {//（函数名称，函数本身）
+   this.prototype[name]=fn;
+   return this;//链式调用关键
+};//这个函数的意思：为function对象增加函数，会用链式调用，链式调用有两个参数name,和fn
+
+//使用的时候:
+_$.method("AddEvent",function (type,fn) {//_$本身是一个functionm,它想要继承原型链上的东西
+  fn();
+}).method("getEvent",function (fn,e) {
+  fn();
+})
+```
+
+## Vue中computed/watch/methods的区别
+
+首先它们(不包括methods)都是以Vue的依赖追踪机制为基础的，它们的共同点是：都是希望在依赖数据发生改变的时候，被依赖的数据根据预先定义好的函数，发生“自动”的变化。
+
+相比于watch/computed，**methods不处理数据逻辑关系，只提供可调用的函数**
+
+
+computed:
+
+1. 支持缓存并且默认会取缓存，只有当依赖数据发生改变，才会重新计算
+2. 不支持异步，当computed内有异步操作时无法监听数据的变化
+3. 基于响应式依赖进行缓存的，即基于data、props中声明过的数据通过计算得到
+4. 通常应用在多个属性通过复杂计算得到一个数据时
+5. 若computed中的属性的属性值是函数，则默认会取get方法，return值即为该属性的属性值。当数据变化时，默认调用set
+
+watch：
+
+1. 不支持缓存，数据更改就会触发回调,监听的属性也必须是data、props中声明过的数据
+2. 支持异步
+3. 监听函数有两个参数，第一个是最新值，第二个是旧值
+4. 通常应用在一个数据影响多个数据使用, watch 选项允许我们执行异步操作 ( 访问一个 API )，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。这些都是计算属性无法做到的
+5. 监听的对象除了可以配置回调函数外，还可以配置两个参数，
+    immediate: 组件加载立即触发回调函数执行
+    deep: 深度监听，为了发现对象内部值的变化，对复杂类型的对象使用
+**注意：deep监听不到数组的变动和对象的新增，参考vue数组变异，只有以响应式的方式触发才会被监听到**
+监听的对象也可以写成字符串形式
+
+`当需要在数据变化时执行异步或者开销较大的操作时，用watch，请勿滥用`
+
+
+## vue有哪些指令
+
+1、v-if：根据表达式的值的真假条件渲染元素。在切换时元素及它的数据绑定 / 组件被销毁并重建。
+2、v-show：根据表达式之真假值，切换元素的 display CSS 属性。
+3、v-for：循环指令，基于一个数组或者对象渲染一个列表，vue 2.0以上必须需配合 key值 使用。
+4、v-bind：动态地绑定一个或多个特性，或一个组件 prop 到表达式。
+5、v-on：用于监听指定元素的DOM事件，比如点击事件。绑定事件监听器。
+6、v-model：实现表单输入和应用状态之间的双向绑定
+7、v-pre：跳过这个元素和它的子元素的编译过程。可以用来显示原始 Mustache 标签。跳过大量没有指令的节点会加快编译。
+8、v-once：只渲染元素和组件一次。随后的重新渲染，元素/组件及其所有的子节点将被视为静态内容并跳过。这可以用于优化更新性能。
+9、v-text和{{}}表达式渲染数据，不解析标签。
+10、v-html不仅可以渲染数据，而且可以解析标签。　
+
+## vue的优点
+
+Vue是一套用于构建用户界面的渐进式的JavaScript框架。
+
+1. 体积小：压缩后只有33k；
+2. 更高的运行效率：基于虚拟DOM，一种可以预先通过JavaScript进行各种计算，把最终的DOM操作计算出来并优化的技术，由于这种DOM操作属于预处理操作，并没有真实的操作DOM，所以叫做虚拟DOM；而jQuery是需要一直操作真实DOM的
+3. 双向数据绑定：让开发者不用再去操作DOM对象，把更多的精力投入到业务逻辑上；
+4. 生态丰富、学习成本低(相比于react、angular容易上手)：市场上拥有大量成熟、稳定的基于vue.js的ui框架及组件，拿来即用实现快速开发；对初学者友好、入门容易、学习资料多；
+5. 和其他框架一样，Vue允许你将一个网页分割成可复用的组件，每个组件都包含属于自己的HTML、CSS、JavaScript，以用来渲染网页中相应的地方。如果我们构建了一个大型的应用，可能需要将东西分割成为各自的组件和文件，使用Vue的命令行工具，使快速初始化一个真实的工程变得非常简单。 

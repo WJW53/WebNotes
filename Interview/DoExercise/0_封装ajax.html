@@ -35,7 +35,7 @@
             if(typeof options.async !== "boolean"){//默认异步
                 options.async = true;
             }
-            options.type = options.type.toUpperCse();
+            options.type = options.type.toUpperCase();
 
     //如果网络非常非常快,执行send的瞬间就完成了请求,而且后端也给我们返回了数据
             //这时我们就可能监听不到属性变化了,所以要在建立连接之前绑定事件

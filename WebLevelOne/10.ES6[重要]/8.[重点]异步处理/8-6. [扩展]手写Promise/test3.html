@@ -41,7 +41,7 @@
         }, err => {
             console.log("有失败的", err);
         })
-        //
+        
         const pro1 = MyPromise.race(proms);
         pro1.then(datas => {
             console.log("有一个完成", datas);
