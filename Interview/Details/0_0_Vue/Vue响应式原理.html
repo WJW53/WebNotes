@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //监听数据变化,递归监听,页面渲染
+        //利用Object.defineProperty实现响应式的劣势
+        //1. 天生就需要递归
+        //2. 监听不到数组不存在的索引的改变
+        //      事实上vue是直接不能监听到利用数组索引改变的,因为耗费的性能和用户体验不成正比
+        //      vue中先判断data是不是数组,如果是就不用defineReactive方法了,然后重新改写数组方法,做一些处理
+        //3. 监听不到对象的增删
+        //4. 监听不到数组长度的改变
+
+
+        const data = {
+            name: 'wujingwei',
+            age: 21,
+            W: {
+                name: 'wjw',
+                age: 18,
+                obj: {}
+            },
+            arr: [1, 2, 3]
+        }
+
+        const arrayProto = Array.prototype; //
+        const arrayMethods = Object.create(arrayProto); //克隆原型,避免污染真正的原型
+        ['push', 'pop', 'shift', 'unshift', 'splice', 'reverse', 'sort'].forEach((method) => {
+            arrayMethods[method] = function () { //重新改写
+                arrayProto[method].call(this, ...arguments);
+                render(); //再重新渲染
+            }
+        });
+
+        function defineReactive(data, key, value) {
+            observer(value); //深度监听,递归
+            Object.defineProperty(data, key, {
+                get() {
+                    return value;
+                },
+                set(newValue) {
+                    if (newValue === value) {
+                        return;
+                    }
+                    value = newValue;
+                    render();
+                }
+            })
+        }
+
+        function observer(data) {
+            if (data === undefined || typeof data !== 'object') return;
+            //数组
+            if (Array.isArray(data)) {
+                data.__proto__ = arrayMethods;
+                return;
+            }
+            for (let key in data) {
+                defineReactive(data, key, data[key]);
+            }
+
+        }
+
+        function render() {
+            console.log('页面渲染啦');
+        }
+
+        function $set(data, key, value) {
+            if (Array.isArray(data)) {
+                data.splice(key, 1, value); //从key处开始插入一个值,value
+                render();
+                return value;
+            }
+            defineReactive(data, key, value);
+            render();
+            return value;
+        }
+
+        function $delete(data, key) {
+            if (Array.isArray(data)) {
+                data.splice(key, 1);
+            }
+            delete data[key];
+            render();
+            return;
+        }
+
+        observer(data);
+
+        data.name = 'wjw';
+        data.arr.push(4);
+        data.W.age = 17;
+        $set(data.W.obj,"objWjw",'obj_wjw');
+        console.log(data);
+    </script>
+</body>
+
+</html>

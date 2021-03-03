@@ -7,7 +7,7 @@ const btn = document.querySelector("button");
 btn.onclick = async function() {
   //动态加载
   //import 是ES6的草案,也就是说还没有成为标准,但是webpack是认的
-  //浏览器会使用JSOP的方式远程(也就是会异步)去读取一个js模块,也会缓存下来的
+  //浏览器会使用JSONP的方式远程(也就是会异步)去读取一个js模块,也会缓存下来的
   //import()会返回一个promise   （* as obj）,所以我们可以使用async&await
 
   // const { chunk } = await import(/* webpackChunkName:"lodash" */"lodash-es");//为这个chunk命名
