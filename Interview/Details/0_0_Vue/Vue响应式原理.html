@@ -76,11 +76,9 @@
         function $set(data, key, value) {
             if (Array.isArray(data)) {
                 data.splice(key, 1, value); //从key处开始插入一个值,value
-                render();
                 return value;
             }
             defineReactive(data, key, value);
-            render();
             return value;
         }
 

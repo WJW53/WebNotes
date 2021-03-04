@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function isObject(obj) {
+            if (typeof obj === 'object' && obj !== null) return true;
+            else return false;
+        }
+
+        //也解决了解决循环引用导致的死循环问题 和 Symbol的拷贝
+        function deepClone(target, hash = new WeakMap()) {
+            if (!isObject(target)) return target; //不是对象
+            if (hash.has(target)) return hash.get(target); //hash中有
+            const cloneTarget = Array.isArray(target) ? [] : {}; //区别对待
+            hash.set(target, cloneTarget); //hash存储
+
+            //针对Symbol属性拷贝
+            const symKeys = Object.getOwnPropertySymbols(target);
+            if (symKeys.length) {
+                symKeys.forEach((key) => {
+                    if (isObject(target[key])) {
+                        cloneTarget[key] = deepClone(target[key], hash);
+                    } else {
+                        cloneTarget[key] = target[key];
+                    }
+                });
+            }
+
+            for (const i in target) {
+                if (Object.prototype.hasOwnProperty.call(target, i)) {
+                    cloneTarget[i] = isObject(i) ? deepClone(target, hash) : target[i];
+                }
+            }
+
+            return cloneTarget;
+        }
+
+        var fn = Symbol("fn");
+        var a = {
+            name: "key1",
+            eat: [
+                "苹果",
+                "香蕉"
+            ],
+            [fn](){
+                console.log('typeof fn: ' + typeof fn);
+            }
+        }
+        a.eat[2] = "桃";
+        a.d = a;
+        b = deepClone(a);
+        //放这里检验是否死循环了,没报错就ok了
+        console.log(a);
+        console.log(b);
+        b[fn]();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            background: black;
+        }
+
+        #can {
+            background: #fff;
+        }
+
+        div {
+            width: 800px;
+            height: 800px;
+            margin: auto;
+        }
+
+        input {
+            width: 70px;
+            height: 50px;
+            font-size: 20px;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            var mycolor = 'black';
+            //b表示画布
+            var b = 1;
+            //a表示橡皮
+            var a = 50;
+            var oC = document.getElementById("can")
+            var oGC = oC.getContext("2d")
+            oC.onmousedown = function (e) {
+                //计算鼠标在画布的距离
+                var disX = e.clientX - oC.offsetLeft
+                var disY = e.clientY - oC.offsetTop
+                //每次必须重新开始，让它们变成多个。
+                oGC.beginPath();
+                if (mycolor == 'white') {//白色就相当于橡皮了
+                    //设置画线的宽，与颜色
+                    oGC.lineWidth = a;
+                    oGC.strokeStyle = mycolor;
+                    //设置画的起始点
+                    oGC.moveTo(disX, disY);
+                } else {
+                    //设置画线的宽，与颜色
+                    oGC.lineWidth = b;
+                    oGC.strokeStyle = mycolor;
+                    //设置画的起始点
+                    oGC.moveTo(disX, disY);
+                }
+                document.onmousemove = function (e) {
+                    var disX = e.clientX - oC.offsetLeft;
+                    var disY = e.clientY - oC.offsetTop;
+                    //移动时设置画线的结束位置。并且显示
+                    oGC.lineTo(disX, disY); //鼠标点下去的位置
+                    oGC.stroke();
+                }
+                //鼠标离开时清空鼠标按下与移动事件，停止画
+                document.onmouseup = function () {
+                    document.onmousedown = null //鼠标放开的位置
+                    document.onmousemove = null
+                }
+
+            }
+            //加减粗细
+            var ainp = document.getElementsByTagName('input')
+            //画笔的加减
+            ainp[0].onclick = function () {
+                b++;
+            }
+            ainp[1].onclick = function () {
+                if (b > 1) {
+                    b--;
+                }
+            }
+            //橡皮的加减
+            ainp[7].onclick = function () {
+                a += 5;
+            }
+            ainp[8].onclick = function () {
+                if (a > 5) {
+                    a -= 5;
+                }
+            }
+            //改变颜色
+            for (let i = 2; i < ainp.length - 2; i++) {
+                ainp[i].onclick = function () {
+                    mycolor = this.value;
+                }
+            }
+            //rgb颜色
+            ainp[9].onchange = function () {
+                mycolor = this.value;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <canvas id="can" width="800" height="800"></canvas>
+        <input type="button" value="+" />
+        <input type="button" value="-" />
+        <input type="button" value="red" style="background: red;" />
+        <input type="button" value="yellow" style="background: yellow;" />
+        <input type="button" value="blue" style="background: blue;" />
+        <input type="button" value="black" style="background: black; color: white;" />
+        <input type="button" value="white" style="background: white;" />
+        <input type="button" value="橡皮+" />
+        <input type="button" value="橡皮-" />
+        <!--添加一个rgb色-->
+        <input type="color" />
+    </div>
+</body>
+
+</html>

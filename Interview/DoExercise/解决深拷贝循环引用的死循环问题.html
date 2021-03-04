@@ -80,7 +80,7 @@
                 })
             }
 
-            for (const i in target) {
+            for (const i in target) { //数组对象都可以遍历
                 if (Object.prototype.hasOwnProperty.call(target, i)) {
                     cloneTarget[i] =
                         typeof target[i] === 'object' && target[i] !== null ?
