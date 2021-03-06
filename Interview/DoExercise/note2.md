@@ -188,7 +188,7 @@ FMP(First Meaningful Paint) 首次有效绘制: 例如，在 YouTube 观看页�
 2.懒加载 ---（1）路由的懒加载
 3.压缩 ---（1）webpack 压缩UglifyJsPlugin；（2）gzip压缩 (3)图片压缩、JPG优化
 4.缓存http代码：---浏览器的强缓存（max-age Etag）和协商(弱)缓存（last-modified）
-5.第三方组件---第三方组件作为外部依赖使用，会被打爆进业务代码。
+5.第三方组件---第三方组件作为外部依赖使用，会被打包进业务代码。
 6.按需加载 --- （1）第三方库和工具的按需加载，如echarts （2）选择更优的工具 day.js代替moment （3）可用代码拆分（Code-splitting）只传送用户需要的代
 
 #### 减少内存的消耗
@@ -415,4 +415,19 @@ webpack是webpack，babel是babel，一个模块打包工具一个是js代码处
 作者：麦克斯韦
 链接：https://www.zhihu.com/question/309893645/answer/580113997
 
-## 
+## setTimeout 与 requestAnimationFrame 的区别：
+
+• 引擎层面：setTimeout 属于 JS 引擎，存在事件轮询，存在事件队列。
+requestAnimationFrame 属于 GUI 引擎，发生在渲
+染过程的中重绘重排部分，与电脑分辨路保持一致。
+• 性能层面：当页面被隐藏或最小化时，定时器 setTimeout 仍在后台执行动画任
+务。
+当页面处于未激活的状态下，该页面的屏幕刷新任
+务会被系统暂停，requestAnimationFrame 也会停止。
+• 应用层面：利用 setTimeout，这种定时机制去做动画，模拟固定时间刷新页面。
+requestAnimationFrame 由浏览器专门为动画提供
+的 API，在运行时浏览器会自动优化方法的调用，在特定性环境下可以有效节省了
+CPU 开销。
+
+
+

@@ -120,17 +120,18 @@
         //3. 将DOM与CSSOM合并成一个渲染树RenderTree(根据可视化节点和style rules结合出来的树)
         //4. 根据render tree来布局,计算每个节点的具体位置等
         //5. 调用GPU绘制,合成图层,显示在屏幕上
+
         // 通过以下几个常用属性可以生成新图层:
         // 3 D 变换： translate3d、 translateZ
         // will - change
         // video、 iframe 标签
         // 通过动画实现的 opacity 动画转换
-        // position: fixed
+        // position: absolute、fixed
 
 
 
-        // css选择器权重
-        // !important --> infinity
+        // css选择器权重(256进制)
+        // !important --> infinity(这里不是js里的,这儿是有限的)
         // 行间是1000
         // id是100
         // 类伪类属性是10

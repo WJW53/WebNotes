@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //1. 数组方式
+        /*=======栈结构=======*/
+        var stack = function () {
+            this.data = []
+
+            this.push = push
+            this.pop = pop
+
+            this.clear = clear
+            this.length = length
+        }
+        var push = function (element) {
+            this.data.push(element)
+        }
+        var pop = function () {
+            this.data.pop()
+        }
+        var clear = function () {
+            this.data.length = 0
+        }
+        var length = function () {
+            return this.data.length;
+        }
+        //测试
+        var s = new stack()
+        s.push('first')
+        s.push('second')
+        console.log(s)
+        s.pop()
+        console.log(s)
+        // s.clear()
+        console.log(s)
+
+
+        /*=======队列结构=======*/
+        var queue = function () {
+            this.data = []
+
+            this.enQueue = enQueue
+            this.deQueue = deQueue
+
+            this.clear = clear
+            this.length = length
+        }
+        var enQueue = function (element) {
+            this.data.push(element)
+        }
+        var deQueue = function () {
+            this.data.shift()
+        }
+        var clear = function () {
+            this.data.length = 0
+        }
+        var length = function () {
+            return this.data.length;
+        }
+        //测试
+        var q = new queue()
+        q.enQueue('first')
+        q.enQueue('second')
+        console.log(q)
+        q.deQueue()
+        console.log(q)
+        q.clear()
+        console.log(q)
+
+
+
+        //2. 链表：链表的插入（尾插），移除（栈：末尾节点移除，队列：头结点移除）
+        /*=====栈结构========*/
+        var node = function (data) {
+            this.data = data
+            this.next = null
+        }
+        var stack = function () {
+            this.top = new node("top")
+
+            this.push = push
+            this.pop = pop
+
+            this.clear = clear
+            this.length = length
+        }
+
+        /*=======入栈=======*/
+        var push = function (data) {
+            let newNode = new node(data)
+            newNode.next = this.top
+            this.top = newNode
+        }
+        /*=======出栈=======*/
+        var pop = function () {
+            let curr = this.top
+            this.top = this.top.next
+            curr.next = null
+        }
+        /*=======清空栈=======*/
+        var clear = function () {
+            this.top = new node('top')
+        }
+        /*=======栈长度=======*/
+        var length = function () {
+            let cnt = 0
+            while (this.top.data !== 'top') {
+                this.top = this.top.next
+                cnt++
+            }
+            return cnt
+
+        }
+        /*=======测试=======*/
+        var s = new stack()
+        s.push('first')
+        s.push('second')
+        console.log(s)
+        s.pop()
+        console.log(s)
+        // s.clear()
+        console.log(s.length())
+
+
+        /*=====队列结构========*/
+        var node = function (data) {
+            this.data = data
+            this.next = null
+        }
+        var queue = function () {
+            this.top = new node("top")
+
+            this.enQueue = enQueue
+            this.deQueue = deQueue
+        }
+
+        /*=======入队=======*/
+        var enQueue = function (data) {
+            let newNode = new node(data)
+            newNode.next = this.top
+            this.top = newNode
+        }
+        /*=======出队=======*/
+        var deQueue = function () {
+            let curr = this.top
+            while (curr.next.next !== null && curr.next.next.data !== 'top') {
+                curr = curr.next
+            }
+            if (curr.next.next.data === 'top') {
+                curr.next = curr.next.next
+            }
+        }
+
+        /*=======测试=======*/
+        var q = new queue()
+        q.enQueue('first')
+        q.enQueue('second')
+        console.log(q)
+        q.deQueue()
+        console.log(q)
+    </script>
+</body>
+
+</html>

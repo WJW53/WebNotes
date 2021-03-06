@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        :root{
+            height: 100%;
+        }
+        body{
+            height: 100%;
+            min-height: 600px;
+        }
+        .wrapper{
+            height: 100%;
+        }
+        .left{
+            float: left;
+            width: 200px;
+            height: 100%;
+            background-color: red;
+        }
+        .center{
+            margin: 0 200px;
+            /* position: absolute;
+            left: 200px;
+            right: 200px; */
+            background-color: green;
+            height: 100%;
+        }
+        .right{
+            float: right;
+            background-color: blue;
+            height: 100%;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- center用margin的时候,这个center要放在right下书写才行,
+        不然center会把right挤下去的.
+        用绝对定位的话就没必要了 -->
+    <div class="wrapper">
+        <div class="left">left</div>
+        <div class="right">right</div>
+        <div class="center">center</div>
+    </div>
+</body>
+</html>
