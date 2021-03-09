@@ -17,7 +17,7 @@
 
         var s = "aaaaaaaabbbbbbbbbccccccdefgggggggg";
         //找出该字符串中连续的字符
-        var reg = /(?<char>\w)\k<char>+/g;
+        var reg = /(?<char>\w)\k<char>+/g;//\k是对捕获组的引用
         while (result = reg.exec(s)) {
             console.log(result[1]);
         }

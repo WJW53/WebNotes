@@ -495,4 +495,33 @@ innerHTML是获取HTML文本结构内容。
 3. 当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
 
 
-##  
+##  数据改变到页面渲染的过程是怎么样的？
+
+首先看下面的图片👇，这是执行click函数改变一个数据之后发生的函数调用栈，从图上的说明可以比较清楚个了解这个响应式过程的大概流程。下面简单讲解一下：
+```
+改变数据，触发这个被劫持过的数据的setter方法
+执行这个数据的订阅中心（dep）的notify方法
+update方法里执行queueWatcher方法把watcher推入队列
+执行nextTick方法开始更新视图
+run方法里设置dep.target为当前订阅对象
+调用get方法调用当前watcher的getter执行更新方法
+updateComponent方法里调用了render方法开始执行渲染页面
+patch、patchVnode、updateChildren方法都是比较VNode更新渲染的函数，不过重点的diff过程在updateChildren方法里。
+```
+![](https://user-gold-cdn.xitu.io/2019/6/23/16b83a2e38faea15?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
+链接：https://juejin.cn/post/6844903873283358728
+
+## vue-diff的具体实现
+
+patchVnode、updateChildren方法在vue源码项目的src/core/vdom/patch.js文件中。
+先介绍patchVnode方法，这是执行真正更新dom的方法，大概的执行逻辑如下
+```
+判断vnode和oldVnode是否相等
+判断是否能重用vnode
+判断是否执行回调
+判断是否有children需要diff更新
+判断执行更新类型—新增dom、移除dom、更新textDom
+```
+
+## 

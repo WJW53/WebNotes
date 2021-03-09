@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
-
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,13 +7,11 @@
         .red {
             color: red;
         }
-
         .blue {
             color: blue;
         }
     </style>
 </head>
-
 <body>
 
     <div id="test">
@@ -26,23 +23,23 @@
                 {{key.a}}: {{key.b}}
             </li>
         </ul>
-        <input type="text" v-model="obj.x" v-on:keydown="enter" />
+        <input type="text" v-model="obj.x" v-on:keydown="enter"/>
         {{obj.x}}
-        <br />
-        <img v-bind:src="imgSrc" />
-        <br />
+        <br/>
+        <img v-bind:src="imgSrc"/>
+        <br/>
         <span v-bind:class="{red: obj.x < 2}">我的天啊</span>
-        <br />
+        <br/>
         <span v-bind:class="haha">我的地啊</span>
     </div>
-    <script type="module">
-        import Due from "./core/index.js";
-    window.test = new Due({
+<script type="module">
+    import Vue from "./core/index.js";
+    let test = new Vue({
         el: "test",
         data: {
             content: "hello",
             description: "panda say hello",
-            list: [{a: "panda", b: "18"}, {a: "monkey", b: 20},3],
+            list: [{a: "panda", b: "18"}, {a: "monkey", b: 20}],
             obj: {
                 x: 1,
                 y: 2
@@ -61,5 +58,4 @@
     });
 </script>
 </body>
-
 </html>

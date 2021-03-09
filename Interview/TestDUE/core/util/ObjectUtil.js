@@ -1,12 +1,12 @@
-//obj为对象,code为属性名,比如:key.a
+
 export function getValue(obj, code) {
     if (!obj) {
         return obj;
     }
     let codeList = code.split(".");
     let temp = obj;
-    for (let i = 0 ; i < codeList.length ; i ++) {//一层层的迭代更新维护temp
-        if (temp[codeList[i]]!==undefined) {
+    for (let i = 0 ; i < codeList.length ; i ++) {
+        if (temp[codeList[i]]) {
             temp = temp[codeList[i]];
         } else {
             return undefined;
@@ -14,14 +14,14 @@ export function getValue(obj, code) {
     }
     return temp;
 }
-//due对象,该元素绑定的属性,该元素的新value
+
 export function setValue(obj, attr, value) {
     if (!obj) {
         return obj;
     }
     let attrList = attr.split(".");
     let temp = obj;
-    for (let i = 0 ; i < attrList.length - 1 ; i ++) {//截止到到倒数第二层
+    for (let i = 0 ; i < attrList.length - 1 ; i ++) {
         if (temp[attrList[i]]) {
             temp = temp[attrList[i]];
         } else {
