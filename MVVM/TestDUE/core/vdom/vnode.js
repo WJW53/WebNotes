@@ -1,4 +1,4 @@
-
+let number = 0;
 export default class VNode {
     constructor(tag,//标签类型,DIV,SPAN,INPUT,#TEXT...
         elm,//对应的真实节点
@@ -20,5 +20,6 @@ export default class VNode {
         this.env = {};//当前结点的环境变量,便于子节点继承
         this.instructions = null;//存放指令
         this.template = [];//当前节点涉及到的模板
+        this.number = ++number;//看看是哪个节点,调试的时候用的
     }
 }

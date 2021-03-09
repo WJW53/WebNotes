@@ -31,6 +31,15 @@
 
 ### 在instance下的grammer文件夹里
 
+解析编译才是真的难！！
+
 #### vmodel.js
 
+#### vfor.js
 
+#### vbind.js
+
+#### von
+
+
+### util文件夹下都是工具处理函数

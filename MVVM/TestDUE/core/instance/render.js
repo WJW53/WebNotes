@@ -64,13 +64,14 @@ export function prepareRender(vm, vnode) {
     if (vnode.nodeType == 3) {//如果当前是文本，则解析是否存在模板(插值表达式啥的)
         analysisTemplateString(vnode);
     }
-    if (vnode.nodeType == 0) {
+    if (vnode.nodeType == 0) {//虚拟节点,针对v-for的
         setTemplate2Vnode("{{" + vnode.data + "}}", vnode);
         setVnode2Template("{{" + vnode.data + "}}", vnode);
     }
 
     //元素节点
     analysisAttr(vm, vnode);//在这里也要解析属性
+    //这不能在只是nodeType===1的情况下预渲染
     for (let i = 0; i < vnode.children.length; i++) {
         prepareRender(vm, vnode.children[i]);
     }
@@ -136,18 +137,19 @@ function analysisAttr(vm, vnode) {
         setVnode2Template("{{" + vnode.elm.getAttribute("v-model") + "}}", vnode);
     }
 }
-
+//根据template得到对应的虚拟节点
 export function getVNodeByTemplate(template) {
     return template2Vnode.get(template);
 }
-
+//清空映射表
+export function clearMap() {
+    template2Vnode.clear();
+    vnode2Template.clear();
+}
 export function getTemplate2VnodeMap() {
     return template2Vnode;
 }
 export function getVnode2TemplateMap() {
     return vnode2Template;
 }
-export function clearMap() {
-    template2Vnode.clear();
-    vnode2Template.clear();
-}
+

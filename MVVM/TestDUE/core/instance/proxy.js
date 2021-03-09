@@ -62,8 +62,9 @@ function constructObjectProxy(vm, obj, namespace) {
             set: function (value) {
                 // console.log("set:" + getNameSpace(namespace, prop));
                 obj[prop] = value;
-                let val = getValue(vm._data, getNameSpace(namespace, prop))
-                if (val instanceof Array) {
+                //这是直接操作数组索引的时候劫持的操作
+                let val = getValue(vm._data, getNameSpace(namespace, prop));
+                if (val instanceof Array) {//如果是数组,则需要先rebuild一次
                     rebuild(vm, getNameSpace(namespace, prop));
                     renderData(vm, getNameSpace(namespace, prop));
                 } else {

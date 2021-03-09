@@ -32,7 +32,7 @@ export function setValue(obj, attr, value) {
         temp[attrList[attrList.length - 1]] = value;
     }
 }
-
+//合并vnode原先的属性 和 env环境里的属性,比如子能访问父的for循环里的数据
 export function mergeAttr(obj1, obj2) {
     if (obj1 == null) {
         return clone(obj2);
@@ -41,7 +41,7 @@ export function mergeAttr(obj1, obj2) {
         return clone(obj1);
     }
     let result = {};
-    let obj1Attrs = Object.getOwnPropertyNames(obj1);
+    let obj1Attrs = Object.getOwnPropertyNames(obj1);//即便不可枚举也能获取到自身所有属性值
     for (let i = 0 ; i < obj1Attrs.length ; i ++) {
         result[obj1Attrs[i]] = obj1[obj1Attrs[i]];
     }
@@ -51,21 +51,22 @@ export function mergeAttr(obj1, obj2) {
     }
     return result;
 }
-
+//获取当前vnode环境
 export function getEnvAttr(vm, vnode) {
     let result = mergeAttr(vm._data, vnode.env);
     result = mergeAttr(result, vm._computed);
     return result;
 }
-
+//是函数就执行,不是就直接返回
 export function execute(obj) {
-    if (typeof obj == "function") {
+    if (typeof obj === "function") {
         return obj();
     } else {
         return obj;
     }
 }
 
+//以下是关于克隆的代码
 export function easyClone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
