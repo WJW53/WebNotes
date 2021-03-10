@@ -687,7 +687,7 @@ const countEleType = () => {
 ```
 
 
-## ie7body默认的margin上下margin15左右margin为10
+## ie7body默认的margin上下15左右margin为10
 
 ## W3C规定垂直方向上的margin为auto时解析为0,水平方向时是自动吸收剩余空间(必须是块盒)
 
