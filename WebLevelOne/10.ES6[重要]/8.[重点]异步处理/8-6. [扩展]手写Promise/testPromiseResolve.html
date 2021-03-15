@@ -17,8 +17,8 @@
             // resolve(Promise.resolve(4));
             // resolve(p);
             ////这三种写法等价
-            Promise.resolve().then(()=>{
-                p.then(resolve);//这里才是最终的resolve
+            Promise.resolve().then(() => {
+                p.then(resolve); //这里才是最终的resolve
             });
         }).then((res) => {
             console.log(res);
@@ -45,7 +45,7 @@
         //0 1 2 3 4 5 7 6 8 9
 
 
-        
+
         // let p = Promise.resolve(1);
         // let p3 = Promise.resolve(p);
         // //Promise.resolve(thenable) 等价于如下代码
@@ -66,6 +66,15 @@
         // 链接：https://juejin.cn/post/6936515826514149389
         // 来源：掘金
         // 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+        // var logger = {
+        //     log: setInterval(() => {
+        //         console.log('Hello World');
+        //     }, 1000)
+        // }
+        // // clearInterval(logger.log);
+        // logger = null;
+        //会每隔一秒打印一次,因为定时器已经开启了,并且没有clearInterval
     </script>
 </body>
 

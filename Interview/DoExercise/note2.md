@@ -524,4 +524,87 @@ patchVnode、updateChildren方法在vue源码项目的src/core/vdom/patch.js文�
 判断执行更新类型—新增dom、移除dom、更新textDom
 ```
 
+## 一个新特性: Optional Chaining
+过去在 Object 属性链的调用中，很容易因为某个属性不存在而导致之后出现Cannot read property xxx of undefined的错误。
+
+那 optional chaining 就是添加了`?.`这么个操作符，它会先判断前面的值，如果是 null 或 undefined，就结束调用、返回 undefined。
+
+例如，我们可以将上面的示例重构为 this.state.data?.()。或者，如果我们主要关注state 是否已定义，我们可以返回this.state？.data。
+
+## ~~
+
+在某些上下文中，+将被解释为连接操作符，而不是加法操作符。当这种情况发生时(你希望返回一个整数，而不是浮点数)，您可以使用两个波浪号:`~~`。
+
+连续使用两个波浪有效地否定了操作，因为— ( — n — 1) — 1 = n + 1 — 1 = n。 换句话说，~—16 等于15。
+
+虽然我想不出很多用例，但是按位 NOT 运算符也可以用在布尔值上：`~true = -2和~false = -1。`
+
+## 指数运算符**
+
+从 ES7 开始，可以使用指数运算符**作为幂的简写，这比编写Math.pow(2, 3) 更快。 这是很简单的东西，但它之所以出现在列表中，是因为没有多少教程更新过这个操作符
+
+## 快速浮点数转整数 |
+
+如果希望将浮点数转换为整数，可以使用Math.floor()、Math.ceil()或Math.round()。但是还有一种更快的方法可以使用|(位或运算符)将浮点数截断为整数。
+
+|的行为取决于处理的是正数还是负数，所以最好只在确定的情况下使用这个快捷方式。
+
+如果n为正，则n | 0有效地向下舍入。 如果n为负数，则有效地向上舍入。 更准确地说，此操作将删除小数点后面的任何内容，将浮点数截断为整数。
+
+你可以使用~~来获得相同的舍入效果，如上所述，实际上任何位操作符都会强制浮点数为整数。这些特殊操作之所以有效，是因为一旦强制为整数，值就保持不变。
+
+## Async/Await替代Promise的6个理由
+1. 语法简洁
+2. 错误处理：使用 async/await 的话，catch 能处理 JSON.parse 错误
+3. 条件语句：上面的代码使用 async/await 编写可以大大地提高可读性:
+4. 中间值：使用 async/await 的话，代码会变得异常简单和直观。
+```js
+const makeRequest = async () => {
+    const value1 = await promise1();
+    const value2 = await promise2(value1);
+    return promise3(value1, value2);
+};
+```
+5. 错误栈：然而，async/await 中的错误栈会指向错误所在的函数
+6. 调试：
+最后一点，也是非常重要的一点在于，async/await 能够使得代码调试更简单。2 个理由使得调试 Promise 变得非常痛苦:
+
+  - 不能在返回表达式的箭头函数中设置断点
+  - 如果你在.then 代码块中设置断点，使用 Step Over 快捷键，调试器不会跳到下一个.then，因为它只会跳过异步代码。
+
+使用 await/async 时，你不再需要那么多箭头函数，这样你就可以像调试同步代码一样跳过 await 语句。
+
+https://blog.fundebug.com/2017/04/04/nodejs-async-await/
+
+
+## Java到底是编译型语言还是解释型语言？
+
+Java这个语言很非凡。 
+一、你可以说它是编译型的。因为所有的Java代码都是要编译的，.java不经过编译就什么用都没有。 
+二、你可以说它是解释型的。因为java代码编译后不能直接运行，它是解释运行在JVM上的，所以它是解释运行的，那也就算是解释的了。 
+三、但是，现在的JVM为了效率，都有一些JIT优化。它又会把.class的二进制代码编译为本地的代码直接运行，所以，又是编译的。
+像C、C++ 他们经过一次编译之后直接可以编译成操作系统了解的类型，可以直接执行的 所以他们是编译型的语言。没有经过第二次的处理 而Java不一样他首先由编译器编译成.class类型的文件，这个是java自己类型的文件 然后在通过虚拟机(JVM)从.class文件中读一行解释执行一行，所以他是解释型的语言，而由于java对于多种不同的操作系统有不同的JVM所以 Java实现了真正意义上的跨平台！ 
+请观看下面两张图 了解一下Java的虚拟机机制： 
+(1)java语言的编译-->解释--->执行过程 
+![](https://img-blog.csdn.net/20170519090738244?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXpjNzA5MTk3MDA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+
+(2)java的虚拟机 
+![](https://img-blog.csdn.net/20170519090836650?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXpjNzA5MTk3MDA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+今天听到同事在讨论java是哪种类型的语言（编译型、解释型），以前稍微有些接触，但是概念比较模糊，为了不至于让别人的思想左右自己，所以查了些资料，找到了很多热心网友给出的答案，终于有些明白。这里先给出编译型语言和解释型语言的定义。 
+定义： 
+编译型语言：把做好的源程序全部编译成二进制代码的可运行程序。然后，可直接运行这个程序。 
+解释型语言：把做好的源程序翻译一句，然后执行一句，直至结束！
+区别： 
+编译型语言，执行速度快、效率高；依靠编译器、跨平台性差些。 
+解释型语言，执行速度慢、效率低；依靠解释器、跨平台性好。 
+个人认为，java是解释型的语言，因为虽然java也需要编译，编译成.class文件，但是并不是机器可以识别的语言，而是字节码，最终还是需要 jvm的解释，才能在各个平台执行，这同时也是java跨平台的原因。所以可是说java即是编译型的，也是解释型，但是假如非要归类的话，从概念上的定义，恐怕java应该归到解释型的语言中。 
+附： 
+编译型的语言包括：C、C++、Delphi、Pascal、Fortran 
+解释型的语言包括：Java、Basic、javascript
+
+
+## js下载文件、音频、视频的方式
+
+https://blog.csdn.net/lavendersue/article/details/111193389
+
 ## 

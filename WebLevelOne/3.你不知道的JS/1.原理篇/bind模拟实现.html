@@ -11,40 +11,64 @@
 
 
     <script>
-        Function.prototype.newBind = function (target) {
-            var self = this;
-            var args = [].slice.call(arguments,1);//slice不改变原数组,1:让newBind()从数据参数开始截取
-            var temp = function () {};//作为缓冲层,解决this和constructor的指向问题
-            //f才是要真正执行的功能,改变this指向,传参啥的
-            var f = function(){
-                var _arg = [].slice.call(arguments,0);//这个是newShow();
-                //如果用了new newShow();那么就不改变this指向.
-                //否则就改变,若newShow()没传指向参数,就让this默认指向window,然后把数据参数传进来
-                return self.apply(this instanceof temp ? this : (target || window),args.concat(_arg)); 
+        // Function.prototype.newBind = function (target) {
+        //     var self = this;
+        //     var args = [].slice.call(arguments, 1); //slice不改变原数组,1:让newBind()从数据参数开始截取
+        //     var temp = function () {}; //作为缓冲层,解决this和constructor的指向问题
+        //     //f才是要真正执行的功能,改变this指向,传参啥的
+        //     var f = function () {
+        //         var _arg = [].slice.call(arguments, 0); //这个是newShow();
+        //         //如果用了new newShow();那么就不改变this指向.
+        //         //否则就改变,若newShow()没传指向参数,就让this默认指向window,然后把数据参数传进来
+        //         return self.apply(this instanceof temp ? this : (target || window), args.concat(_arg));
+        //     }
+
+        //     temp.prototype = self.prototype; //先把show的原型赋值给temp的原型
+        //     f.prototype = new temp(); //然后再把temp实例化的对象赋值给f的原型
+        //     //这样就可以让new newShow().constructor依然指向show了,前提是show的prototype没有重新赋值
+
+        //     //obj.constructor --> obj.__proto__.constructor            
+
+        //     return f; //最后就是返回这个函数
+        // }
+
+        Function.prototype.newBind = function (context = window, ...args) {
+            if (typeof this !== 'function') {
+                throw new Error("Type Error");
             }
+            // 保存this的值
+            var self = this;
 
-            temp.prototype = self.prototype;//先把show的原型赋值给temp的原型
-            f.prototype = new temp();//然后再把temp实例化的对象赋值给f的原型
-            //这样就可以让new newShow().constructor依然指向show了
-
-//obj.constructor --> obj.__proto__.constructor            
-
-            return f;//最后就是返回这个函数
+            return function F() {
+                // 考虑new的情况
+                if (this instanceof F) {
+                    return new self(...args, ...arguments);
+                }
+                return self.apply(context, [...args, ...arguments]);
+            }
         }
 
-        function show (x,y,a,b,z) {
-            console.log(this,x,y,a,b,z);   
+
+        FatherShow.prototype.firstName = 'Wu';
+
+        function FatherShow() {}
+        show.prototype = new FatherShow();
+
+        function show(x, y, a, b, z) {
+            console.log(this, x, y, a, b, z);
         }
 
-        var Dn = {
+        var wjw = {
             personality: 'cute',
         }
 
-        var newShow = show.newBind(Dn,1,3,1,4);
+        var newShow = show.newBind(wjw, 1, 3, 1, 4);
 
-        newShow(0);
-        console.log(new newShow(0).constructor);
-        
+        newShow(0); //{personality: "cute"} 1 3 1 4 0
+        var oS = new newShow(18); //show {} 1 3 1 4 18
+        console.log(oS.firstName); //Wu
+        console.log(oS.constructor); //ƒ FatherShow() {}
+        // console.log(new newShow(0).constructor);
     </script>
 </body>
 

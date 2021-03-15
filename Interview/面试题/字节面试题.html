@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //1.
+        // var length = 10;
+
+        // function fn() {
+        //     return this.length + 1;
+        // }
+        // var obj = {
+        //     length: 5,
+        //     test1: function () {
+        //         return fn();
+        //     }
+        // };
+        // obj.test2 = fn; //下面代码输出是什么
+        // console.log(obj.test1()); //window.length + 1,所以是11
+        // console.log(fn() === obj.test2()); //11 === 6,所以false
+
+
+        //2.
+        // console.log('begin');
+        // setTimeout(() => {
+        //     console.log('setTimeout 1');
+        //     Promise.resolve().then(() => {
+        //         console.log('promise 1');
+        //         setTimeout(() => {
+        //             console.log('setTimeout2 between promise1&2')
+        //         });
+        //     }).then(() => {
+        //         console.log('promise 2')
+        //     })
+        // }, 0);
+        // console.log('end');
+        // //begin,end,setTimeout 1,promise 1,promise 2,setTimeout2 between promise1&2
+
+
+
+        // 3.实现一个延时执行队列， 要求分别在 1,3,4 秒后打印出 “1”, “2”, “ 3"
+        class Queue {
+            constructor() {
+                this.taskList = [];
+            }
+            task(delay, fn) {
+                function callback() {
+                    return new Promise((resolve, reject) => {
+                        let timer = setTimeout(() => {
+                            fn();
+                            resolve();
+                            clearTimeout(timer);
+                            timer = null;
+                        }, delay);
+                    })
+                }
+                this.taskList.push(callback);
+                return this;
+            }
+            async start() {
+                while (this.taskList.length) {
+                    await this.taskList.shift()();
+                }
+            }
+        }
+        new Queue()
+            .task(1000, () => {
+                console.log(1);
+            })
+            .task(2000, () => {
+                console.log(2);
+            })
+            .task(1000, () => {
+                console.log(3);
+            })
+            .start();
+
+
+
+        // 4. 实现一个并发控制
+
+
+        // 5. 实现数组拍平
+
+        // 6. 给一段HTML，写出它的VDOM；写一个函数去解析这个VDOM，把元素添加到DOM上。
+
+        
+    </script>
+</body>
+
+</html>
