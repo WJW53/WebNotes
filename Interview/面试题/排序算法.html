@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //冒泡,升序,每次是后面的元素确定为max
+        function bubbleSort(arr) {
+            let temp = 0,
+                flag = true,
+                len = arr.length;
+            for (let i = 0; i < len - 1; i++) {
+                for (let j = 0; j < len - 1 - i; j++) {
+                    if (arr[j] > arr[j + 1]) {
+                        temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                        flag = false;
+                    }
+                }
+                if (flag) {
+                    break;
+                } else {
+                    flag = true;
+                }
+            }
+        }
+
+        //选择排序,升序,每次是确定前面的元素为min
+        function selsetSort(arr) {
+            var len = arr.length;
+            var index;
+            for (var i = 0; i < len - 1; i++) {
+                index = i;
+                for (var j = i + 1; j < len; j++) {
+                    if (arr[index] > arr[j]) { //寻找最小值
+                        index = j; //保存最小值的索引
+                    }
+                }
+                if (index != i) {
+                    var temp = arr[i];
+                    arr[i] = arr[index];
+                    arr[index] = temp;
+                }
+            }
+            return arr;
+        }
+
+
+        //插入排序,只要后面的比前面一个小,那就交换位置(每次i之前都是排好序的)
+        function insertSort(arr) {
+            for (let i = 1; i < arr.length; i++) {
+                let j = i;
+                while (j > 0) {
+                    if (arr[j] < arr[j - 1]) {
+                        let temp;
+                        temp = arr[j];
+                        arr[j] = arr[j - 1];
+                        arr[j - 1] = temp;
+                        j--;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        //桶排,升序(取决于他内部采用哪种排序算法)
+        // 桶排序(Bucket sort)是一种基于计数的排序算法,工作的原理是将数据分到有限数量的桶子里,
+        //   然后每个桶再分别排序(可使用别的排序算法进行排序)
+        // 桶排序概况
+        //   要求排序内容已知,排序键为数字
+        //   主要适用于小范围整数数据,且独立均匀分布.
+        //   计数排序是一种特殊的桶排序
+        // 桶排序过程
+        //   计算并设置固定数量的空桶
+        //   将数据放入对应的桶中
+        //   对桶中的数据进行排序
+        //   把每个桶的数据进行合并
+        //插入排序
+        function insertion_sort(A) {
+            for (let i = 1; i < A.length; i++) {
+                let p = i - 1
+                const x = A[i]
+                while (p >= 0 && A[p] > x) {
+                    A[p + 1] = A[p]
+                    p--
+                }
+                A[p + 1] = x
+            }
+        }
+        //桶排序
+        function bucket_sort(A, k, s) { //A排序数组,k桶子数量,s桶子空间尺度
+            const buckets = Array.from({
+                length: k
+            }, () => []) //创建桶子,二维数组,k个桶子,每个桶子是一个数组
+            //把元素放入对应桶子
+            for (let i = 0; i < A.length; i++) {
+                //计算需要放入桶子序号
+                const idx = ~~(A[i] / s); //~~是向下取整
+                buckets[idx].push(A[i]);
+            }
+
+            //对每个桶子进行排序
+            for (let i = 0; i < buckets.length; i++) {
+                //此处选取插入排序, 空间消耗少,元素少常数时间消耗短
+                insertion_sort(buckets[i]);
+            }
+
+            //把每个桶子数据合并
+            return [].concat(...buckets);
+        }
+
+
+        // 快速排序
+        // 快排改进——黄佳新
+        var devide_Xin = function (array, start, end) {
+            if (start >= end) return array;
+            var baseIndex = Math.floor((start + end) / 2), // 基数索引
+                i = start,
+                j = end;
+
+            while (i <= j) {
+                while (array[i] < array[baseIndex]) {
+                    i++;
+                }
+                while (array[j] > array[baseIndex]) {
+                    j--;
+                }
+
+                if (i <= j) {
+                    var temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                    i++;
+                    j--;
+                }
+            }
+            return i;
+        }
+
+        var quickSort_Xin = function (array, start, end) {
+            if (array.length < 1) {
+                return array;
+            }
+            var index = devide_Xin(array, start, end);
+            if (start < index - 1) {
+                quickSort_Xin(array, start, index - 1);
+            }
+            if (end > index) {
+                quickSort_Xin(array, index, end);
+            }
+
+            return array;
+        }
+
+        //计数排序----桶排序的一种特例而已
+        // 'use strict'
+
+        var arr = [0, 0, 1, 2, 3, 22, 123, 333, 333, 444, 4, 5, 10, 12, 555, 666, 777, 888, 999, 1000];
+        // console.log(arr.length);
+
+        function countionSort(arr) {
+            var countArr = [];
+            var count = 0; // 辅助计数,没啥用,就是核验下数字个数
+
+            // 把原始数组的元素, 当做索引值, 记录出现的次数
+            arr.forEach(function (value) {
+                if (!countArr[value]) {
+                    countArr[value] = 1;
+                } else {
+                    countArr[value] += 1;
+                }
+                count += 1;
+            });
+
+            // 按照出现的次数, 把索引值 当做新数组的 value, unshift|push 降序|升序排列
+            var newArr = [];
+            countArr.forEach(function (value, index) {
+                if (value) {
+                    while (value) {
+                        newArr.push(index);
+                        // newArr.unshift(index);
+                        value--;
+                        count += 1;
+                    }
+                }
+            });
+            // console.log(count);
+            return newArr;
+        }
+
+        console.log(countionSort(arr));
+
+
+        //归并算法(分解,合并--分治思想),升序,空间O(nlog2n),空间O(n)
+        function Merger(a, b) {
+            var n = a && a.length;
+            var m = b && b.length;
+            var c = [];
+            var i = 0,
+                j = 0;
+
+            while (i < n && j < m) {
+                if (a[i] < b[j])
+                    c.push(a[i++]);
+                else
+                    c.push(b[j++]);
+            }
+
+            while (i < n)
+                c.push(a[i++]);
+
+            while (j < m)
+                c.push(b[j++]);
+
+            console.log("将数组", a, '和', b, '合并为', c)
+            return c;
+        }
+
+        function merge_sort(arr) {
+            console.log(arr);
+            if (arr.length === 1)
+                return arr;
+
+            var mid = Math.floor(arr.length / 2);
+            var left = arr.slice(0, mid);
+            var right = arr.slice(mid);
+
+            return Merger(merge_sort(left), merge_sort(right)); //合并左右部分
+        }
+
+
+
+        //希尔排序
+        function shellSort(arr) {
+            let len = arr.length;
+            // gap 即为增量
+            for (let gap = Math.floor(len / 2); gap > 0; gap = Math.floor(gap / 2)) {
+                for (let i = gap; i < len; i++) {
+                    let j = i;
+                    let current = arr[i];
+                    while (j - gap >= 0 && current < arr[j - gap]) {
+                        arr[j] = arr[j - gap];
+                        j = j - gap;
+                    }
+                    arr[j] = current;
+                }
+            }
+        }
+
+
+        // var arr = [3, 5, 7, 1, 4, 56, 12, 78, 25, 0, 9, 8, 42, 37];
+        // shellSort(arr);
+
+
+
+        //基数----从个位开始,直到最高位,分别排序 O(n * k)
+        function RadixLSDSort(arr, digit) {
+            const radix = 10; // 基数,以10进制来进行排序
+            var i = 0,
+                j = 0,
+                count = Array(radix), // 0~9的桶
+                len = arr.length,
+                bucket = Array(len);
+            // 利用LSD,也就是次位优先
+            for (var d = 0; d < digit; d++) {
+                for (i = 0; i < radix; i++) {
+                    count[i] = 0;
+                }
+                // 向各个桶中添加元素,并统计出每个桶中装的个数
+                for (i = 0; i < len; i++) {
+                    j = getDigit(arr[i], d);
+                    count[j]++;
+                }
+                // count的越往后值最大,最大值为arr.length
+                // count数组的值为,该位数值为该索引的数字总数
+                for (i = 1; i < radix; i++) {
+                    count[i] = count[i] + count[i - 1];
+                }
+                // 按照桶的顺序将导入temp中
+                for (i = len - 1; i >= 0; i--) {
+                    j = getDigit(arr[i], d);
+                    bucket[count[j] - 1] = arr[i];
+                    count[j]--;
+                }
+                // 将已经根据相应位数排好的序列导回arr中
+                for (i = 0; i < len; i++) {
+                    arr[i] = bucket[i];
+                }
+            }
+            return arr
+        }
+
+        // 获得每位的数字
+        function getDigit(x, d) {
+            var a = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+            return (Math.floor(x / a[d]) % 10);
+        }
+
+        //堆排
+        // 堆的预备知识
+        // 堆是一个完全二叉树。
+        // 完全二叉树： 二叉树除开最后一层，其他层结点数都达到最大，最后一层的所有结点都集中在左边（左边结点排列满的情况下，右边才能缺失结点）。
+        // 大顶堆：根结点为最大值，每个结点的值大于或等于其孩子结点的值。
+        // 小顶堆：根结点为最小值，每个结点的值小于或等于其孩子结点的值。
+        // 堆的存储： 堆由数组来实现，相当于对二叉树做层序遍历。
+
+        //具体实现如下:
+        // 交换两个节点
+        function swap(A, i, j) {
+            let temp = A[i];
+            A[i] = A[j];
+            A[j] = temp;
+        }
+
+        // 将 i 结点以下的堆整理为大顶堆，注意这一步实现的基础实际上是：
+        // 假设 结点 i 以下的子堆已经是一个大顶堆，shiftDown函数实现的
+        // 功能是实际上是：找到 结点 i 在包括结点 i 的堆中的正确位置。后面
+        // 将写一个 for 循环，从第一个非叶子结点开始，对每一个非叶子结点
+        // 都执行 shiftDown操作，所以就满足了结点 i 以下的子堆已经是一大
+        //顶堆
+        function shiftDown(A, i, length) {
+            let temp = A[i]; // 当前父节点
+            // j<length 的目的是对结点 i 以下的结点全部做顺序调整
+            for (let j = 2 * i + 1; j < length; j = 2 * j + 1) {
+                temp = A[i]; // 将 A[i] 取出，整个过程相当于找到 A[i] 应处于的位置
+                if (j + 1 < length && A[j] < A[j + 1]) {
+                    j++; // 找到两个孩子中较大的一个，再与父节点比较
+                }
+                if (temp < A[j]) {
+                    swap(A, i, j) // 如果父节点小于子节点:交换；否则跳出
+                    i = j; // 交换后，temp 的下标变为 j
+                } else {
+                    break;
+                }
+            }
+        }
+
+        // 堆排序
+        function heapSort(A) {
+            // 初始化大顶堆，从第一个非叶子结点开始
+            for (let i = Math.floor(A.length / 2 - 1); i >= 0; i--) {
+                shiftDown(A, i, A.length);
+            }
+            // 排序，每一次for循环找出一个当前最大值，数组长度减一
+            for (let i = Math.floor(A.length - 1); i > 0; i--) {
+                swap(A, 0, i); // 根节点与最后一个节点交换
+                shiftDown(A, 0, i); // 从根节点开始调整，并且最后一个结点已经为当
+                // 前最大值，不需要再参与比较，所以第三个参数
+                // 为 i，即比较到最后一个结点前一个即可
+            }
+        }
+
+        let Arr = [4, 6, 8, 5, 9, 1, 2, 5, 3, 2];
+        heapSort(Arr);
+        console.log(Arr);
+    </script>
+
+</body>
+
+</html>

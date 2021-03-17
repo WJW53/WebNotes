@@ -44,54 +44,203 @@
         // //begin,end,setTimeout 1,promise 1,promise 2,setTimeout2 between promise1&2
 
 
+        //在外面包一层函数,以便控制执行时机,这个思想非常重要
 
         // 3.实现一个延时执行队列， 要求分别在 1,3,4 秒后打印出 “1”, “2”, “ 3"
-        class Queue {
-            constructor() {
-                this.taskList = [];
-            }
-            task(delay, fn) {
-                function callback() {
-                    return new Promise((resolve, reject) => {
-                        let timer = setTimeout(() => {
-                            fn();
-                            resolve();
-                            clearTimeout(timer);
-                            timer = null;
-                        }, delay);
-                    })
-                }
-                this.taskList.push(callback);
-                return this;
-            }
-            async start() {
-                while (this.taskList.length) {
-                    await this.taskList.shift()();
-                }
-            }
-        }
-        new Queue()
-            .task(1000, () => {
-                console.log(1);
-            })
-            .task(2000, () => {
-                console.log(2);
-            })
-            .task(1000, () => {
-                console.log(3);
-            })
-            .start();
+        // class Queue {
+        //     constructor() {
+        //         this.taskList = [];
+        //     }
+        //     task(delay, fn) {
+        //         function callback() {
+        //             return new Promise((resolve, reject) => {
+        //                 let timer = setTimeout(() => {
+        //                     fn();
+        //                     resolve();
+        //                     clearTimeout(timer);
+        //                     timer = null;
+        //                 }, delay);
+        //             })
+        //         }
+        //         this.taskList.push(callback);
+        //         return this;
+        //     }
+        //     async start() {
+        //         while (this.taskList.length) {
+        //             await this.taskList.shift()();
+        //         }
+        //     }
+        // }
+        // new Queue()
+        //     .task(1000, () => {
+        //         console.log(1);
+        //     })
+        //     .task(2000, () => {
+        //         console.log(2);
+        //     })
+        //     .task(1000, () => {
+        //         console.log(3);
+        //     })
+        //     .start();
 
 
 
-        // 4. 实现一个并发控制
+        // 4. 实现一个并发控制的调度器
+        //         可以看到，最多时存在两个并行的Promise，并且一个Promise执行完成之后，执行新的Promise，
+        //并且新执行的Promise不会影响到另一个正在执行的Promise。既然如此的话，
+        //就不能使用Promise.all()和Promise.race()这两个API了，Promise.all()会等待所有Promise完成，
+        //Promise.race()只会执行一个Promise。
+        //其实从Promise依序进行执行，可以使用队列先进先出的特性，add操作知识每次用队列中插入Promise Creator，
+        //判断当前执行数量是否小于2，如果小于2就从队列中弹出Promise Creator执行并给执行的Promise绑定then函数，
+        //then函数被调用就说明当前Promise已经执行完成，重复当前操作，可以看出是一个递归的操作。
+
+        // class Scheduler {
+        //     constructor() {
+        //         this.queue = []; //事件队列
+        //         this.maxNum = 2; //并发限制数量
+        //         this.runNum = 0; //当前运行数量
+        //     }
+        //     add(promiseCreator) {
+        //         this.queue.push(promiseCreator);
+        //     }
+        //     request() {
+        //         if (!this.queue || !this.queue.length || this.runNum >= this.maxNum) {
+        //             return; //这些情况下都不能继续执行新任务
+        //         }
+        //         this.runNum++; //准备执行
+        //         this.queue.shift()().then(() => { //执行完后,当前任务-1,并且开始执行下一个任务
+        //             this.runNum--;
+        //             this.request();
+        //         });
+        //     }
+        //     taskStart() {
+        //         for (let i = 0; i < this.maxNum; i++) {
+        //             this.request();
+        //         }
+        //     }
+        // }
+
+        // const timeout = (time) => {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(resolve, time); //时间一到就执行resolve
+        //     });
+        // }
+
+        // const scheduler = new Scheduler();
+        // const addTask = ((time, order) => {
+        //     scheduler.add(() => timeout(time).then(() => {
+        //         console.log(order);
+        //     }));
+        // });
+
+        // addTask(1000, '1');
+        // addTask(500, '2');
+        // addTask(300, '3');
+        // addTask(400, '4');
+
+        // scheduler.taskStart();
+        // //2 3 1 4
+
 
 
         // 5. 实现数组拍平
 
-        // 6. 给一段HTML，写出它的VDOM；写一个函数去解析这个VDOM，把元素添加到DOM上。
+        // 6. 给一段HTML，写出它的VDOM；写一个函数去解析这个VDOM，把元素添加到DOM上
 
-        
+
+        // 7. Promise封装axios
+        /*axios({
+            method: "get",
+            url: "./data.json",
+            data: {
+                id: 10
+            }
+        }).then((res) => {
+            console.log(res)
+        }, (e) => {
+            console.log(e);
+        })*/
+
+        // function axios(options) {
+        //     let promise = new Promise((resolve, reject) => {
+        //         var xhr = new XMLHttpRequest();
+        //         var data = "";
+        //         //数据处理
+
+        //         for (var key in options.data) {
+        //             data += "&" + key + "=" + options.data[key]
+        //         }
+
+        //         xhr.onreadystatechange = function () {
+        //             let timer = null;
+        //             let timeout = options.timeout ? options.timeout : 5000
+        //             if (xhr.readyState == 4 && xhr.status == 200) {
+        //                 let res = JSON.parse(xhr.responseText);
+        //                 clearTimeout(timer);
+        //                 resolve(res);
+        //             }
+        //             timer = setTimeout(() => {
+        //                 clearTimeout(timer);
+        //                 reject(xhr.status);
+        //             }, timeout);
+
+        //         }
+
+        //         if (options.method == "get") {
+        //             let url = options.url + "?" + data.slice(1);
+        //             xhr.open(options.method, url);
+        //             xhr.send();
+        //         } else if (options.method == "post") {
+        //             xhr.open(options.method, options.url);
+        //             xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        //             xhr.send(data);
+        //         }
+
+        //     });
+        //     return promise;
+        // }
+
+
+
+        // 8. 多叉树的深度
+        function maxDepth(root) {
+            if (root == null) return 0;
+            let max = 0;
+            for (let node of root.children) { //深度优先
+                let count = maxDepth(node);
+                if (max < count) max = count;
+            }
+            return max + 1; //每层都得+1
+        }
+        //二叉树的深度
+        function getMaxDepth(root) {
+            if (root == null) return 0;
+            return Math.max(getMaxDepth(root.left), getMaxDepth(root.right)) + 1;
+        }
+        //二叉树的宽度
+        //　使用队列，层次遍历二叉树。在上一层遍历完成后，下一层的所有节点已经放到队列中，
+        // 此时队列中的元素个数就是下一层的宽度。以此类推，依次遍历下一层即可求出二叉树的最大宽度。
+        function getMaxWidth(root) {
+            if (root == null) return 0;
+            let queue = [root],
+                maxWidth = 1;
+            while (true) {
+                let len = queue.length; //当前层的节点个数
+                if (len === 0) break;
+                while (len > 0) { //如果当前层还有节点
+                    let temp = queue.shift();
+                    len--;
+                    if (temp.left != null) {
+                        queue.push(temp.left);
+                    }
+                    if (temp.right != null) {
+                        queue.push(temp.right);
+                    }
+                }
+                maxWidth = Math.max(maxWidth, queue.length);
+            }
+            return maxWidth;
+        }
     </script>
 </body>
 

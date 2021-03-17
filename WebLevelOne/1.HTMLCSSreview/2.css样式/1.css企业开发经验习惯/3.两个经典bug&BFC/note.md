@@ -6,7 +6,7 @@
 
 - *父子嵌套元素在垂直方向的margin(正值),父子元素是结合在一起的.就是说水平线是一样的*
 - 相当于他俩margin是绑定在一起的
-- `取负值的话,是按两人的相加`
+- `同号取最大,异号,是按两人的和`
 
 
 ### 弥补办法-->BFC
@@ -34,24 +34,24 @@ border-top:1px solid black;
 ### 原理
 
 
-`注意：如果垂直方向有值,哥哥位置该在哪儿就在哪儿,但弟弟元素会照常跟哥哥元素设置的取加和式100-120==-20!!  -120+100==-20`
+`注意：如果垂直方向有值,哥哥位置该在哪儿就在哪儿,但弟弟元素会照常跟哥哥元素设置的margin异号时,取加和式100-120==-20!!  -120+100==-20;;同号取max`
 - **两个兄弟结构的元素在垂直方向上的margin是合并的**
 
 ### 弥补办法-->BFC
 
 1. 给弟弟加上一层父级元素,并给他的父级加上overflow:hidden;
-```
- <div class="box1"></div>
-   <div class="wrapper">
+```html
+    <div class="box1"></div>
+    <div class="wrapper">
         <div class="box2"></div>
-  </div>
+    </div>
   .wrapper{
             overflow:hidden;
         }
 ```
 
 2. 给俩兄弟各自加一层父级,再加BFC
-```
+```html
     <div class="wrapper">
         <div class="box1"></div>
     </div>

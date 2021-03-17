@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //1. 是否为回文链表
+        // https://blog.csdn.net/pu_jun_xuan/article/details/114274921
+        function ListNode(val) {
+            this.val = val;
+            this.next = null;
+        }
+
+        //         思路
+        // 单链表无法倒着遍历，无法使用双指针技巧。那么最简单的办法就是，把原始链表反转存入一条新的链表，
+        //然后比较这两条链表是否相同。
+
+        // 在「学习数据结构的框架思维」中说过，链表兼具递归结构，树结构不过是链表的衍生。
+        // 那么，链表其实也可以有前序遍历和后序遍历：
+
+        /* 倒序打印单链表中的元素值 */
+        function traverse(head) {
+            if (head == null) return;
+            traverse(head.next);
+            // 后序遍历代码
+            console.log(head.val);
+        }
+
+        //具体实现,尚未优化
+        // 左侧指针
+        // let left = new ListNode(-1);
+
+        // function isPalindrome(head) {
+        //     left = head;
+        //     return traverse(head);
+        // }
+
+        // function traverse(right) {
+        //     if (right == null) return true;
+        //     let res = traverse(right.next);
+        //     // 后序遍历代码
+        //     res = res && (right.val == left.val); //从尾部开始逐渐往前一一对比
+        //     left = left.next;
+        //     return res;
+        // }
+
+
+
+        //         优化->时间复杂度O(n),空间复杂度O(1),已经是最优了
+        let head = new ListNode(1);
+        let n2 = new ListNode(2);
+        let n3 = new ListNode(3);
+        let n4 = new ListNode(2);
+        let n5 = new ListNode(1);
+        head.next = n2;
+        n2.next = n3;
+        n3.next = n4;
+        n4.next = n5;
+        // console.log(head);
+
+        // 1、先通过「双指针技巧」中的快慢(分别走两步和一步)指针来找到链表的中点：
+        let slow = new ListNode(-1),
+            fast = new ListNode(-1);
+        slow = fast = head;
+        while (fast != null && fast.next != null) { //第一个fast也可以改为slow
+            slow = slow.next;
+            fast = fast.next.next;
+        } //slow 指针现在就指向链表中点
+        //奇数个节点的时候,fast指向尾结点,
+        //偶数个节点的时候(也要算成奇数,怎么算,将最后一个NULL再看做一个节点,),fast指向NULL
+        //所以如果fast指针没有指向null，说明链表长度为奇数，slow还要再前进一步：
+        if (fast != null) {
+            slow = slow.next; //这样回文的时候才只用判断一半
+        }
+        //从slow开始反转后面的链表，现在就可以开始比较回文串了：
+        function isPalindrome(left, right) {
+            while (right != null) {
+                if (left.val != right.val) {
+                    return false;
+                }
+                left = left.next;
+                right = right.next;
+            }
+            return true;
+        }
+
+        function reverse(head) {
+            let pre = null,
+                cur = head;
+            while (cur !== null) {
+                let next = cur.next;
+                cur.next = pre;
+                pre = cur;
+                cur = next;
+            }
+            return pre; //最终cur指向NULL而pre指向尾结点
+        }
+
+        let left = head;
+        let right = reverse(slow); //反转链表
+        console.log(isPalindrome(left, right));
+
+
+
+
+        //2. 找出链表中倒数第K个节点
+        // 今天来看一道有意思的链表算法题目。
+        // 给到一个单向链表， 要求找出该链表中倒数第 k 个节点， 要求只能遍历一次链表， 且空间复杂度为 O(1)。
+        // 思路1： 如果能从链表尾部开始遍历， 那只需倒序遍历 k 个节点即是要找出的节点， 但是由于是单链表， 只能从头结点开始遍历。
+        // 思路2： 先遍历一遍该单链表， 获取链表的总节点数 n， 那么第 n - k + 1 这个节点就是倒数第 k 个节点。 所以第二次再遍历到第 n - k + 1 这个节点即可， 但是题目要求只能遍历一遍链表。
+        // 思路3： 通过遍历该链表把节点都存入到一个数组中， 然后再通过数组下标可直接获取到倒数第 k 个节点， 但是这样会需要额外的存储空间， 空间复杂度为 O(n)。
+
+        // 上面这三种常规思路其实都是不符合题目要求的， 那就只能想其他办法了。
+
+        // 我们知道， 链表的节点之间都是通过指针来连接的， 我们先额外定义两个空指针， 分别叫前指针和后指针。
+        // 先让前指针指向链表的头指针并开始遍历， 一直遍历到第 k - 1 个节点， 在这期间， 后指针原地保持不动。
+        // 当前指针遍历到第 k 个节点时， 后指针也指向链表头指针并开始遍历， 在这之后， 前指针每往后遍历一个节点， 后指针也往后遍历一个节点。
+        // 这样前后两指针的距离始终都保持为 k - 1， 当前指针遍历到链表的最后一个节点时， 后指针刚好也就到了倒数第 k 个节点了。
+
+        // 如果还没想明白的话， 看下面的图应该就很好理解了。 p1 代表前指针， p2 代表后指针， 该链表一共有 6 个节点， 要求的是倒数第 3 个节点。
+        
+    </script>
+</body>
+
+</html>
