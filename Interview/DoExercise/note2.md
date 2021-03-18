@@ -615,4 +615,19 @@ https://blog.csdn.net/lavendersue/article/details/111193389
 
 java字节码文件首先被加载到计算机内存中，然后读出一条指令，翻译一条指令，执行一条指令，该过程被称为java语言的解释执行，是由java虚拟机完成的。
 
-## 
+## 解决1px问题
+```js
+var viewport = document.querySelector("meta[name=viewport]");
+var ppi = 1;
+if (window.devicePixelRatio == 2) ppi = 2;
+if (window.devicePixelRatio == 3) ppi = 3;
+
+viewport.setAttribute('content', `width=device-width,initial-scale=${1/ppi}, maximum-scale=${1/ppi}, minimum-scale=${1/ppi}, user-scalable=no`);
+
+// 设置根字体大小
+var docEl = document.documentElement; 
+var fontsize = 10 * (docEl.clientWidth / 320) + 'px'; 
+docEl.style.fontSize = fontsize;
+
+// 在CSS中用rem单位就行了
+```
