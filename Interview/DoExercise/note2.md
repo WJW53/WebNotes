@@ -631,3 +631,79 @@ docEl.style.fontSize = fontsize;
 
 // 在CSS中用rem单位就行了
 ```
+
+## 判断是否存在循环引用
+```js
+let flag = false;
+function cycle(obj, parent) {
+    //表示调用的祖先属性的数组
+    let parentArr = parent || [obj];
+    for (let i in obj) {
+        if (typeof obj[i] === "object") {
+            //判断是否有循环引用
+            for (let j = 0;j<parentArr.length;j++){
+              if(parentArr[j] === obj[i]){
+                obj[i] = "[cycle]";
+                flag = true;
+                return;
+              }
+            }
+            cycle(obj[i], [...parentArr, obj[i]]);
+        }
+    }
+    return flag;
+}
+let a = {
+    b:{
+        c:{}
+    }
+};
+
+a.b.c.d = a;
+
+console.log(cycle(a));
+```
+
+## vue源码目录结构
+```js
+VUE 2.6.10
+├── scripts 			# 打包相关的配置文件，其中最重要的是config.js。主要是根据不同的入口，打	包为不同的文件。
+├── dist 			# 打包之后文件所在位置
+├── examples 		# demo示例
+├── flow 			# Vue使用了Flow来进行静态类型检查，这里定义了声明了一些静态类型
+├── packages 		# vue还可以分别生成其它的npm包
+├── src 			# 主要源码所在位置
+	├── compiler        # 编译相关 
+		├── codegen 		#根据ast生成render函数
+        ├── directives 		#通用生成render函数之前需要处理的指令
+        ├── parser 			#模板解析
+	├── core            # 核心代码
+        ├── components 		#全局的组件，这里只有keep-alive
+        ├── global-api 	#全局方法，也就是添加在Vue对象上的方法，比如Vue.use,Vue.extend,,Vue.mixin等
+        ├── instance 		#实例相关内容，包括实例方法，生命周期，事件等
+        ├── observer 		#双向数据绑定相关文件
+        ├── util 			#工具方法
+        ├── vdom 			#虚拟dom相关 
+	├── platforms       # 不同平台的支持
+		├── web 			#web端独有文件
+	        ├── compiler 		#编译阶段需要处理的指令和模块
+	        ├── runtime 		#运行阶段需要处理的组件、指令和模块
+	        ├── server 			#服务端渲染相关
+	        ├── util 			#工具库
+        ├── weex 			#weex端独有文件
+	├── server          # 服务端渲染
+	├── sfc             # vue 文件解析
+	├── shared          # 共享工具代码
+├── test 			# 测试用例
+```
+
+## 2021大前端技术储备
+
+https://blog.csdn.net/gongch0604/article/details/111947613
+
+
+## 前端方向
+
+node全栈应用、人工智能化、前端工程化、跨平台技术（非常重要）、性能优化和监控
+
+火的技术?：cssinjs+原子css，weex，flutter，react native，typescript

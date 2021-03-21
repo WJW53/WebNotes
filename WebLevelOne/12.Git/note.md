@@ -23,7 +23,7 @@ git remote -v
 **重新设置成ssh的方式:**
 ```shell
 git remote rm origin
-git remote add origin git@github.com:username/repository.git
+git remote add origin git@github.com:WJW53/MyNodeJS.git
 git push -u origin master
 ```
 再看下当前的传输协议:
