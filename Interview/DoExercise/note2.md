@@ -706,4 +706,21 @@ https://blog.csdn.net/gongch0604/article/details/111947613
 
 node全栈应用、人工智能化、前端工程化、跨平台技术（非常重要）、性能优化和监控
 
-火的技术?：cssinjs+原子css，weex，flutter，react native，typescript
+有些技术需要了解并学习技：cssinjs+原子css，weex，flutter，react native，typescript
+
+## ES2021的新特性
+
+`str.replaceAll`、`Promise.any`、`#`（真正私有化变量,无法外部调用,只能函数/类内部自己调用）、`WeakRef`（类，弱引用，垃圾回收0）
+
+`??=`的意思是，如果左侧的值是空值(null和undefined)，那么就把右侧的值赋值给左侧的变量(这个是ES2020的特性)
+
+Numeric separators,比如123456789，一长串看起来很累，所以这次加了下划线作为分隔符123_456_789,
+注意，下划线不能连续，也不能放在开头和结尾，放在开头，就变成字符串了，会被当成变量名，放在结尾会直接报语法错误
+
+
+## 搞清clientHeight、offsetHeight、scrollHeight、offsetTop、scrollTop
+
+https://blog.csdn.net/qq_35430000/article/details/80277587
+
+
+## 

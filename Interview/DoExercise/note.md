@@ -300,7 +300,7 @@ console.log(newCal2(9)); // 1+2*8-9=8
 
 ## 箭头函数
 
-1. this为父级作用域的this
+1. this为父级作用域的this(不可利用call/apply/bind更改其this指向)
 2. 本身无this、arguments、new.target
 3. 没有原型，所以不能作为构造函数使用，更不能继承原型链
 4. 一般用于：事件处理函数、异步处理函数、其他临时性函数、为了绑定父级this、为了代码简洁
