@@ -723,4 +723,15 @@ Numeric separators,比如123456789，一长串看起来很累，所以这次加�
 https://blog.csdn.net/qq_35430000/article/details/80277587
 
 
+## CSSOM阻塞DOM的构建的情况
+
+JS文件不只是阻塞DOM的构建，它会导致CSSOM也阻塞DOM的构建。
+
+原本DOM和CSSOM的构建是互不影响，井水不犯河水，但是一旦引入了JavaScript，CSSOM也开始阻塞DOM的构建，只有CSSOM构建完毕后，DOM再恢复DOM构建。
+
+这是什么情况？
+
+这是因为JavaScript不只是可以改DOM，它还可以更改样式，也就是它可以更改CSSOM。前面我们介绍，**不完整的CSSOM是无法使用的，但JavaScript中想访问CSSOM并更改它，那么在执行JavaScript时，必须要能拿到完整的CSSOM**。所以就导致了一个现象，如果浏览器尚未完成CSSOM的下载和构建，而我们却想在此时运行脚本，那么浏览器将延迟脚本执行和DOM构建，直至其完成CSSOM的下载和构建。也就是说，`在这种情况下，浏览器会先下载和构建CSSOM，然后再执行JavaScript，最后在继续构建DOM`。
+
+
 ## 
