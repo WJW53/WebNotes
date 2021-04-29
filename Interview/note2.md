@@ -207,7 +207,6 @@ SSR 预渲染 同构
 #### webpack
 1. 遇到webpack打包性能问题，先去npm run build --report，然后根据分析结果来做相应的优化，谁占体积大就干谁
 2. webpack提供的externals可以配合外部资源CDN轻松大幅度减少打包体积，尤其对于echarts、jQuery、lodash这种库来说
-
 3. 代码拆分
 
 JS 层面细细展开
