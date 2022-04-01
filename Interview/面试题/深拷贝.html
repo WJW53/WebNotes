@@ -36,7 +36,8 @@
 
             for (const i in target) {
                 if (Object.prototype.hasOwnProperty.call(target, i)) {
-                    cloneTarget[i] = isObject(i) ? deepClone(target, hash) : target[i];
+                    // console.log(i, isObject(target[i]));
+                    cloneTarget[i] = isObject(target[i]) ? deepClone(target[i], hash) : target[i];
                 }
             }
 
@@ -52,7 +53,12 @@
             ],
             [fn](){
                 console.log('typeof fn: ' + typeof fn);
-            }
+            },
+            person: {
+                name: 'wjw',
+                age: 18,
+                relative: ['wzp', 'llf', 'wqq', {what: 'test'}],
+            },
         }
         a.eat[2] = "桃";
         a.d = a;

@@ -106,7 +106,8 @@ const MyPromise = (() => {
                     //也就是当这里的函数运行了,我就知道,噢,需要执行thenable了
                     //防止值的穿透:
                     if (typeof thenable !== "function") {
-                        //父级promise没有注册thenable时,那交给我来处理
+                        //如果这层promise没有注册thenable时,那交给这里来处理
+                        //相当于我内部隐式的帮你注册了
                         resolve(data);
                         return;
                     }
@@ -115,7 +116,7 @@ const MyPromise = (() => {
 
                 this[settleHandle](reason => {
                     if (typeof catchable !== "function") {
-                        //父级promise没有注册catchable时,那交给我来处理
+                        //如果这层promise没有注册catchable时,那交给这里来处理
                         reject(reason);
                         return;
                     }

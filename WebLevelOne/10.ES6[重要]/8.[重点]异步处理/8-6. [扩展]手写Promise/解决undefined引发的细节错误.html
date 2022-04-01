@@ -9,22 +9,25 @@
 
 <body>
     <!-- <script src="./0.MyPromise.js"></script> -->
-    <!-- <script src="./5.防止值的穿透问题.js"></script> -->
+    <script src="./5.防止值的穿透问题.js"></script>
     <!-- <script src="./MyPromise.js"></script> -->
-    <script src="./MyPromise_2.js"></script>
+    <!-- <script src="./MyPromise_2.js"></script> -->
 
     <script>
         var pro1 = new MyPromise((resolve, reject) => {
                 setTimeout(() => {
-                    // resolve(1);
-                    reject(2);
+                    resolve(1);
+                    // reject(2);
                 }, 1000);
             })
-            .then(data => { //只处理了正常情况,但现在pro1是reject,所以不执行thenable
+            .then(undefined, data => { //只处理了正常情况,但现在pro1是reject,所以不执行thenable
                 console.log(data);
             })
             .catch(err => { //
                 console.log(err); //2,因为then中没有传入thenable
+            }).then(data => {
+                console.log('ccc', data);
+                console.log('tttt')
             })
 
         //当pro1resolve之后

@@ -21,6 +21,20 @@ text-overflow:ellipsis;
 
 ### flex布局：
 
+如果flex-basis的总和加起来大于父级宽度，子级被压缩，最后的选择是flex-shrink来进行压缩计算
+
+**以下是标准盒模型下的计算公式，如果是border-box(且加了border/padding,用的是width属性, 则加权值计算的时候用的始终是content区域的宽度！！注意减去padding和border的值):**
+
+`加权值 = (flex-basis1 * flex-shrink1) + .....；`
+
+那么压缩后的计算公式就是
+
+`压缩的宽度 w = (子元素flex-basis值 * (flex-shrink)/加权值) * 溢出值`
+
+如果flex-basis的总和小于父级宽度，剩余的宽度将根据flex-grow值的总和进行百分比；
+
+`扩张的宽度 w = (子元素flex-grow值 /所有子元素flex-grow的总和) * 剩余值`
+
 #### 容器属性：
 flex-direction:row;
 flex-wrap:nowrap;

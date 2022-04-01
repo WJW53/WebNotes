@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="./MyPromise.js"></script>
+    <script>
+        // MyPromise.resolve()
+        //   .then(() => {
+        //     console.log(0);
+        //     return MyPromise.resolve(4);
+        //   })
+        //   .then((res) => {
+        //     console.log(res);
+        //   });
+
+        // MyPromise.resolve()
+        //   .then(() => {
+        //     console.log(1);
+        //   })
+        //   .then(() => {
+        //     console.log(2);
+        //   })
+        //   .then(() => {
+        //     console.log(3);
+        //   })
+        //   .then(() => {
+        //     console.log(5);
+        //   })
+        //   .then(() => {
+        //     console.log(6);
+        //   });
+          //PromiseA+: 0 1 2 4 3 5 6;  浏览器Promise实践: 0123456, 它有过优化
+
+        //-----------
+        console.log('--------------------')
+        // let p = Promise.resolve(4);
+        // new Promise((resolve) => {
+        //     console.log(0);
+        //     // resolve(Promise.resolve(4));
+        //     // resolve(p);
+        //     ////这三种写法等价
+        //     Promise.resolve().then(() => {
+        //         p.then(resolve); //这里才是最终的resolve
+        //     });
+        // }).then((res) => {
+        //     console.log(res);
+        // }).then(() => {
+        //     console.log(7);
+        // }).then(() => {
+        //     console.log(8);
+        // });
+
+        // new Promise((resolve) => {
+        //     console.log(1);
+        //     resolve();
+        // }).then(() => {
+        //     console.log(2);
+        // }).then(() => {
+        //     console.log(3);
+        // }).then(() => {
+        //     console.log(5);
+        // }).then(() => {
+        //     console.log(6);
+        // }).then((res) => {
+        //     console.log(9);
+        // });
+        ////PromiseA+和浏览器实践均为: 0 1 2 3 4 5 7 6 8 9
+        let p = MyPromise.resolve(4);
+        new MyPromise((resolve) => {
+            console.log(0);
+            // resolve(MyPromise.resolve(4));
+            // resolve(p);
+            ////这三种写法等价
+            MyPromise.resolve().then(() => {
+                p.then(resolve); //这里才是最终的resolve
+            });
+        }).then((res) => {
+            console.log(res);
+        }).then(() => {
+            console.log(7);
+        }).then(() => {
+            console.log(8);
+        });
+
+        new MyPromise((resolve) => {
+            console.log(1);
+            resolve();
+        }).then(() => {
+            console.log(2);
+        }).then(() => {
+            console.log(3);
+        }).then(() => {
+            console.log(5);
+        }).then(() => {
+            console.log(6);
+        }).then((res) => {
+            console.log(9);
+        });
+
+
+
+
+    //   // test.js
+    //   const promise = new MyPromise((resolve, reject) => {
+    //     resolve("success");
+    //   });
+
+    //   // 这个时候将promise定义一个p1，然后返回的时候返回p1这个promise
+    //   const p1 = promise.then((value) => {
+    //     console.log(1);
+    //     console.log("resolve", value);
+    //     return p1;
+    //   });
+
+    //   // 运行的时候会走reject
+    //   p1.then(
+    //     (value) => {
+    //       console.log(2);
+    //       console.log("resolve", value);
+    //     },
+    //     (reason) => {
+    //       console.log(3);
+    //       console.log(reason.message);
+    //     }
+    //   );
+
+      // 大家先思考一下
+    </script>
+  </body>
+</html>
